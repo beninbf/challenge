@@ -4,8 +4,7 @@
 <html lang="en">
 <head>
 
-<link rel="stylesheet" type="text/css"
-	href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
 
 <!--
 	<spring:url value="/css/main.css" var="springCss" />
@@ -80,11 +79,7 @@
            </table>
 		</div>
 	</div>
-	<!-- /.container -->
 
-	<script type="text/javascript"
-		src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+    <script type="text/javascript" src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </body>
-
 </html>
