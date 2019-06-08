@@ -2,10 +2,6 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
-    <!--
-        <spring:url value="/css/main.css" var="springCss" />
-        <link href="${springCss}" rel="stylesheet" />
-         -->
     <c:url value="/css/main.css" var="jstlCss" />
     <link href="${jstlCss}" rel="stylesheet" />
 </head>
@@ -22,10 +18,9 @@
 		<div class="starter-template">
 			<h1>Please select the entity you would like to search</h1>
 			<table>
-                    <!-- <input type="submit" value="Users" name="user-options"/> -->
-                    <input type="button" onclick="location.href='user-options';" value="Users" />
-                    <input type="button" onclick="location.href='ticket-options';" value="Tickets" />
-                    <input type="button" onclick="location.href='organization-options';" value="Organizations" />
+                <td><input type="button" onclick="location.href='user-options';" value="Users" /></td>
+                <td><input type="button" onclick="location.href='ticket-options';" value="Tickets" /></td>
+                <td><input type="button" onclick="location.href='organization-options';" value="Organizations" /></td>
             </table>
 		</div>
 	</div>
