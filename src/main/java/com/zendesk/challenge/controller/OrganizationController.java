@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -33,13 +35,20 @@ import java.util.Map;
 public class OrganizationController {
     private static Logger logger = LoggerFactory.getLogger(OrganizationController.class);
 
+    private static final Set<String> booleanTypes = new HashSet<>();
+    {
+        booleanTypes.add("sharedTickets");
+    }
+
     @Inject
     private OrganizationService organizationService;
 
     @RequestMapping(value="/organization", method = RequestMethod.GET, params = {"field", "value"})
     public String organization(@RequestParam("field") String field, @RequestParam("value") String value, Map<String, Object> model) {
+        logger.info(String.format("Querying for organization by field: %s and value: %s", field, value));
         value = value.isEmpty() ? null : value;
-        List<Organization> organizations = organizationService.getOrganizations(field, value);
+        Object valueToQuery = booleanTypes.contains(field) ? getBoolean(value) : value;
+        List<Organization> organizations = organizationService.getOrganizations(field, valueToQuery);
 
         List<OrganizationModel> organizationModels = new ArrayList<>();
         for (Organization organization: organizations) {
@@ -52,5 +61,15 @@ public class OrganizationController {
         model.put("value", value);
         model.put("organizations", organizationModels);
         return "organization";
+    }
+
+    private Boolean getBoolean(String value) {
+        Boolean result = null;
+        if (value.equals("true")) {
+            result = Boolean.TRUE;
+        } else if (value.equals("false")) {
+            result = Boolean.FALSE;
+        }
+        return result;
     }
 }

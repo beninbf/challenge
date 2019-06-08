@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -45,9 +46,8 @@ public class Organization implements Serializable {
     @Column(name = "NAME", nullable = true, length = 50)
     private String name;
 
-    @Convert(converter = StringListConverter.class)
     @Column(name = "DOMAIN_NAMES", nullable = true)
-    private List<String> domainNames;
+    private String domainNames;
 
     @Column(name = "CREATED_D", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", nullable = false)
     private Timestamp createdDate;
@@ -59,9 +59,8 @@ public class Organization implements Serializable {
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean sharedTickets;
 
-    @Convert(converter = StringListConverter.class)
     @Column(name = "TAGS", nullable = true)
-    private List<String> tags;
+    private String tags;
 
     /**
      * Gets unique userId.
@@ -177,7 +176,7 @@ public class Organization implements Serializable {
      * @return the tags
      */
     public List<String> getTags() {
-        return tags;
+        return Arrays.asList(tags.split(","));
     }
 
     /**
@@ -186,7 +185,7 @@ public class Organization implements Serializable {
      * @param tags the tags
      */
     public void setTags(List<String> tags) {
-        this.tags = tags;
+        this.tags = String.join(",", tags);
     }
 
     /**
@@ -195,7 +194,7 @@ public class Organization implements Serializable {
      * @return the domain names
      */
     public List<String> getDomainNames() {
-        return domainNames;
+        return Arrays.asList(domainNames.split(","));
     }
 
     /**
@@ -204,7 +203,7 @@ public class Organization implements Serializable {
      * @param domainNames the domain names
      */
     public void setDomainNames(List<String> domainNames) {
-        this.domainNames = domainNames;
+        this.domainNames = String.join(",", domainNames);
     }
 
     /**

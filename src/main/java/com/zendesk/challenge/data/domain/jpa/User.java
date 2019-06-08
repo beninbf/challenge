@@ -3,12 +3,12 @@ package com.zendesk.challenge.data.domain.jpa;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -84,9 +84,8 @@ public class User implements Serializable {
     @Column(name = "ORGANIZATION_ID", nullable = true)
     private Long organizationId;
 
-    @Convert(converter = StringListConverter.class)
-    @Column(name = "TAGS", nullable = false)
-    private List<String> tags;
+    @Column(name = "TAGS", nullable = false, length = 100)
+    private String tags;
 
     @Column(name = "SUSPENDED", columnDefinition = "TINYINT(1)", nullable = true)
     @Type(type = "org.hibernate.type.NumericBooleanType")
@@ -407,7 +406,7 @@ public class User implements Serializable {
      * @return the tags
      */
     public List<String> getTags() {
-        return tags;
+        return Arrays.asList(tags.split(","));
     }
 
     /**
@@ -416,7 +415,7 @@ public class User implements Serializable {
      * @param tags the tags
      */
     public void setTags(List<String> tags) {
-        this.tags = tags;
+        this.tags = String.join(",", tags);
     }
 
     /**

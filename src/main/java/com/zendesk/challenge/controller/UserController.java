@@ -47,8 +47,7 @@ public class UserController {
 
     @RequestMapping(value = "/user", method = RequestMethod.GET, params = {"field", "value"})
     public String user(@RequestParam("field") String field, @RequestParam("value") String value, Map<String, Object> model) {
-        logger.info(String.format("Querying by field: %s and value: %s", field, value));
-
+        logger.info(String.format("Querying for users by field: %s and value: %s", field, value));
         Object valueToQuery = booleanTypes.contains(field) ? getBoolean(value) : value;
         List<User> users = userService.getUsers(field, valueToQuery);
         List<UserModel> userModels = new ArrayList<>();
