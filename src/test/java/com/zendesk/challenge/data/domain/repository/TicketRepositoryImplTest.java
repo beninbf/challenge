@@ -1,6 +1,5 @@
 package com.zendesk.challenge.data.domain.repository;
 
-
 import com.zendesk.challenge.data.domain.jpa.Ticket;
 import com.zendesk.challenge.data.domain.repository.config.RepositoryTestConfig;
 import com.zendesk.challenge.util.TestUtil;

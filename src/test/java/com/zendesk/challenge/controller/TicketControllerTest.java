@@ -1,9 +1,7 @@
 package com.zendesk.challenge.controller;
 
 import com.zendesk.challenge.data.domain.jpa.Ticket;
-import com.zendesk.challenge.data.domain.jpa.User;
 import com.zendesk.challenge.service.TicketService;
-import com.zendesk.challenge.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;

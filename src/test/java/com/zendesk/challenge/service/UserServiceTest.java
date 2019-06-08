@@ -1,6 +1,5 @@
 package com.zendesk.challenge.service;
 
-import com.zendesk.challenge.data.domain.jpa.Ticket;
 import com.zendesk.challenge.data.domain.jpa.User;
 import com.zendesk.challenge.data.domain.repository.UserRepository;
 import com.zendesk.challenge.service.impl.UserServiceImpl;

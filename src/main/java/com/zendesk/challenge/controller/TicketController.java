@@ -1,12 +1,8 @@
 package com.zendesk.challenge.controller;
 
-import com.zendesk.challenge.builder.OrganizationBuilder;
 import com.zendesk.challenge.builder.TicketBuilder;
-import com.zendesk.challenge.data.domain.jpa.Organization;
 import com.zendesk.challenge.data.domain.jpa.Ticket;
-import com.zendesk.challenge.model.OrganizationModel;
 import com.zendesk.challenge.model.TicketModel;
-import com.zendesk.challenge.service.OrganizationService;
 import com.zendesk.challenge.service.TicketService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

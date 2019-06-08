@@ -1,8 +1,6 @@
 package com.zendesk.challenge.controller;
 
-import com.zendesk.challenge.data.domain.jpa.Organization;
 import com.zendesk.challenge.data.domain.jpa.User;
-import com.zendesk.challenge.service.OrganizationService;
 import com.zendesk.challenge.service.UserService;
 import org.junit.Before;
 import org.junit.Test;

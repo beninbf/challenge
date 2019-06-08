@@ -1,6 +1,5 @@
 package com.zendesk.challenge.service;
 
-import com.zendesk.challenge.data.domain.jpa.Organization;
 import com.zendesk.challenge.data.domain.jpa.Ticket;
 import com.zendesk.challenge.data.domain.repository.TicketRepository;
 import com.zendesk.challenge.service.impl.TicketServiceImpl;

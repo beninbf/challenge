@@ -1,7 +1,6 @@
 package com.zendesk.challenge.service;
 
 import com.zendesk.challenge.data.domain.jpa.Organization;
-import com.zendesk.challenge.data.domain.jpa.User;
 import com.zendesk.challenge.data.domain.repository.OrganizationRepository;
 import com.zendesk.challenge.service.impl.OrganizationServiceImpl;
 import org.junit.Before;
@@ -15,7 +14,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
