@@ -4,6 +4,7 @@ import com.zendesk.challenge.data.domain.jpa.Ticket;
 import com.zendesk.challenge.model.TicketModel;
 import org.junit.Test;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -18,6 +19,14 @@ public class TicketBuilderTest {
         Ticket ticket  = new TicketBuilder().model(model).build();
         assertNotNull("ticket should not be null", ticket);
         assertEquals("ticket id should be 11", model.getId(), ticket.getTicketId());
+    }
+
+    @Test
+    public void testBuildModel() {
+        Ticket ticket = getTicket();
+        TicketModel model  = new TicketBuilder().ticket(ticket).buildModel();
+        assertNotNull("ticket should not be null", model);
+        assertEquals("ticket id should be aaa", ticket.getTicketId(), model.getId());
     }
 
     private TicketModel getTicketModel() {
@@ -39,5 +48,26 @@ public class TicketBuilderTest {
         ticketModel.setTags(Arrays.asList("blah,blah,blah"));
         ticketModel.setDueAt(new Date());
         return ticketModel;
+    }
+
+    private Ticket getTicket() {
+        Ticket ticket = new Ticket();
+        ticket.setTicketId("aaa");
+        ticket.setUrl("Test");
+        ticket.setExternalId("abc");
+        ticket.setCreatedDate(new Timestamp(new Date().getTime()));
+        ticket.setType("test type");
+        ticket.setSubject("test subject");
+        ticket.setDescription("test description");
+        ticket.setPriority("test priority");
+        ticket.setStatus("test status");
+        ticket.setSubmitterId(2l);
+        ticket.setAssigneeId(4l);
+        ticket.setOrganizationId(5l);
+        ticket.setVia("via");
+        ticket.setHasIncidents(true);
+        ticket.setTags(Arrays.asList("blah,blah,blah"));
+        ticket.setDueDate(new Timestamp(new Date().getTime()));
+        return ticket;
     }
 }

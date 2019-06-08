@@ -21,6 +21,14 @@ public class UserBuilderTest {
         assertEquals("user id should be 11", model.getId().longValue(), user.getUserId().longValue());
     }
 
+    @Test
+    public void testBuildModel() {
+        User user = getUser();
+        UserModel model = new UserBuilder().user(user).buildModel();
+        assertNotNull("user should not be null", user);
+        assertEquals("user id should be 11", user.getUserId().longValue(), model.getId().longValue());
+    }
+
     private UserModel getUserModel() {
         UserModel userModel = new UserModel();
         userModel.setId(11L);
@@ -43,5 +51,29 @@ public class UserBuilderTest {
         userModel.setLocale("locale");
         userModel.setTimezone("timezone");
         return userModel;
+    }
+
+    private User getUser() {
+        User user = new User();
+        user.setUserId(11L);
+        user.setUrl("Test");
+        user.setExternalId("abc");
+        user.setName("test name");
+        user.setAlias("test alias");
+        user.setCreatedDate(new Timestamp(new Date().getTime()));
+        user.setActive(true);
+        user.setShared(true);
+        user.setVerified(true);
+        user.setLastLoginDate(new Timestamp(new Date().getTime()));
+        user.setEmail("test@email.com");
+        user.setSignature("sig");
+        user.setPhone("888-888-8888");
+        user.setOrganizationId(3l);
+        user.setSuspended(true);
+        user.setTags(Arrays.asList("hello","ok","good"));
+        user.setRole("admin");
+        user.setLocale("locale");
+        user.setTimezone("timezone");
+        return user;
     }
 }
