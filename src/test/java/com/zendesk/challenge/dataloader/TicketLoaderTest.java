@@ -12,6 +12,19 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+/**
+ *
+ * <code>TicketLoaderTest</code> unit test for TicketLoader
+ *
+ * <pre>
+ * <strong>History</strong>    Name              Date            Description
+ * <strong>History</strong>    --------------------------------------------------------------------
+ * <strong>History</strong>    Benin Bryant      June 6, 2019    Creating a basic search.
+ * </pre>
+ *
+ * @author Benin Bryant
+ * @since June 6, 2019
+ */
 public class TicketLoaderTest {
 
     @Mock

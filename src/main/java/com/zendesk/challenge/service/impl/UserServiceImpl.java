@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,6 +30,12 @@ public class UserServiceImpl implements UserService {
 
     public List<User> getUsers(String field, Object value) {
         logger.info(String.format("retrieving users information %s=%s", field, value));
-        return userRepository.getUsers(field, value);
+        List<User> users = null;
+        try {
+            users = userRepository.getUsers(field, value);
+        } catch (Exception ex) {
+            logger.error(ex.getMessage(), ex);
+        }
+        return users;
     }
 }

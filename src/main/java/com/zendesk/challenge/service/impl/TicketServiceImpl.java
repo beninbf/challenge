@@ -30,7 +30,13 @@ public class TicketServiceImpl implements TicketService {
 
     public List<Ticket> getTickets(String field, Object value) {
         logger.info(String.format("retrieving tickets information %s=%s", field, value));
-        return ticketRepository.getTickets(field, value);
+        List<Ticket> tickets = null;
+        try {
+            tickets = ticketRepository.getTickets(field, value);
+        } catch (Exception ex) {
+            logger.error(ex.getMessage(), ex);
+        }
+        return tickets;
     }
 
 }

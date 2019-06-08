@@ -33,10 +33,10 @@ public class UserController {
     private static Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Inject
-    UserService userService;
+    private UserService userService;
 
     @RequestMapping(value = "/user", method = RequestMethod.GET, params = {"field", "value"})
-    public String organization(@RequestParam("field") String field, @RequestParam("value") String value, Map<String, Object> model) {
+    public String user(@RequestParam("field") String field, @RequestParam("value") String value, Map<String, Object> model) {
         value = value.isEmpty() ? null : value;
         List<User> users = userService.getUsers(field, value);
 

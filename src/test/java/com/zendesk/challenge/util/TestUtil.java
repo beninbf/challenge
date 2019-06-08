@@ -9,6 +9,19 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import javax.inject.Inject;
 
+/**
+ *
+ * <code>TestUtil</code> a bean for conveniently deleting all repositories before an after tests
+ *
+ * <pre>
+ * <strong>History</strong>    Name              Date            Description
+ * <strong>History</strong>    --------------------------------------------------------------------
+ * <strong>History</strong>    Benin Bryant      June 6, 2019    Creating a basic search.
+ * </pre>
+ *
+ * @author Benin Bryant
+ * @since June 6, 2019
+ */
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = RepositoryTestConfig.class)
 public class TestUtil {
 

@@ -19,6 +19,19 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ *
+ * <code>UserRepositoryImplTest</code> unit test for UserRepositoryImpl
+ *
+ * <pre>
+ * <strong>History</strong>    Name              Date            Description
+ * <strong>History</strong>    --------------------------------------------------------------------
+ * <strong>History</strong>    Benin Bryant      June 6, 2019    Creating a basic search.
+ * </pre>
+ *
+ * @author Benin Bryant
+ * @since June 6, 2019
+ */
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = RepositoryTestConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class UserRepositoryImplTest {

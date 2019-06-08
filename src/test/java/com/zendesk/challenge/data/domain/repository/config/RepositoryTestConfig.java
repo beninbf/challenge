@@ -9,6 +9,19 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
+/**
+ *
+ * <code>RepositoryTestConfig</code> config for enabling the use of repositories for testing.
+ *
+ * <pre>
+ * <strong>History</strong>    Name              Date            Description
+ * <strong>History</strong>    --------------------------------------------------------------------
+ * <strong>History</strong>    Benin Bryant      June 6, 2019    Creating a basic search.
+ * </pre>
+ *
+ * @author Benin Bryant
+ * @since June 6, 2019
+ */
 @Configuration
 @Import(ChallengeDomainConfig.class)
 public class RepositoryTestConfig {

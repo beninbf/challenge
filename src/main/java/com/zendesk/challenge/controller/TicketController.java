@@ -37,10 +37,10 @@ public class TicketController {
     private static Logger logger = LoggerFactory.getLogger(TicketController.class);
 
     @Inject
-    TicketService ticketService;
+    private TicketService ticketService;
 
     @RequestMapping(value = "/ticket", method = RequestMethod.GET, params = {"field", "value"})
-    public String organization(@RequestParam("field") String field, @RequestParam("value") String value, Map<String, Object> model) {
+    public String ticket(@RequestParam("field") String field, @RequestParam("value") String value, Map<String, Object> model) {
         value = value.isEmpty() ? null : value;
         List<Ticket> tickets = ticketService.getTickets(field, value);
 

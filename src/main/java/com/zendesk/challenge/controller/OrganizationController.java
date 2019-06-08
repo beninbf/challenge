@@ -34,7 +34,7 @@ public class OrganizationController {
     private static Logger logger = LoggerFactory.getLogger(OrganizationController.class);
 
     @Inject
-    OrganizationService organizationService;
+    private OrganizationService organizationService;
 
     @RequestMapping(value="/organization", method = RequestMethod.GET, params = {"field", "value"})
     public String organization(@RequestParam("field") String field, @RequestParam("value") String value, Map<String, Object> model) {
