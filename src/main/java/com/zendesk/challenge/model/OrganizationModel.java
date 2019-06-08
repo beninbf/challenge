@@ -9,7 +9,16 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * The type Organization model.
+ *
+ * <code>OrganizationModel</code> model object for organizations.
+ * <pre>
+ * <strong>History</strong>    Name              Date            Description
+ * <strong>History</strong>    --------------------------------------------------------------------
+ * <strong>History</strong>    Benin Bryant      June 6, 2019    Creating a basic search.
+ * </pre>
+ *
+ * @author Benin Bryant
+ * @since June 6, 2019
  */
 public class OrganizationModel implements Serializable {
 

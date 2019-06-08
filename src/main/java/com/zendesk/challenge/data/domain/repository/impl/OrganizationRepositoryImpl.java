@@ -15,6 +15,18 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
+/**
+ *
+ * <code>OrganizationRepositoryImpl</code> implementation of the OrganizationRepository Interface.
+ * <pre>
+ * <strong>History</strong>    Name              Date            Description
+ * <strong>History</strong>    --------------------------------------------------------------------
+ * <strong>History</strong>    Benin Bryant      June 6, 2019    Creating a basic search.
+ * </pre>
+ *
+ * @author Benin Bryant
+ * @since June 6, 2019
+ */
 public class OrganizationRepositoryImpl implements OrganizationDao {
 
     @Autowired

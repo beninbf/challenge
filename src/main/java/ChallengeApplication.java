@@ -1,18 +1,23 @@
 import com.zendesk.challenge.config.ChallengeConfig;
-import org.hibernate.SessionFactory;
-import org.hibernate.ejb.HibernateEntityManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
 /**
- * SpringBootApplication.
  *
+ * <code>ChallengeApplication</code> spring boot application.
+ * <pre>
+ * <strong>History</strong>    Name              Date            Description
+ * <strong>History</strong>    --------------------------------------------------------------------
+ * <strong>History</strong>    Benin Bryant      June 6, 2019    Creating a basic search.
+ * </pre>
+ *
+ * @author Benin Bryant
+ * @since June 6, 2019
  */
 @Import(ChallengeConfig.class)
 @EnableAutoConfiguration
@@ -27,10 +32,4 @@ public class ChallengeApplication {
         SpringApplication.run(ChallengeApplication.class, args);
         logger.info("ZENDESK APPLICATION STARTED");
     }
-
-//    @Bean
-//    public SessionFactory sessionFactory(HibernateEntityManagerFactory hemf) {
-//        return hemf.getSessionFactory();
-//    }
-
 }

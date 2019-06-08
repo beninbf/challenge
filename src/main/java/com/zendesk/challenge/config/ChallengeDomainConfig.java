@@ -10,6 +10,19 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import javax.annotation.PostConstruct;
 
+/**
+ *
+ * <code>ChallengeDomainConfig</code>  Configuration class for jpa and repository objects.
+ *
+ * <pre>
+ * <strong>History</strong>    Name              Date            Description
+ * <strong>History</strong>    --------------------------------------------------------------------
+ * <strong>History</strong>    Benin Bryant      June 6, 2019    Creating a basic search.
+ * </pre>
+ *
+ * @author Benin Bryant
+ * @since June 6, 2019
+ */
 @Configuration
 @ComponentScan
 @EnableAutoConfiguration

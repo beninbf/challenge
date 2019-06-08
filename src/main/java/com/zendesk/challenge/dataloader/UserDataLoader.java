@@ -21,8 +21,16 @@ import java.net.URL;
 import java.util.List;
 
 /**
- * UserDataLoader - this class runs on start up, populating our in memory data base
- * with User rows, using the user.json file as a seed.
+ *
+ * <code>TicketDataLoader</code> runs at startup to populate our in memory database.
+ * <pre>
+ * <strong>History</strong>    Name              Date            Description
+ * <strong>History</strong>    --------------------------------------------------------------------
+ * <strong>History</strong>    Benin Bryant      June 6, 2019    Creating a basic search.
+ * </pre>
+ *
+ * @author Benin Bryant
+ * @since June 6, 2019
  */
 @Component
 public class UserDataLoader implements CommandLineRunner {

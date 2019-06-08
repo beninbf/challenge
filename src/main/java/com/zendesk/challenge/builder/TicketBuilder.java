@@ -5,6 +5,19 @@ import com.zendesk.challenge.model.TicketModel;
 
 import java.sql.Timestamp;
 
+/**
+ *
+ * <code>TicketBuilder</code> Builder class for building Ticket JPA objects and Ticket Models
+ *
+ * <pre>
+ * <strong>History</strong>    Name              Date            Description
+ * <strong>History</strong>    --------------------------------------------------------------------
+ * <strong>History</strong>    Benin Bryant      June 6, 2019    Creating a basic search.
+ * </pre>
+ *
+ * @author Benin Bryant
+ * @since June 6, 2019
+ */
 public class TicketBuilder {
 
     private TicketModel model;

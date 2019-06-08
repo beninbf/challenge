@@ -6,6 +6,19 @@ import com.zendesk.challenge.model.OrganizationModel;
 import java.sql.Timestamp;
 import java.util.Date;
 
+/**
+ *
+ * <code>OrganizationBuilder</code> Builder class for building Organization JPA object and OrganizationModels
+ *
+ * <pre>
+ * <strong>History</strong>    Name              Date            Description
+ * <strong>History</strong>    --------------------------------------------------------------------
+ * <strong>History</strong>    Benin Bryant      June 6, 2019    Creating a basic search.
+ * </pre>
+ *
+ * @author Benin Bryant
+ * @since June 6, 2019
+ */
 public class OrganizationBuilder {
 
     private OrganizationModel model;

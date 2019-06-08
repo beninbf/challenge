@@ -10,6 +10,19 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ *
+ * <code>OrganizationServiceImpl</code> service implemenation for the organization service.
+ * <pre>
+ * <strong>History</strong>    Name              Date            Description
+ * <strong>History</strong>    --------------------------------------------------------------------
+ * <strong>History</strong>    Benin Bryant      June 6, 2019    Creating a basic search.
+ * </pre>
+ *
+ * @author Benin Bryant
+ * @since June 6, 2019
+ */
 public class OrganizationServiceImpl implements OrganizationService {
     private static Logger logger = LoggerFactory.getLogger(OrganizationServiceImpl.class);
 

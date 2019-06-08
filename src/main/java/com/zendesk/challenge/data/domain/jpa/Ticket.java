@@ -11,7 +11,17 @@ import java.sql.Timestamp;
 import java.util.List;
 
 /**
- * The Ticket JPA Object.
+ *
+ * <code>Ticket</code> class is a database entity mapping to table TICKET.
+ *
+ * <pre>
+ * <strong>History</strong>    Name              Date            Description
+ * <strong>History</strong>    --------------------------------------------------------------------
+ * <strong>History</strong>    Benin Bryant      June 6, 2019    Creating a basic search.
+ * </pre>
+ *
+ * @author Benin Bryant
+ * @since June 6, 2019
  */
 @Entity
 public class Ticket {

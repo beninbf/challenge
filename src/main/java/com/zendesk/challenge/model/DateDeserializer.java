@@ -11,6 +11,18 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ *
+ * <code>DateDeserializer</code> for formatting the dates during deserialization.
+ * <pre>
+ * <strong>History</strong>    Name              Date            Description
+ * <strong>History</strong>    --------------------------------------------------------------------
+ * <strong>History</strong>    Benin Bryant      June 6, 2019    Creating a basic search.
+ * </pre>
+ *
+ * @author Benin Bryant
+ * @since June 6, 2019
+ */
 public class DateDeserializer extends JsonDeserializer<Date> {
     private static Logger logger = LoggerFactory.getLogger(DateDeserializer.class);
 

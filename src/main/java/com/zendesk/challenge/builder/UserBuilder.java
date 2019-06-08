@@ -5,6 +5,19 @@ import com.zendesk.challenge.model.UserModel;
 
 import java.sql.Timestamp;
 
+/**
+ *
+ * <code>UserBuilder</code> Builder class for building User JPA objects and User Models
+ *
+ * <pre>
+ * <strong>History</strong>    Name              Date            Description
+ * <strong>History</strong>    --------------------------------------------------------------------
+ * <strong>History</strong>    Benin Bryant      June 6, 2019    Creating a basic search.
+ * </pre>
+ *
+ * @author Benin Bryant
+ * @since June 6, 2019
+ */
 public class UserBuilder {
 
     private UserModel model;

@@ -8,6 +8,19 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+
+/**
+ *
+ * <code>UserModel</code> model object for users.
+ * <pre>
+ * <strong>History</strong>    Name              Date            Description
+ * <strong>History</strong>    --------------------------------------------------------------------
+ * <strong>History</strong>    Benin Bryant      June 6, 2019    Creating a basic search.
+ * </pre>
+ *
+ * @author Benin Bryant
+ * @since June 6, 2019
+ */
 public class UserModel implements Serializable {
 
     private static final long serialVersionUID = -1702280467535730161L;

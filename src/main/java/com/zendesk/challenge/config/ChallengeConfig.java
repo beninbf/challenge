@@ -14,7 +14,17 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 /**
- * Challenge Config - Spring Config class for generating beans.
+ *
+ * <code>ChallengeConfig</code> Spring Config class for generating service beans.
+ *
+ * <pre>
+ * <strong>History</strong>    Name              Date            Description
+ * <strong>History</strong>    --------------------------------------------------------------------
+ * <strong>History</strong>    Benin Bryant      June 6, 2019    Creating a basic search.
+ * </pre>
+ *
+ * @author Benin Bryant
+ * @since June 6, 2019
  */
 @Configuration
 @ComponentScan(basePackages = { "com.zendesk.challenge.service", "com.zendesk.challenge.controller"})
@@ -37,5 +47,4 @@ public class ChallengeConfig {
     public OrganizationService organizationService() {
         return new OrganizationServiceImpl();
     }
-
 }
