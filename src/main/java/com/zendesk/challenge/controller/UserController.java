@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -32,14 +34,23 @@ import java.util.Map;
 public class UserController {
     private static Logger logger = LoggerFactory.getLogger(UserController.class);
 
+    private static final Set<String> booleanTypes = new HashSet<>();
+    {
+        booleanTypes.add("verified");
+        booleanTypes.add("active");
+        booleanTypes.add("shared");
+        booleanTypes.add("suspended");
+    }
+
     @Inject
     private UserService userService;
 
     @RequestMapping(value = "/user", method = RequestMethod.GET, params = {"field", "value"})
     public String user(@RequestParam("field") String field, @RequestParam("value") String value, Map<String, Object> model) {
-        value = value.isEmpty() ? null : value;
-        List<User> users = userService.getUsers(field, value);
+        logger.info(String.format("Querying by field: %s and value: %s", field, value));
 
+        Object valueToQuery = booleanTypes.contains(field) ? getBoolean(value) : value;
+        List<User> users = userService.getUsers(field, valueToQuery);
         List<UserModel> userModels = new ArrayList<>();
         for (User user : users) {
             UserModel userModel = new UserBuilder().user(user).buildModel();
@@ -51,5 +62,15 @@ public class UserController {
         model.put("value", value);
         model.put("users", userModels);
         return "user";
+    }
+
+    private Boolean getBoolean(String value) {
+        Boolean result = null;
+        if (value.equals("true")) {
+            result = Boolean.TRUE;
+        } else if (value.equals("false")) {
+            result = Boolean.FALSE;
+        }
+        return result;
     }
 }

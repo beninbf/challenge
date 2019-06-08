@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
@@ -69,4 +70,16 @@ public class UserServiceTest {
         verify(userRepository, times(1)).getUsers(anyString(), any(Object.class));
         assertTrue("result should be empty", result.isEmpty());
     }
+
+    @Test
+    public void testField() {
+        User user = new User();
+
+        Field[] fields = user.getClass().getDeclaredFields();
+
+        for(Field field: fields) {
+            System.out.println(field.getName());
+        }
+    }
+
 }

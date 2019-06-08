@@ -57,7 +57,7 @@ public class UserControllerTest {
         Map<String, Object> modelMap = new HashMap<>();
         User user = mock(User.class);
         when(userService.getUsers(anyString(), any(Object.class))).thenReturn(Arrays.asList(user));
-        String path = userController.user("id", "100l", modelMap);
+        String path = userController.user("id", "100", modelMap);
         assertEquals("should be user", "user", path);
         verify(userService, times(1)).getUsers(anyString(), any(Object.class));
     }

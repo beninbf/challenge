@@ -26,30 +26,32 @@
                 <h2>FIELD: ${field}</h2>
                 <h2>VALUE: ${value}</h2>
                 <table border="1">
-                    <tr>
-                        <th>ORGANIZATION ID</th>
-                        <th>URL</th>
-                        <th>EXTERNAL ID</th>
-                        <th>NAME</th>
-                        <th>DOMAIN NAMES</th>
-                        <th>CREATED_AT</th>
-                        <th>DETAILS</th>
-                        <th>SHARED_TICKETS</th>
-                        <th>TAGS</th>
-                    </tr>
-                   <c:forEach var="organization" items="${organizations}">
-                       <tr>
-                           <td>${organization.id}</td>
-                           <td>${organization.url}</td>
-                           <td>${organization.externalId}</td>
-                           <td>${organization.name}</td>
-                           <td>${organization.domainNames}</td>
-                           <td>${organization.createdAt}</td>
-                           <td>${organization.details}</td>
-                           <td>${organization.sharedTickets}</td>
-                           <td>${organization.tags}</td>
-                       </tr>
-                    </c:forEach>
+                    <tbody>
+                        <tr>
+                            <th>ORGANIZATION ID</th>
+                            <th>URL</th>
+                            <th>EXTERNAL ID</th>
+                            <th>NAME</th>
+                            <th>DOMAIN NAMES</th>
+                            <th>CREATED_AT</th>
+                            <th>DETAILS</th>
+                            <th>SHARED_TICKETS</th>
+                            <th>TAGS</th>
+                        </tr>
+                       <c:forEach var="organization" items="${organizations}">
+                           <tr>
+                               <td>${organization.id}</td>
+                               <td>${organization.url}</td>
+                               <td>${organization.externalId}</td>
+                               <td>${organization.name}</td>
+                               <td>${organization.domainNames}</td>
+                               <td>${organization.createdAt}</td>
+                               <td>${organization.details}</td>
+                               <td>${organization.sharedTickets}</td>
+                               <td>${organization.tags}</td>
+                           </tr>
+                        </c:forEach>
+                    </tbody>
                </table>
             </div>
         </div>

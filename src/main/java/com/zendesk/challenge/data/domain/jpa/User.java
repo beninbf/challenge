@@ -55,7 +55,7 @@ public class User implements Serializable {
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean active;
 
-    @Column(name = "VERFIED", columnDefinition = "TINYINT(1)", nullable = true)
+    @Column(name = "VERIFIED", columnDefinition = "TINYINT(1)", nullable = true)
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean verified;
 
