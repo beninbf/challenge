@@ -22,6 +22,19 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ *
+ * <code>OrganizationControllerTest</code> unit test for OrganizationController.
+ *
+ * <pre>
+ * <strong>History</strong>    Name              Date            Description
+ * <strong>History</strong>    --------------------------------------------------------------------
+ * <strong>History</strong>    Benin Bryant      June 6, 2019    Creating a basic search.
+ * </pre>
+ *
+ * @author Benin Bryant
+ * @since June 6, 2019
+ */
 public class OrganizationControllerTest {
 
     @Mock
