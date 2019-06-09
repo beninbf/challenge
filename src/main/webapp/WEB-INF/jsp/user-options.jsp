@@ -34,7 +34,7 @@
         </nav>
        <div class="container">
             <div class="starter-template">
-                <h1>Choose the field and type in the value you wish to search by</h1>
+                <h1 class="display-2">USER SEARCH PAGE</h1>
                 <%
                     User user = new User();
                     Field[] fields = user.getClass().getDeclaredFields();
@@ -48,23 +48,30 @@
                     request.setAttribute("fieldNames", fieldNames);
                  %>
                  <form id="userForm" action="/user">
-                    <table>
+                    <table class="table table-striped table-bordered">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">CHOOSE FIELD</th>
+                                <th scope="col">ENTER VALUE</th>
+                            <tr>
+                        </thead>
                         <tbody>
                             <tr>
                                 <td>
                                     <select id="userField" name="field">
-                                        <option value="Select">Select the User Field</option>
+                                        <option class="dropdown-item" value="Select">Select the User Field</option>
                                         <c:forEach var="fieldName" items="${fieldNames}">
                                                 <option value="${fieldName}"> ${fieldName} </option>
                                         </c:forEach>
                                     </select>
+                                    </div>
                                 </td>
                                 <td>
-                                    User Field Value: <input type="text" id="value" name="value"><br>
+                                    <input type="text" style="width:200px;" id="value" name="value" placeholder="leave blank for null search">
                                 </td>
                             </tr>
                             <tr>
-                                <td><button id="submit">Submit</button></td>
+                                <td><button id="submit" class="btn btn-primary">Submit</button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -74,7 +81,7 @@
         <script type="text/javascript">
             $("#userForm").submit(function(e) {
               if ($('#userField').val() == 'Select') {
-                alert('You must select a valid field');
+                alert('Your must select a valid field');
                 e.preventDefault(e);
               }
             });

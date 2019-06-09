@@ -30,7 +30,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     private OrganizationRepository organizationRepository;
 
     public List<Organization> getOrganizations(String field, Object value) {
-        logger.info(String.format("retrieving organization information %s=%s", field, value));
+        logger.info(String.format("retrieving organizations where field=%s and value=%s", field, value));
         List<Organization> result = new ArrayList<>();
         try {
             result = organizationRepository.getOrganizations(field, value);

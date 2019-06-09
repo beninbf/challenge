@@ -8,70 +8,84 @@
         <link href="${jstlCss}" rel="stylesheet" />
     </head>
     <body>
-        <nav class="navbar navbar-inverse">
-            <div class="container">
+        <nav class="navbar navbar-inverse" style="width:2200px;">
+            <div class="container" style="margin-left:50px;">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="#">Spring Boot</a>
+                    <a class="navbar-brand" href="#">ZenDesk Code Challenge</a>
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">Home</a></li>
-                        <li><a href="#about">About</a></li>
+                        <li><a href="/user-options">Back</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
         <div class="container">
             <div class="starter-template">
-                <h1>Spring Boot Web JSP Example</h1>
-                <h2>Message: ${message}</h2>
-                <h2>Message: ${field}</h2>
-                <h2>Message: ${value}</h2>
-                <table border="1">
-                    <tr>
-                        <th>USER ID</th>
-                        <th>URL</th>
-                        <th>EXTERNAL ID</th>
-                        <th>NAME</th>
-                        <th>ALIAS</th>
-                        <th>CREATED_AT</th>
-                        <th>ACTIVE</th>
-                        <th>VERIFIED</th>
-                        <th>SHARED</th>
-                        <th>LOCALE</th>
-                        <th>TIMEZONE</th>
-                        <th>LAST LOGIN AT</th>
-                        <th>EMAIL</th>
-                        <th>PHONE</th>
-                        <th>SIGNATURE</th>
-                        <th>ORGANIZATION ID</th>
-                        <th>TAGS</th>
-                        <th>SUSPENDED</th>
-                        <th>ROLE</th>
-                    </tr>
-                   <c:forEach var="user" items="${users}">
-                       <tr>
-                           <td>${user.id}</td>
-                           <td>${user.url}</td>
-                           <td>${user.externalId}</td>
-                           <td>${user.name}</td>
-                           <td>${user.alias}</td>
-                           <td>${user.createdAt}</td>
-                           <td>${user.active}</td>
-                           <td>${user.verified}</td>
-                           <td>${user.shared}</td>
-                           <td>${user.locale}</td>
-                           <td>${user.timezone}</td>
-                           <td>${user.lastLoginAt}</td>
-                           <td>${user.email}</td>
-                           <td>${user.phone}</td>
-                           <td>${user.signature}</td>
-                           <td>${user.organizationId}</td>
-                           <td>${user.tags}</td>
-                           <td>${user.suspended}</td>
-                           <td>${user.role}</td>
-                       </tr>
-                    </c:forEach>
+                <h1 class="display-2">User Search Results</h1>
+                <table class="table table-bordered" style="max-width:30%;">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">USER FIELD</th>
+                            <th scope="col">FIELD VALUE</th>
+                        <tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>${field}</td>
+                            <td>${value}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-striped table-bordered">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">USER ID</th>
+                            <th scope="col">URL</th>
+                            <th scope="col">EXTERNAL ID</th>
+                            <th scope="col">NAME</th>
+                            <th scope="col">ALIAS</th>
+                            <th scope="col">CREATED_AT</th>
+                            <th scope="col">ACTIVE</th>
+                            <th scope="col">VERIFIED</th>
+                            <th scope="col">SHARED</th>
+                            <th scope="col">LOCALE</th>
+                            <th scope="col">TIMEZONE</th>
+                            <th scope="col">LAST LOGIN AT</th>
+                            <th scope="col">EMAIL</th>
+                            <th scope="col">PHONE</th>
+                            <th scope="col">SIGNATURE</th>
+                            <th scope="col">ORGANIZATION ID</th>
+                            <th scope="col">TAGS</th>
+                            <th scope="col">SUSPENDED</th>
+                            <th scope="col">ROLE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       <c:forEach var="user" items="${users}">
+                           <tr>
+                               <td>${user.id}</td>
+                               <td>${user.url}</td>
+                               <td>${user.externalId}</td>
+                               <td>${user.name}</td>
+                               <td>${user.alias}</td>
+                               <td>${user.createdAt}</td>
+                               <td>${user.active}</td>
+                               <td>${user.verified}</td>
+                               <td>${user.shared}</td>
+                               <td>${user.locale}</td>
+                               <td>${user.timezone}</td>
+                               <td>${user.lastLoginAt}</td>
+                               <td>${user.email}</td>
+                               <td>${user.phone}</td>
+                               <td>${user.signature}</td>
+                               <td>${user.organizationId}</td>
+                               <td>${user.tags}</td>
+                               <td>${user.suspended}</td>
+                               <td>${user.role}</td>
+                           </tr>
+                        </c:forEach>
+                    </tbody>
                </table>
             </div>
         </div>

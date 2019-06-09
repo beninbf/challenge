@@ -23,7 +23,7 @@
         <nav class="navbar navbar-inverse">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="#">User Search Options</a>
+                    <a class="navbar-brand" href="#">Organization Search Options</a>
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
@@ -34,7 +34,7 @@
         </nav>
        <div class="container">
             <div class="starter-template">
-                <h1>Choose the field and type in the value you wish to search by</h1>
+                <h1 class="display-2">ORGANIZATION SEARCH PAGE</h1>
                 <%
                     Organization organization = new Organization();
                     Field[] fields = organization.getClass().getDeclaredFields();
@@ -48,7 +48,13 @@
                     request.setAttribute("fieldNames", fieldNames);
                  %>
                  <form id="organizationForm" action="/organization">
-                    <table>
+                    <table class="table table-striped table-bordered">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">CHOOSE FIELD</th>
+                                <th scope="col">ENTER VALUE</th>
+                            <tr>
+                        </thead>
                         <tbody>
                             <tr>
                                 <td>
@@ -60,11 +66,11 @@
                                     </select>
                                 </td>
                                 <td>
-                                    Organization Field Value: <input type="text" id="value" name="value"><br>
+                                    <input type="text" style="width:200px;" id="value" name="value" placeholder="leave blank for null search"><br>
                                 </td>
                             </tr>
                             <tr>
-                                <td><button id="submit">Submit</button></td>
+                                <td><button id="submit" class="btn btn-primary">Submit</button></td>
                             </tr>
                         </tbody>
                     </table>

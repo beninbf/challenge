@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
 
     public List<User> getUsers(String field, Object value) {
-        logger.info(String.format("retrieving users information %s=%s", field, value));
+        logger.info(String.format("retrieving users where field=%s and value=%s", field, value));
         List<User> users = null;
         try {
             users = userRepository.getUsers(field, value);

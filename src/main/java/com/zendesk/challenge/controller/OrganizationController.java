@@ -33,6 +33,7 @@ import java.util.Set;
  */
 @Controller
 public class OrganizationController {
+
     private static Logger logger = LoggerFactory.getLogger(OrganizationController.class);
 
     private static final Set<String> booleanTypes = new HashSet<>();
@@ -45,7 +46,7 @@ public class OrganizationController {
 
     @RequestMapping(value="/organization", method = RequestMethod.GET, params = {"field", "value"})
     public String organization(@RequestParam("field") String field, @RequestParam("value") String value, Map<String, Object> model) {
-        logger.info(String.format("Querying for organization by field: %s and value: %s", field, value));
+        logger.info(String.format("Querying for users by field=%s and value=%s", field, value));
         value = value.isEmpty() ? null : value;
         Object valueToQuery = booleanTypes.contains(field) ? getBoolean(value) : value;
         List<Organization> organizations = organizationService.getOrganizations(field, valueToQuery);
@@ -56,7 +57,6 @@ public class OrganizationController {
             organizationModels.add(organizationModel);
         }
         logger.info(String.format("number of organizations retrieved %s", organizations.size()));
-        model.put("message", "please work");
         model.put("field", field);
         model.put("value", value);
         model.put("organizations", organizationModels);
@@ -65,6 +65,9 @@ public class OrganizationController {
 
     private Boolean getBoolean(String value) {
         Boolean result = null;
+        if (value == null) {
+            return result;
+        }
         if (value.equals("true")) {
             result = Boolean.TRUE;
         } else if (value.equals("false")) {

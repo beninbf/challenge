@@ -8,8 +8,8 @@
         <link href="${jstlCss}" rel="stylesheet" />
     </head>
     <body>
-        <nav class="navbar navbar-inverse">
-            <div class="container">
+        <nav class="navbar navbar-inverse" style="width:1290px;">
+            <div class="container" style="margin-left:50px;">
                 <div class="navbar-header">
                     <a class="navbar-brand" href="#">ZenDesk Code Challenge</a>
                 </div>
@@ -22,11 +22,23 @@
         </nav>
         <div class="container">
             <div class="starter-template">
-                <h1>ORGANIZATION SEARCH RESULTS</h1>
-                <h2>FIELD: ${field}</h2>
-                <h2>VALUE: ${value}</h2>
-                <table border="1">
+                <h1 class="display-2">Organization Search Results</h1>
+                <table class="table table-bordered" style="max-width:30%;">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">ORGANIZATION FIELD</th>
+                            <th scope="col">FIELD VALUE</th>
+                        <tr>
+                    </thead>
                     <tbody>
+                        <tr>
+                            <td>${field}</td>
+                            <td>${value}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-striped table-bordered">
+                    <thead class="thead-light">
                         <tr>
                             <th>ORGANIZATION ID</th>
                             <th>URL</th>
@@ -38,6 +50,8 @@
                             <th>SHARED_TICKETS</th>
                             <th>TAGS</th>
                         </tr>
+                    </thead>
+                    <tbody>
                        <c:forEach var="organization" items="${organizations}">
                            <tr>
                                <td>${organization.id}</td>

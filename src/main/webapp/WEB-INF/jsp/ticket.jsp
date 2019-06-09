@@ -8,64 +8,78 @@
         <link href="${jstlCss}" rel="stylesheet" />
     </head>
     <body>
-        <nav class="navbar navbar-inverse">
-            <div class="container">
+        <nav class="navbar navbar-inverse" style="width:1765px;">
+            <div class="container" style="margin-left:50px;">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="#">Spring Boot</a>
+                    <a class="navbar-brand" href="#">ZenDesk Code Challenge</a>
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">Home</a></li>
-                        <li><a href="#about">About</a></li>
+                        <li><a href="/ticket-options">Back</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
         <div class="container">
             <div class="starter-template">
-                <h1>Spring Boot Web JSP Example</h1>
-                <h2>Message: ${message}</h2>
-                <h2>Message: ${field}</h2>
-                <h2>Message: ${value}</h2>
-                <table border="1">
-                    <tr>
-                        <th>TICKET ID</th>
-                        <th>URL</th>
-                        <th>EXTERNAL ID</th>
-                        <th>CREATED_AT</th>
-                        <th>TYPE</th>
-                        <th>SUBJECT</th>
-                        <th>DESCRIPTION</th>
-                        <th>PRIORITY</th>
-                        <th>STATUS</th>
-                        <th>SUBMITTER ID</th>
-                        <th>ASSIGNEE ID</th>
-                        <th>ORGANIZATION ID</th>
-                        <th>TAGS</th>
-                        <th>HAS_INCIDENTS</th>
-                        <th>DUE AT</th>
-                        <th>VIA</th>
-                    </tr>
-                   <c:forEach var="ticket" items="${tickets}">
-                       <tr>
-                           <td>${ticket.id}</td>
-                           <td>${ticket.url}</td>
-                           <td>${ticket.externalId}</td>
-                           <td>${ticket.createdAt}</td>
-                           <td>${ticket.type}</td>
-                           <td>${ticket.subject}</td>
-                           <td>${ticket.description}</td>
-                           <td>${ticket.priority}</td>
-                           <td>${ticket.status}</td>
-                           <td>${ticket.submitterId}</td>
-                           <td>${ticket.assigneeId}</td>
-                           <td>${ticket.organizationId}</td>
-                           <td>${ticket.tags}</td>
-                           <td>${ticket.hasIncidents}</td>
-                           <td>${ticket.dueAt}</td>
-                           <td>${ticket.via}</td>
-                       </tr>
-                    </c:forEach>
+                <h1 class="display-2">Ticket Search Results</h1>
+                <table class="table table-bordered" style="max-width:30%;">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">TICKET FIELD</th>
+                            <th scope="col">FIELD VALUE</th>
+                        <tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>${field}</td>
+                            <td>${value}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-striped table-bordered">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>TICKET ID</th>
+                            <th>URL</th>
+                            <th>EXTERNAL ID</th>
+                            <th>CREATED_AT</th>
+                            <th>TYPE</th>
+                            <th>SUBJECT</th>
+                            <th>DESCRIPTION</th>
+                            <th>PRIORITY</th>
+                            <th>STATUS</th>
+                            <th>SUBMITTER ID</th>
+                            <th>ASSIGNEE ID</th>
+                            <th>ORGANIZATION ID</th>
+                            <th>TAGS</th>
+                            <th>HAS_INCIDENTS</th>
+                            <th>DUE AT</th>
+                            <th>VIA</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach var="ticket" items="${tickets}">
+                           <tr>
+                               <td>${ticket.id}</td>
+                               <td>${ticket.url}</td>
+                               <td>${ticket.externalId}</td>
+                               <td>${ticket.createdAt}</td>
+                               <td>${ticket.type}</td>
+                               <td>${ticket.subject}</td>
+                               <td>${ticket.description}</td>
+                               <td>${ticket.priority}</td>
+                               <td>${ticket.status}</td>
+                               <td>${ticket.submitterId}</td>
+                               <td>${ticket.assigneeId}</td>
+                               <td>${ticket.organizationId}</td>
+                               <td>${ticket.tags}</td>
+                               <td>${ticket.hasIncidents}</td>
+                               <td>${ticket.dueAt}</td>
+                               <td>${ticket.via}</td>
+                           </tr>
+                        </c:forEach>
+                    </tbody>
                </table>
             </div>
         </div>

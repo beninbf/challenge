@@ -47,8 +47,25 @@ public class UserController {
 
     @RequestMapping(value = "/user", method = RequestMethod.GET, params = {"field", "value"})
     public String user(@RequestParam("field") String field, @RequestParam("value") String value, Map<String, Object> model) {
-        logger.info(String.format("Querying for users by field: %s and value: %s", field, value));
-        Object valueToQuery = booleanTypes.contains(field) ? getBoolean(value) : value;
+        logger.info(String.format("Querying for users by field=%s and value=%s", field, value));
+
+        Object valueToQuery = null;
+        if (booleanTypes.contains(field)) {
+            if (value.equals("true")) {
+                valueToQuery = Boolean.TRUE;
+            } else if (value.equals("false")) {
+                valueToQuery = Boolean.FALSE;
+            } else if (!value.isEmpty()) {
+                logger.info(String.format("invalid value %s for boolean field", value));
+                model.put("field", field);
+                model.put("value", value);
+                model.put("users", new ArrayList<>());
+                return "user";
+            }
+        } else {
+            valueToQuery = !value.isEmpty() ? value : valueToQuery;
+        }
+
         List<User> users = userService.getUsers(field, valueToQuery);
         List<UserModel> userModels = new ArrayList<>();
         for (User user : users) {
@@ -56,20 +73,9 @@ public class UserController {
             userModels.add(userModel);
         }
         logger.info(String.format("number of users retrieved %s", users.size()));
-        model.put("message", "please work");
         model.put("field", field);
         model.put("value", value);
         model.put("users", userModels);
         return "user";
-    }
-
-    private Boolean getBoolean(String value) {
-        Boolean result = null;
-        if (value.equals("true")) {
-            result = Boolean.TRUE;
-        } else if (value.equals("false")) {
-            result = Boolean.FALSE;
-        }
-        return result;
     }
 }

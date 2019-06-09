@@ -76,7 +76,7 @@ public class UserBuilder {
             userModel.setName(user.getName());
             userModel.setAlias(user.getAlias());
             if (user.getCreatedDate() != null) {
-                user.setCreatedDate(new Timestamp(user.getCreatedDate().getTime()));
+                userModel.setCreatedAt(new Timestamp(user.getCreatedDate().getTime()));
             }
             userModel.setActive(user.isActive());
             userModel.setShared(user.isShared());

@@ -44,7 +44,7 @@ public class TicketController {
 
     @RequestMapping(value = "/ticket", method = RequestMethod.GET, params = {"field", "value"})
     public String ticket(@RequestParam("field") String field, @RequestParam("value") String value, Map<String, Object> model) {
-        logger.info(String.format("Querying for tickets by field: %s and value: %s", field, value));
+        logger.info(String.format("Querying for tickets by field=%s and value=%s", field, value));
         Object valueToQuery = booleanTypes.contains(field) ? getBoolean(value) : value;
         List<Ticket> tickets = ticketService.getTickets(field, valueToQuery);
 
@@ -54,7 +54,6 @@ public class TicketController {
             ticketModels.add(ticketModel);
         }
         logger.info(String.format("number of tickets retrieved %s", tickets.size()));
-        model.put("message", "please work");
         model.put("field", field);
         model.put("value", value);
         model.put("tickets", ticketModels);
@@ -63,6 +62,9 @@ public class TicketController {
 
     private Boolean getBoolean(String value) {
         Boolean result = null;
+        if (value == null) {
+            return result;
+        }
         if (value.equals("true")) {
             result = Boolean.TRUE;
         } else if (value.equals("false")) {

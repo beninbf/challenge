@@ -29,7 +29,7 @@ public class TicketServiceImpl implements TicketService {
     TicketRepository ticketRepository;
 
     public List<Ticket> getTickets(String field, Object value) {
-        logger.info(String.format("retrieving tickets information %s=%s", field, value));
+        logger.info(String.format("retrieving tickets where field=%s and value=%s", field, value));
         List<Ticket> tickets = null;
         try {
             tickets = ticketRepository.getTickets(field, value);

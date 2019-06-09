@@ -2,7 +2,6 @@
 <html lang="en">
     <head>
         <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
-        <c:url value="/css/main.css" var="jstlCss" />
         <link href="${jstlCss}" rel="stylesheet" />
     </head>
     <body>
@@ -18,9 +17,9 @@
                 <h1>Please select the entity you would like to search</h1>
                 <br />
                 <table>
-                    <td><input type="button" onclick="location.href='user-options';" value="Users" /></td>
-                    <td><input type="button" onclick="location.href='ticket-options';" value="Tickets" /></td>
-                    <td><input type="button" onclick="location.href='organization-options';" value="Organizations" /></td>
+                    <td><button type="button" class="btn btn-primary" onclick="location.href='user-options';">Users</button></td>
+                    <td><button type="button" class="btn btn-primary" onclick="location.href='ticket-options';">Tickets</button></td>
+                    <td><button type="button" class="btn btn-primary" onclick="location.href='organization-options';">Organizations</button></td>
                 </table>
             </div>
         </div>
