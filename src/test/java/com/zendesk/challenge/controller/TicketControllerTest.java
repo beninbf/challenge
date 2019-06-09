@@ -1,10 +1,6 @@
 package com.zendesk.challenge.controller;
 
-import com.zendesk.challenge.data.domain.jpa.Organization;
 import com.zendesk.challenge.data.domain.jpa.Ticket;
-import com.zendesk.challenge.data.domain.repository.OrganizationRepository;
-import com.zendesk.challenge.data.domain.repository.UserRepository;
-import com.zendesk.challenge.service.BooleanValueScrubber;
 import com.zendesk.challenge.service.TicketService;
 import com.zendesk.challenge.util.GenericTestDataFactory;
 import org.junit.Before;
@@ -15,13 +11,9 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;

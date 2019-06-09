@@ -120,4 +120,18 @@ public class UserServiceImplTest {
         assertFalse("users should not be empty", result.isEmpty());
         assertTrue("users size should be 1", result.size() == 1);
     }
+
+    @Test
+    public void testUserSave() {
+        User user = GenericTestDataFactory.getUser(1l);
+        userService.save(user);
+        verify(userRepository, times(1)).save(any(User.class));
+    }
+
+    @Test
+    public void testGetFields() {
+        List<String> fields = userService.getFields();
+        assertNotNull("field list should not be null", fields);
+        assertTrue("field list should not be empty null", !fields.isEmpty());
+    }
 }

@@ -1,8 +1,11 @@
 package com.zendesk.challenge.service;
 
 import com.zendesk.challenge.data.domain.jpa.Organization;
+import com.zendesk.challenge.data.domain.jpa.User;
 import com.zendesk.challenge.data.domain.repository.OrganizationRepository;
 import com.zendesk.challenge.service.impl.OrganizationServiceImpl;
+import com.zendesk.challenge.util.GenericTestDataFactory;
+import org.aspectj.weaver.ast.Or;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -79,5 +82,19 @@ public class OrganizationServiceImplTest {
         List<Organization> result = organizationService.findOrganizationsByField("id", 1l);
         verify(organizationRepository, times(1)).findOrganizationsByField(anyString(), any(Object.class));
         assertTrue("result should be empty", result.isEmpty());
+    }
+
+    @Test
+    public void testOrgannizationSave() {
+        Organization organization = GenericTestDataFactory.getOrganization();
+        organizationService.save(organization);
+        verify(organizationRepository, times(1)).save(any(Organization.class));
+    }
+
+    @Test
+    public void testGetFields() {
+        List<String> fields = organizationService.getFields();
+        assertNotNull("field list should not be null", fields);
+        assertTrue("field list should not be empty null", !fields.isEmpty());
     }
 }

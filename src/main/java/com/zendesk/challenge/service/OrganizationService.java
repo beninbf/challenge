@@ -34,4 +34,19 @@ public interface OrganizationService {
      * @return list of organizations
      */
     List<Organization> findOrganizationsByField(String field, Object value);
+
+    /**
+     * Save an organization to storage.
+     *
+     * @param organization Organization
+     * @return Organization
+     */
+    Organization save(Organization organization);
+
+    /**
+     * Get fields of Organization Db object.
+     *
+     * @return List of Strings
+     */
+    List<String> getFields();
 }

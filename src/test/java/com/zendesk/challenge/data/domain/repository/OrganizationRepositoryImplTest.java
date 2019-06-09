@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  *
@@ -84,6 +85,14 @@ public class OrganizationRepositoryImplTest {
         assertEquals("should be 1", 1, emptyNameOrgList.size());
         assertEquals("organization id should be 100", 100l, emptyNameOrgResult.get().getId().longValue());
         assertEquals("organization id should be 100", 100l, emptyNameOrgList.get(0).getId().longValue());
+    }
+
+    @Test
+    public void testSave() {
+        Organization organization = GenericTestDataFactory.getOrganization();
+        Organization result = organizationRepository.save(organization);
+        assertNotNull("result should not be null", result);
+        assertEquals("Id should be the same", organization.getId(), result.getId());
     }
 
     @After

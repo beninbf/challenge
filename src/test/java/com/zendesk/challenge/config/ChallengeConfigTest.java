@@ -1,5 +1,6 @@
 package com.zendesk.challenge.config;
 
+import com.zendesk.challenge.service.BooleanValueScrubber;
 import com.zendesk.challenge.service.OrganizationService;
 import com.zendesk.challenge.service.TicketService;
 import com.zendesk.challenge.service.UserService;
@@ -61,5 +62,14 @@ public class ChallengeConfigTest {
     public void testOrganizationService() {
         assertNotNull(config.organizationService());
         assertTrue(config.organizationService() instanceof OrganizationService);
+    }
+
+    /**
+     * Test method for {@link com.zendesk.challenge.config.ChallengeConfig#booleanValueScrubber()} ()}.
+     */
+    @Test
+    public void testBooleanValueScrubber() {
+        assertNotNull(config.booleanValueScrubber());
+        assertTrue(config.booleanValueScrubber() instanceof BooleanValueScrubber);
     }
 }

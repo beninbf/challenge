@@ -5,7 +5,6 @@ import com.zendesk.challenge.data.domain.jpa.User;
 import com.zendesk.challenge.model.UserModel;
 
 import java.sql.Timestamp;
-import java.util.Optional;
 
 /**
  *

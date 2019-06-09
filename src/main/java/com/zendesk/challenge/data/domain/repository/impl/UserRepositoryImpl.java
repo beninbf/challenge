@@ -1,6 +1,5 @@
 package com.zendesk.challenge.data.domain.repository.impl;
 
-import com.zendesk.challenge.data.domain.jpa.Ticket;
 import com.zendesk.challenge.data.domain.jpa.User;
 import com.zendesk.challenge.data.domain.repository.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;

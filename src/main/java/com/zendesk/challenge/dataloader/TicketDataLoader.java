@@ -7,10 +7,10 @@ import com.zendesk.challenge.builder.TicketBuilder;
 import com.zendesk.challenge.data.domain.jpa.Organization;
 import com.zendesk.challenge.data.domain.jpa.Ticket;
 import com.zendesk.challenge.data.domain.jpa.User;
-import com.zendesk.challenge.data.domain.repository.OrganizationRepository;
-import com.zendesk.challenge.data.domain.repository.TicketRepository;
-import com.zendesk.challenge.data.domain.repository.UserRepository;
 import com.zendesk.challenge.model.TicketModel;
+import com.zendesk.challenge.service.OrganizationService;
+import com.zendesk.challenge.service.TicketService;
+import com.zendesk.challenge.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -22,9 +22,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
-import java.util.Optional;
 
 /**
  *
@@ -47,13 +45,13 @@ public class TicketDataLoader implements CommandLineRunner {
     private final static String TICKET_SEED_PATH = "json_data/tickets.json";
 
     @Inject
-    private TicketRepository ticketRepository;
+    private TicketService ticketService;
 
     @Inject
-    private OrganizationRepository organizationRepository;
+    private OrganizationService organizationService;
 
     @Inject
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Override
     public void run(String[] args) {
@@ -73,16 +71,13 @@ public class TicketDataLoader implements CommandLineRunner {
                 User assignee = null;
                 User submitter = null;
                 if (ticketModel.getOrganizationId() != null) {
-                    Optional<Organization> organizationOptional = organizationRepository.findById(ticketModel.getOrganizationId());
-                    organization = organizationOptional.isPresent() ? organizationOptional.get() : null;
+                    organization = organizationService.findById(ticketModel.getOrganizationId());
                 }
                 if (ticketModel.getAssigneeId() != null) {
-                    Optional<User> assigneeOptional = userRepository.findById(ticketModel.getAssigneeId());
-                    assignee = assigneeOptional.isPresent() ? assigneeOptional.get() : null;
+                    assignee = userService.findById(ticketModel.getAssigneeId());
                 }
                 if (ticketModel.getSubmitterId() != null) {
-                    Optional<User> submitterOptional = userRepository.findById(ticketModel.getSubmitterId());
-                    submitter = submitterOptional.isPresent() ? submitterOptional.get() : null;
+                    submitter = userService.findById(ticketModel.getSubmitterId());
                 }
 
                 Ticket ticket = new TicketBuilder()
@@ -91,7 +86,7 @@ public class TicketDataLoader implements CommandLineRunner {
                     .assignee(assignee)
                     .submitter(submitter)
                     .build();
-                ticketRepository.save(ticket);
+                ticketService.save(ticket);
             }
         } catch (IOException ex) {
             logger.info(ex.getMessage(), ex);
@@ -113,22 +108,8 @@ public class TicketDataLoader implements CommandLineRunner {
     }
 
     /**
-     * Returns a file.
-     * @param fileName String
-     * @return File
-     */
-    private File getFileFromResources(String fileName) {
-        ClassLoader classLoader = getClass().getClassLoader();
-        URL resource = classLoader.getResource(fileName);
-        if (resource == null) {
-            throw new IllegalArgumentException("file is not found!");
-        } else {
-            return new File(resource.getFile());
-        }
-    }
-
-    /**
-     * GetContents.
+     * Get file Contents.
+     *
      * Given a file this reads the content.
      * @param file
      * @return String

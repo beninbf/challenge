@@ -258,4 +258,18 @@ public class TicketServiceImplTest {
         verify(ticketRepository, times(1)).findBySubmitter(any(User.class));
         assertNull("result should be empty", result);
     }
+
+    @Test
+    public void testTicketSave() {
+        Ticket ticket = GenericTestDataFactory.getTicket();
+        ticketService.save(ticket);
+        verify(ticketRepository, times(1)).save(any(Ticket.class));
+    }
+
+    @Test
+    public void testGetFields() {
+        List<String> fields = ticketService.getFields();
+        assertNotNull("field list should not be null", fields);
+        assertTrue("field list should not be empty null", !fields.isEmpty());
+    }
 }

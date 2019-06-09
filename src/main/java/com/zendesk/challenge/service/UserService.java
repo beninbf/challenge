@@ -41,4 +41,19 @@ public interface UserService {
      * @return List of Users
      */
     List<User> findUsers(String field, String value);
+
+    /**
+     * Save a user to storage.
+     *
+     * @param user User
+     * @return User
+     */
+    User save(User user);
+
+    /**
+     * Get fields of a User DB object.
+     *
+     * @return List of Strings
+     */
+    List<String> getFields();
 }

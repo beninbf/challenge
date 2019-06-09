@@ -5,10 +5,6 @@ import com.zendesk.challenge.model.OrganizationModel;
 import com.zendesk.challenge.util.GenericTestDataFactory;
 import org.junit.Test;
 
-import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.Date;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 

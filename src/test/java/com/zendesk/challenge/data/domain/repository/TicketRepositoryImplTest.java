@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  *
@@ -103,6 +104,17 @@ public class TicketRepositoryImplTest {
         assertEquals("should be 1", 1, emptyDescription.size());
         assertEquals("should be empty", "empty", emptyTicket.get().getId());
         assertEquals("subject should be empty", "empty", emptyDescription.get(0).getId());
+    }
+
+    @Test
+    public void testTicketSave() {
+        Ticket ticket = GenericTestDataFactory.getTicket();
+        organizationRepository.save(ticket.getOrganization());
+        userRepository.save(ticket.getAssignee());
+        userRepository.save(ticket.getSubmitter());
+        Ticket result = ticketRepository.save(ticket);
+        assertNotNull("result should not be null", result);
+        assertEquals("ticketId should be equal", ticket.getId(), result.getId());
     }
 
     @After

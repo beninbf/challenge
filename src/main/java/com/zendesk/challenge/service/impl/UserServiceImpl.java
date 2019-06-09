@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -93,5 +95,27 @@ public class UserServiceImpl implements UserService {
             logger.error(ex.getMessage(), ex);
             return null;
         }
+    }
+
+    public User save(User user) {
+        try {
+            return userRepository.save(user);
+        } catch (Exception ex) {
+            logger.error(ex.getMessage(), ex);
+            return null;
+        }
+    }
+
+    public List<String> getFields() {
+        User user = new User();
+        Field[] fields = user.getClass().getDeclaredFields();
+        List<String> fieldNames = new ArrayList<>();
+        for(Field field: fields) {
+            if (field.getName().equals("serialVersionUID")) {
+                continue;
+            }
+            fieldNames.add(field.getName());
+        }
+        return fieldNames;
     }
 }

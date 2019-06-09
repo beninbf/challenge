@@ -11,12 +11,14 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import sun.net.www.content.text.Generic;
 
 import javax.inject.Inject;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  *
@@ -93,6 +95,15 @@ public class UserRepositoryImplTest {
         assertEquals("should be 100", 100l, emptyUser.get().getId().longValue());
         assertEquals("subject should be 100", 100l, emptyUserList.get(0).getId().longValue());
         assertEquals("user id with empty name should be 100", 100l, emptyUser.get().getId().longValue());
+    }
+
+    @Test
+    public void testSave() {
+        User user = GenericTestDataFactory.getUser(1000l);
+        organizationRepository.save(user.getOrganization());
+        User result = userRepository.save(user);
+        assertNotNull("result should not be null", result);
+        assertEquals("result id should not be 1000", user.getId(), result.getId());
     }
 
     @After

@@ -6,6 +6,9 @@ import com.zendesk.challenge.data.domain.jpa.User;
 import com.zendesk.challenge.data.domain.repository.OrganizationRepository;
 import com.zendesk.challenge.data.domain.repository.TicketRepository;
 import com.zendesk.challenge.data.domain.repository.UserRepository;
+import com.zendesk.challenge.service.OrganizationService;
+import com.zendesk.challenge.service.TicketService;
+import com.zendesk.challenge.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -37,13 +40,13 @@ import static org.mockito.Mockito.when;
 public class TicketLoaderTest {
 
     @Mock
-    private TicketRepository ticketRepository;
+    private TicketService ticketService;
 
     @Mock
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Mock
-    private OrganizationRepository organizationRepository;
+    private OrganizationService organizationService;
 
     @InjectMocks
     private TicketDataLoader ticketDataLoader;
@@ -61,12 +64,12 @@ public class TicketLoaderTest {
 
     @Test
     public void testUploadTicketData() {
-//        Optional<Organization> organization = mock(Optional.class);
-//        User assignee = mock(User.class);
-//        User submitter = mock(User.class);
-//        when(organizationRepository.findOne(anyLong())).thenReturn(organization);
-//        when(userRepository.findOne(anyLong())).thenReturn(assignee).thenReturn(submitter);
-//        ticketDataLoader.run(null);
-//        verify(ticketRepository, times(200)).save(any(Ticket.class));
+        Organization organization = mock(Organization.class);
+        User assignee = mock(User.class);
+        User submitter = mock(User.class);
+        when(organizationService.findById(anyLong())).thenReturn(organization);
+        when(userService.findById(anyLong())).thenReturn(assignee).thenReturn(submitter);
+        ticketDataLoader.run(null);
+        verify(ticketService, times(200)).save(any(Ticket.class));
     }
 }

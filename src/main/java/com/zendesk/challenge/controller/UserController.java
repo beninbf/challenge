@@ -5,7 +5,6 @@ import com.zendesk.challenge.builder.UserBuilder;
 import com.zendesk.challenge.data.domain.jpa.User;
 import com.zendesk.challenge.model.OrganizationModel;
 import com.zendesk.challenge.model.UserModel;
-import com.zendesk.challenge.service.BooleanValueScrubber;
 import com.zendesk.challenge.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

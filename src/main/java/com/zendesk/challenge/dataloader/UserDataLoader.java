@@ -92,21 +92,6 @@ public class UserDataLoader implements CommandLineRunner {
     }
 
     /**
-     * Returns a file.
-     * @param fileName String
-     * @return File
-     */
-    private File getFileFromResources(String fileName) {
-        ClassLoader classLoader = getClass().getClassLoader();
-        URL resource = classLoader.getResource(fileName);
-        if (resource == null) {
-            throw new IllegalArgumentException("file is not found!");
-        } else {
-            return new File(resource.getFile());
-        }
-    }
-
-    /**
      * GetContents.
      * Given a file this reads the content.
      * @param file

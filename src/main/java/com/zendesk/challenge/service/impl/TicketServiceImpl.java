@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -123,5 +125,27 @@ public class TicketServiceImpl implements TicketService {
             logger.error(ex.getMessage(), ex);
         }
         return tickets;
+    }
+
+    public Ticket save(Ticket ticket) {
+        try {
+            return ticketRepository.save(ticket);
+        } catch (Exception ex) {
+            logger.error(ex.getMessage(), ex);
+            return null;
+        }
+    }
+
+    public List<String> getFields() {
+        Ticket ticket = new Ticket();
+        Field[] fields = ticket.getClass().getDeclaredFields();
+        List<String> fieldNames = new ArrayList<>();
+        for(Field field: fields) {
+            if (field.getName().equals("serialVersionUID")) {
+                continue;
+            }
+            fieldNames.add(field.getName());
+        }
+        return fieldNames;
     }
 }

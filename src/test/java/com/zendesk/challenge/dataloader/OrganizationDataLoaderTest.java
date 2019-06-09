@@ -2,6 +2,7 @@ package com.zendesk.challenge.dataloader;
 
 import com.zendesk.challenge.data.domain.jpa.Organization;
 import com.zendesk.challenge.data.domain.repository.OrganizationRepository;
+import com.zendesk.challenge.service.OrganizationService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -28,7 +29,7 @@ import static org.mockito.Mockito.verify;
 public class OrganizationDataLoaderTest {
 
     @Mock
-    private OrganizationRepository organizationRepository;
+    private OrganizationService organizationService;
 
     @InjectMocks
     private OrganizationDataLoader organizationDataLoader;
@@ -47,7 +48,7 @@ public class OrganizationDataLoaderTest {
     @Test
     public void testUploadOrganizationData() {
         organizationDataLoader.run(null);
-        verify(organizationRepository, times(26)).save(any(Organization.class));
+        verify(organizationService, times(26)).save(any(Organization.class));
     }
 
 }

@@ -3,10 +3,10 @@ package com.zendesk.challenge.dataloader;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zendesk.challenge.data.domain.jpa.Organization;
-import com.zendesk.challenge.data.domain.repository.OrganizationRepository;
 import com.zendesk.challenge.builder.OrganizationBuilder;
+import com.zendesk.challenge.data.domain.jpa.Organization;
 import com.zendesk.challenge.model.OrganizationModel;
+import com.zendesk.challenge.service.OrganizationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -18,7 +18,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
 
 /**
@@ -42,7 +41,7 @@ public class OrganizationDataLoader implements CommandLineRunner {
     private final static String ORGANIZATION_SEED_PATH = "json_data/organizations.json";
 
     @Inject
-    private OrganizationRepository organizationRepository;
+    private OrganizationService organizationService;
 
     @Override
     public void run(String[] args) {
@@ -59,7 +58,7 @@ public class OrganizationDataLoader implements CommandLineRunner {
             List<OrganizationModel> organizationModels = getUserObjectFromJson(contents);
             for (OrganizationModel organizationModel: organizationModels) {
                 Organization organization = new OrganizationBuilder().model(organizationModel).build();
-                organizationRepository.save(organization);
+                organizationService.save(organization);
             }
         } catch (IOException ex) {
             logger.error(ex.getMessage(), ex);
@@ -78,21 +77,6 @@ public class OrganizationDataLoader implements CommandLineRunner {
             logger.info(ex.getMessage());
         }
         return null;
-    }
-
-    /**
-     * Returns a file.
-     * @param fileName String
-     * @return File
-     */
-    private File getFileFromResources(String fileName) {
-        ClassLoader classLoader = getClass().getClassLoader();
-        URL resource = classLoader.getResource(fileName);
-        if (resource == null) {
-            throw new IllegalArgumentException("file is not found!");
-        } else {
-            return new File(resource.getFile());
-        }
     }
 
     /**

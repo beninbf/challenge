@@ -62,4 +62,20 @@ public interface TicketService {
      * @return List of tickets
      */
     public List<Ticket> findBySubmitter(User submitter);
+
+    /**
+     * Save ticket to storage;
+     *
+     * @param ticket Ticket
+     * @return Ticket
+     */
+    public Ticket save(Ticket ticket);
+
+    /**
+     * Returns a list of all fields on the Ticket DB object.
+     *
+     * @return List of Strings
+     */
+    public List<String> getFields();
+
 }
