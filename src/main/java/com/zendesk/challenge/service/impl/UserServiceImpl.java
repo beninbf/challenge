@@ -63,7 +63,8 @@ public class UserServiceImpl implements UserService {
         logger.info(String.format("retrieving user where id=%s", id));
         try {
             Optional<User> userOptional = userRepository.findById(id);
-            return userOptional.orElse(null);
+            User user = userOptional.isPresent() ? userOptional.get() : null;
+            return user;
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
             return null;
@@ -72,20 +73,22 @@ public class UserServiceImpl implements UserService {
 
     public List<User> findUsersByField(String field, Object value) {
         logger.info(String.format("retrieving users where field=%s and value=%s", field, value));
-        List<User> users = null;
         try {
-            users = userRepository.findUsersByField(field, value);
+            return userRepository.findUsersByField(field, value);
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
+            return new ArrayList<>();
         }
-        return users;
     }
 
     public List<User> findUsers(String field, String value) {
         try {
             if (field.equals(ORGANIZATION)) {
                 logger.info("query by organization");
-                Organization organization = organizationService.findById(Long.valueOf(value));
+                Organization organization = organizationService.findById(getLong(value));
+                if (organization == null) {
+                    return new ArrayList<>();
+                }
                 return userRepository.findByOrganization(organization);
             } else {
                 Object valueToQuery = booleanValueScrubber.scrub(booleanTypes, field, value);
@@ -93,7 +96,7 @@ public class UserServiceImpl implements UserService {
             }
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
-            return null;
+            return new ArrayList<>();
         }
     }
 
@@ -117,5 +120,17 @@ public class UserServiceImpl implements UserService {
             fieldNames.add(field.getName());
         }
         return fieldNames;
+    }
+
+    private Long getLong(String value) {
+        if (value == null || value.isEmpty()) {
+            return null;
+        }
+        try {
+            return Long.valueOf(value);
+        } catch (NumberFormatException nfe) {
+            logger.error(nfe.getMessage(), nfe);
+            return null;
+        }
     }
 }

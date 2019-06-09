@@ -22,6 +22,14 @@ import java.util.List;
 public interface TicketService {
 
     /**
+     * Find ticket by id.
+     *
+     * @param id String
+     * @return Ticket
+     */
+    public Ticket findById(String id);
+
+    /**
      * Find tickets.
      *
      * @param field String

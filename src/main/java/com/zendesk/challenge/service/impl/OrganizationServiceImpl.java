@@ -35,7 +35,8 @@ public class OrganizationServiceImpl implements OrganizationService {
         logger.info(String.format("retrieving organization where id=%s", id));
         try {
             Optional<Organization> organizationOptional = organizationRepository.findById(id);
-            return organizationOptional.orElse(null);
+            Organization organization = organizationOptional.isPresent() ? organizationOptional.get() : null;
+            return organization;
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
             return null;

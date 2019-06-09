@@ -14,8 +14,10 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -42,6 +44,8 @@ public class TicketServiceImpl implements TicketService {
 
     private static final String SUBMITTER = "submitter";
 
+    private static final String ID = "id";
+
     private static final Set<String> booleanTypes = new HashSet<>();
     {
         booleanTypes.add(HAS_INCIDENTS);
@@ -59,72 +63,79 @@ public class TicketServiceImpl implements TicketService {
     @Inject
     private BooleanValueScrubber booleanValueScrubber;
 
+    public Ticket findById(String id) {
+        Optional<Ticket> ticketOptional = ticketRepository.findById(id);
+        return ticketOptional.isPresent() ? ticketOptional.get() : null;
+    }
+
     public List<Ticket> findTickets(String field, String value) {
         try {
             if (field.equals(ORGANIZATION)) {
                 logger.info("query by organization");
-                Organization organization = organizationService.findById(Long.valueOf(value));
+                Long organizationId = getLong(value);
+                Organization organization = organizationService.findById(organizationId);
                 return findByOrganization(organization);
             } else if (field.equals(ASSIGNEE)) {
                 logger.info("query by assignee");
-                User assignee = userService.findById(Long.valueOf(value));
+                Long assigneeId = getLong(value);
+                User assignee = userService.findById(assigneeId);
                 return findByAssignee(assignee);
             } else if (field.equals(SUBMITTER)) {
                 logger.info("query by submitter");
-                User submitter = userService.findById(Long.valueOf(value));
+                Long submitterId = getLong(value);
+                User submitter = userService.findById(submitterId);
                 return findBySubmitter(submitter);
+            } else if (field.equals(ID)) {
+                Ticket ticket = findById(value);
+                return Arrays.asList(ticket);
             } else {
                 Object valueToQuery = booleanValueScrubber.scrub(booleanTypes, field, value);
                 return findByTicketsByField(field, valueToQuery);
             }
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
-            return null;
+            return new ArrayList<>();
         }
     }
 
     public List<Ticket> findByTicketsByField(String field, Object value) {
         logger.info(String.format("retrieving tickets where field=%s and value=%s", field, value));
-        List<Ticket> tickets = null;
         try {
-            tickets = ticketRepository.findTicketsByField(field, value);
+            return ticketRepository.findTicketsByField(field, value);
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
+            return new ArrayList<>();
         }
-        return tickets;
     }
 
     public List<Ticket> findByOrganization(Organization organization) {
         logger.info(String.format("retrieving by organization=%s", organization.getId()));
-        List<Ticket> tickets = null;
         try {
-            tickets = ticketRepository.findByOrganization(organization);
+            return ticketRepository.findByOrganization(organization);
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
+            return new ArrayList<>();
         }
-        return tickets;
     }
 
     public List<Ticket> findByAssignee(User assignee) {
         logger.info(String.format("retrieving tickets by assignee=%s", assignee.getId()));
-        List<Ticket> tickets = null;
         try {
-            tickets = ticketRepository.findByAssignee(assignee);
+            return ticketRepository.findByAssignee(assignee);
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
+            return new ArrayList<>();
         }
-        return tickets;
     }
 
     public List<Ticket> findBySubmitter(User submitter) {
         logger.info(String.format("retrieving tickets by submitter=%s", submitter.getId()));
-        List<Ticket> tickets = null;
         try {
-            tickets = ticketRepository.findBySubmitter(submitter);
+            return ticketRepository.findBySubmitter(submitter);
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
+            return new ArrayList<>();
         }
-        return tickets;
     }
 
     public Ticket save(Ticket ticket) {
@@ -147,5 +158,18 @@ public class TicketServiceImpl implements TicketService {
             fieldNames.add(field.getName());
         }
         return fieldNames;
+    }
+
+    private Long getLong(String value) {
+        if (value == null || value.isEmpty()) {
+            return null;
+        }
+        try {
+            Long id = Long.valueOf(value);
+            return id;
+        } catch (NumberFormatException nfe) {
+            logger.error(nfe.getMessage(), nfe);
+            return null;
+        }
     }
 }

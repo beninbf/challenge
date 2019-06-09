@@ -15,12 +15,12 @@ import org.springframework.dao.InvalidDataAccessApiUsageException;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -63,6 +63,14 @@ public class TicketServiceImplTest {
     public void setup() {
         ticketService = new TicketServiceImpl();
         MockitoAnnotations.initMocks(this);
+    }
+
+    @Test
+    public void testFindById() {
+        Ticket ticket = mock(Ticket.class);
+        when(ticketRepository.findById(anyString())).thenReturn(Optional.of(ticket));
+        Ticket result = ticketService.findById("id");
+        assertNotNull("ticket is not null", result);
     }
 
     @Test
@@ -145,7 +153,7 @@ public class TicketServiceImplTest {
 
         verify(ticketRepository, times(1)).findTicketsByField(anyString(), any(Object.class));
         verify(booleanValueScrubber, times(1)).scrub(any(Set.class), anyString(), anyString());
-        assertNull("result should be null", result);
+        assertTrue("result should be empty", result.isEmpty());
     }
 
     @Test
@@ -197,7 +205,7 @@ public class TicketServiceImplTest {
         when(ticketRepository.findByOrganization(any(Organization.class))).thenThrow(inv);
 
         List<Ticket> result = ticketService.findByOrganization(organization);
-        assertNull("result should be empty", result);
+        assertTrue("result should be empty", result.isEmpty());
     }
 
     @Test
@@ -227,7 +235,7 @@ public class TicketServiceImplTest {
         List<Ticket> result = ticketService.findByAssignee(user);
 
         verify(ticketRepository, times(1)).findByAssignee(any(User.class));
-        assertNull("result should be empty", result);
+        assertTrue("result should be empty", result.isEmpty());
     }
 
     @Test
@@ -256,7 +264,7 @@ public class TicketServiceImplTest {
         List<Ticket> result = ticketService.findBySubmitter(user);
 
         verify(ticketRepository, times(1)).findBySubmitter(any(User.class));
-        assertNull("result should be empty", result);
+        assertTrue("result should be empty", result.isEmpty());
     }
 
     @Test
