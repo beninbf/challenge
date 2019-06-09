@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
 
 /**
  *
- * <code>UserServiceTest</code> unit test for UserService Interface
+ * <code>UserServiceImplTest</code> unit test for UserService Interface
  *
  * <pre>
  * <strong>History</strong>    Name              Date            Description
@@ -37,7 +37,7 @@ import static org.mockito.Mockito.when;
  * @author Benin Bryant
  * @since June 6, 2019
  */
-public class UserServiceTest {
+public class UserServiceImplTest {
 
     @Mock
     private UserRepository userRepository;

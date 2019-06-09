@@ -1,8 +1,8 @@
 package com.zendesk.challenge.service;
 
-import com.zendesk.challenge.data.domain.jpa.Ticket;
-import com.zendesk.challenge.data.domain.repository.TicketRepository;
-import com.zendesk.challenge.service.impl.TicketServiceImpl;
+import com.zendesk.challenge.data.domain.jpa.Organization;
+import com.zendesk.challenge.data.domain.repository.OrganizationRepository;
+import com.zendesk.challenge.service.impl.OrganizationServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
 
 /**
  *
- * <code>TicketServiceTest</code> unit test for TicketService Interface
+ * <code>OrganizationServiceImplTest</code> unit test for OrganizationService Interface
  *
  * <pre>
  * <strong>History</strong>    Name              Date            Description
@@ -36,36 +36,38 @@ import static org.mockito.Mockito.when;
  * @author Benin Bryant
  * @since June 6, 2019
  */
-public class TicketServiceTest {
+public class OrganizationServiceImplTest {
+
     @Mock
-    private TicketRepository ticketRepository;
+    private OrganizationRepository organizationRepository;
 
     @InjectMocks
-    private TicketService ticketService;
+    private OrganizationService organizationService;
 
     @Before
     public void setup() {
-        ticketService = new TicketServiceImpl();
+        organizationService = new OrganizationServiceImpl();
         MockitoAnnotations.initMocks(this);
     }
 
     @Test
-    public void testGetTickets() throws Exception {
-        Ticket ticket = mock(Ticket.class);
-        List<Ticket> tickets = Arrays.asList(ticket);
-        when(ticketRepository.getTickets(anyString(), anyString())).thenReturn(tickets);
-        List<Ticket> result = ticketService.getTickets("ticketId", "id");
+    public void testGetUsers() {
+        Organization organization = mock(Organization.class);
+        List<Organization> organizations = Arrays.asList(organization);
+        when(organizationRepository.getOrganizations(anyString(), anyLong())).thenReturn(organizations);
+        List<Organization> result = organizationService.getOrganizations("userId", 1l);
+        verify(organizationRepository, times(1)).getOrganizations(anyString(), any(Object.class));
         assertNotNull("result should not be null", result);
         assertFalse("result should not be empty", result.isEmpty());
         assertTrue("result size should be 1", result.size() == 1);
     }
 
     @Test
-    public void testGetTickets_Exception() throws Exception {
+    public void testGetUsers_Exception() {
         NumberFormatException nfe = mock(NumberFormatException.class);
-        when(ticketRepository.getTickets(anyString(), anyLong())).thenThrow(nfe);
-        List<Ticket> result = ticketService.getTickets("organizationId", "1");
-        verify(ticketRepository, times(1)).getTickets(anyString(), any(Object.class));
+        when(organizationRepository.getOrganizations(anyString(), anyLong())).thenThrow(nfe);
+        List<Organization> result = organizationService.getOrganizations("userId", 1l);
+        verify(organizationRepository, times(1)).getOrganizations(anyString(), any(Object.class));
         assertTrue("result should be empty", result.isEmpty());
     }
 }

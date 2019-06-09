@@ -3,6 +3,7 @@ package com.zendesk.challenge.controller;
 import com.zendesk.challenge.builder.UserBuilder;
 import com.zendesk.challenge.data.domain.jpa.User;
 import com.zendesk.challenge.model.UserModel;
+import com.zendesk.challenge.service.BooleanValueScrubber;
 import com.zendesk.challenge.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,38 +35,32 @@ import java.util.Set;
 public class UserController {
     private static Logger logger = LoggerFactory.getLogger(UserController.class);
 
+    private static final String VERIFIED = "verified";
+
+    private static final String ACTIVE = "active";
+
+    private static final String SHARED = "shared";
+
+    private static final String SUSPENDED = "suspended";
+
     private static final Set<String> booleanTypes = new HashSet<>();
     {
-        booleanTypes.add("verified");
-        booleanTypes.add("active");
-        booleanTypes.add("shared");
-        booleanTypes.add("suspended");
+        booleanTypes.add(VERIFIED);
+        booleanTypes.add(ACTIVE);
+        booleanTypes.add(SHARED);
+        booleanTypes.add(SUSPENDED);
     }
 
     @Inject
     private UserService userService;
 
+    @Inject
+    private BooleanValueScrubber booleanValueScrubber;
+
     @RequestMapping(value = "/user", method = RequestMethod.GET, params = {"field", "value"})
     public String user(@RequestParam("field") String field, @RequestParam("value") String value, Map<String, Object> model) {
         logger.info(String.format("Querying for users by field=%s and value=%s", field, value));
-
-        Object valueToQuery = null;
-        if (booleanTypes.contains(field)) {
-            if (value.equals("true")) {
-                valueToQuery = Boolean.TRUE;
-            } else if (value.equals("false")) {
-                valueToQuery = Boolean.FALSE;
-            } else if (!value.isEmpty()) {
-                logger.info(String.format("invalid value %s for boolean field", value));
-                model.put("field", field);
-                model.put("value", value);
-                model.put("users", new ArrayList<>());
-                return "user";
-            }
-        } else {
-            valueToQuery = !value.isEmpty() ? value : valueToQuery;
-        }
-
+        Object valueToQuery = booleanValueScrubber.scrub(booleanTypes, field, value);
         List<User> users = userService.getUsers(field, valueToQuery);
         List<UserModel> userModels = new ArrayList<>();
         for (User user : users) {

@@ -1,6 +1,7 @@
 package com.zendesk.challenge.controller;
 
 import com.zendesk.challenge.data.domain.jpa.User;
+import com.zendesk.challenge.service.BooleanValueScrubber;
 import com.zendesk.challenge.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,6 +11,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -38,6 +40,9 @@ public class UserControllerTest {
     @Mock
     private UserService userService;
 
+    @Mock
+    private BooleanValueScrubber booleanValueScrubber;
+
     @InjectMocks
     private UserController userController;
 
@@ -56,6 +61,7 @@ public class UserControllerTest {
     public void testUser() {
         Map<String, Object> modelMap = new HashMap<>();
         User user = mock(User.class);
+        when(booleanValueScrubber.scrub(any(HashSet.class), anyString(), anyString())).thenReturn(Object.class);
         when(userService.getUsers(anyString(), any(Object.class))).thenReturn(Arrays.asList(user));
         String path = userController.user("id", "100", modelMap);
         assertEquals("should be user", "user", path);

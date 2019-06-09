@@ -1,8 +1,10 @@
 package com.zendesk.challenge.config;
 
+import com.zendesk.challenge.service.BooleanValueScrubber;
 import com.zendesk.challenge.service.OrganizationService;
 import com.zendesk.challenge.service.TicketService;
 import com.zendesk.challenge.service.UserService;
+import com.zendesk.challenge.service.impl.BooleanValueScrubberImpl;
 import com.zendesk.challenge.service.impl.OrganizationServiceImpl;
 import com.zendesk.challenge.service.impl.TicketServiceImpl;
 import com.zendesk.challenge.service.impl.UserServiceImpl;
@@ -46,5 +48,10 @@ public class ChallengeConfig {
     @Bean
     public OrganizationService organizationService() {
         return new OrganizationServiceImpl();
+    }
+
+    @Bean
+    public BooleanValueScrubber booleanValueScrubber() {
+        return new BooleanValueScrubberImpl();
     }
 }

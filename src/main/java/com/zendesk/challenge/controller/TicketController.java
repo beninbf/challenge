@@ -3,6 +3,7 @@ package com.zendesk.challenge.controller;
 import com.zendesk.challenge.builder.TicketBuilder;
 import com.zendesk.challenge.data.domain.jpa.Ticket;
 import com.zendesk.challenge.model.TicketModel;
+import com.zendesk.challenge.service.BooleanValueScrubber;
 import com.zendesk.challenge.service.TicketService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,20 +35,26 @@ import java.util.Set;
 public class TicketController {
     private static Logger logger = LoggerFactory.getLogger(TicketController.class);
 
+    private static final String HAS_INCIDENTS = "hasIncidents";
+
+
     private static final Set<String> booleanTypes = new HashSet<>();
     {
-        booleanTypes.add("hasIncidents");
+        booleanTypes.add(HAS_INCIDENTS);
     }
 
     @Inject
     private TicketService ticketService;
 
+    @Inject
+    private BooleanValueScrubber booleanValueScrubber;
+
     @RequestMapping(value = "/ticket", method = RequestMethod.GET, params = {"field", "value"})
     public String ticket(@RequestParam("field") String field, @RequestParam("value") String value, Map<String, Object> model) {
         logger.info(String.format("Querying for tickets by field=%s and value=%s", field, value));
-        Object valueToQuery = booleanTypes.contains(field) ? getBoolean(value) : value;
-        List<Ticket> tickets = ticketService.getTickets(field, valueToQuery);
 
+        Object valueToQuery = booleanValueScrubber.scrub(booleanTypes, field, value);
+        List<Ticket> tickets = ticketService.getTickets(field, valueToQuery);
         List<TicketModel> ticketModels = new ArrayList<>();
         for (Ticket ticket : tickets) {
             TicketModel ticketModel = new TicketBuilder().ticket(ticket).buildModel();
@@ -58,18 +65,5 @@ public class TicketController {
         model.put("value", value);
         model.put("tickets", ticketModels);
         return "ticket";
-    }
-
-    private Boolean getBoolean(String value) {
-        Boolean result = null;
-        if (value == null) {
-            return result;
-        }
-        if (value.equals("true")) {
-            result = Boolean.TRUE;
-        } else if (value.equals("false")) {
-            result = Boolean.FALSE;
-        }
-        return result;
     }
 }

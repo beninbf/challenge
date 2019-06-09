@@ -1,6 +1,7 @@
 package com.zendesk.challenge.controller;
 
 import com.zendesk.challenge.data.domain.jpa.Ticket;
+import com.zendesk.challenge.service.BooleanValueScrubber;
 import com.zendesk.challenge.service.TicketService;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,6 +11,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -38,6 +40,9 @@ public class TicketControllerTest {
     @Mock
     private TicketService ticketService;
 
+    @Mock
+    private BooleanValueScrubber booleanValueScrubber;
+
     @InjectMocks
     private TicketController ticketController;
 
@@ -56,6 +61,7 @@ public class TicketControllerTest {
     public void testTicket() {
         Map<String, Object> modelMap = new HashMap<>();
         Ticket ticket = mock(Ticket.class);
+        when(booleanValueScrubber.scrub(any(HashSet.class), anyString(), anyString())).thenReturn(Object.class);
         when(ticketService.getTickets(anyString(), any(Object.class))).thenReturn(Arrays.asList(ticket));
         String path = ticketController.ticket("id", "100l", modelMap);
         assertEquals("should be user", "ticket", path);
