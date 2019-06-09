@@ -19,11 +19,11 @@ import java.util.List;
 public interface UserDao {
 
     /**
-     * getUsers - Queries for users based on a field and a value.
+     * findUsersByField - Queries for users based on a field and a value.
      *
      * @param field String
      * @param value Object
      * @return List of Users
      */
-    List<User> getUsers(String field, Object value);
+    List<User> findUsersByField(String field, Object value);
 }

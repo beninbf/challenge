@@ -35,8 +35,8 @@ public class TestUtil {
     private OrganizationRepository organizationRepository;
 
     public void deleteAllRepositories() {
-        userRepository.deleteAll();
         ticketRepository.deleteAll();
+        userRepository.deleteAll();
         organizationRepository.deleteAll();
     }
 }

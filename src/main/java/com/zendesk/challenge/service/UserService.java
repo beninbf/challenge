@@ -19,10 +19,26 @@ import java.util.List;
 public interface UserService {
 
     /**
+     * Find by id.
+     *
+     * @param id Long
+     * @return User object
+     */
+    User findById(Long id);
+
+    /**
      * Get users where the field equals the value.
      * @param field String
      * @param value Object
      * @return List of users
      */
-    List<User> getUsers(String field, Object value);
+    List<User> findUsersByField(String field, Object value);
+
+    /**
+     * Find users by field and value
+     * @param field String
+     * @param value String
+     * @return List of Users
+     */
+    List<User> findUsers(String field, String value);
 }

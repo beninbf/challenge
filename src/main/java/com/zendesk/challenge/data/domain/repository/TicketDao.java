@@ -19,11 +19,11 @@ import java.util.List;
 public interface TicketDao {
 
     /**
-     * getTickets - Queries for tickets based on a field and a value.
+     * findTicketsByField - Queries for tickets based on a field and a value.
      *
      * @param field String
      * @param value Object
      * @return List of Users
      */
-    List<Ticket> getTickets(String field, Object value);
+    List<Ticket> findTicketsByField(String field, Object value);
 }

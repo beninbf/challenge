@@ -54,7 +54,7 @@ public class OrganizationController {
     public String organization(@RequestParam("field") String field, @RequestParam("value") String value, Map<String, Object> model) {
         logger.info(String.format("Querying for users by field=%s and value=%s", field, value));
         Object valueToQuery = booleanValueScrubber.scrub(booleanTypes, field, value);
-        List<Organization> organizations = organizationService.getOrganizations(field, valueToQuery);
+        List<Organization> organizations = organizationService.findOrganizationsByField(field, valueToQuery);
 
         List<OrganizationModel> organizationModels = new ArrayList<>();
         for (Organization organization: organizations) {
@@ -65,6 +65,7 @@ public class OrganizationController {
         model.put("field", field);
         model.put("value", value);
         model.put("organizations", organizationModels);
+        model.put("organizationsCount", organizationModels.size());
         return "organization";
     }
 }

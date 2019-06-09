@@ -1,9 +1,12 @@
 package com.zendesk.challenge.controller;
 
+import com.zendesk.challenge.builder.OrganizationBuilder;
 import com.zendesk.challenge.builder.TicketBuilder;
+import com.zendesk.challenge.builder.UserBuilder;
 import com.zendesk.challenge.data.domain.jpa.Ticket;
+import com.zendesk.challenge.model.OrganizationModel;
 import com.zendesk.challenge.model.TicketModel;
-import com.zendesk.challenge.service.BooleanValueScrubber;
+import com.zendesk.challenge.model.UserModel;
 import com.zendesk.challenge.service.TicketService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,35 +38,61 @@ import java.util.Set;
 public class TicketController {
     private static Logger logger = LoggerFactory.getLogger(TicketController.class);
 
-    private static final String HAS_INCIDENTS = "hasIncidents";
-
-
-    private static final Set<String> booleanTypes = new HashSet<>();
-    {
-        booleanTypes.add(HAS_INCIDENTS);
-    }
-
     @Inject
     private TicketService ticketService;
-
-    @Inject
-    private BooleanValueScrubber booleanValueScrubber;
 
     @RequestMapping(value = "/ticket", method = RequestMethod.GET, params = {"field", "value"})
     public String ticket(@RequestParam("field") String field, @RequestParam("value") String value, Map<String, Object> model) {
         logger.info(String.format("Querying for tickets by field=%s and value=%s", field, value));
 
-        Object valueToQuery = booleanValueScrubber.scrub(booleanTypes, field, value);
-        List<Ticket> tickets = ticketService.getTickets(field, valueToQuery);
+        List<Ticket> tickets = ticketService.findTickets(field, value);
         List<TicketModel> ticketModels = new ArrayList<>();
+        List<OrganizationModel> organizationModels = new ArrayList<>();
+        List<UserModel> assigneeModels = new ArrayList<>();
+        List<UserModel> submitterModels = new ArrayList<>();
+
+        Set<Long> assigneeIds = new HashSet<>();
+        Set<Long> submitterIds = new HashSet<>();
+        Set<Long> organizationIds = new HashSet<>();
+
         for (Ticket ticket : tickets) {
-            TicketModel ticketModel = new TicketBuilder().ticket(ticket).buildModel();
+            TicketModel ticketModel = new TicketBuilder()
+                .ticket(ticket)
+                .organization(ticket.getOrganization())
+                .assignee(ticket.getAssignee())
+                .submitter(ticket.getSubmitter())
+                .buildModel();
             ticketModels.add(ticketModel);
+            if (ticket.getOrganization() != null && !organizationIds.contains(ticket.getOrganization().getId())) {
+                OrganizationModel organizationModel = new OrganizationBuilder().organization(ticket.getOrganization()).buildModel();
+                organizationModels.add(organizationModel);
+                organizationIds.add(ticket.getOrganization().getId());
+            }
+            if (ticket.getAssignee() != null && !assigneeIds.contains(ticket.getAssignee().getId())) {
+                UserModel assigneeModel = new UserBuilder().user(ticket.getAssignee()).organization(ticket.getOrganization()).buildModel();
+                assigneeModels.add(assigneeModel);
+                assigneeIds.add(ticket.getAssignee().getId());
+            }
+            if (ticket.getSubmitter() != null && !submitterIds.contains(ticket.getSubmitter().getId())) {
+                UserModel submitterModel = new UserBuilder().user(ticket.getSubmitter()).organization(ticket.getOrganization()).buildModel();
+                submitterModels.add(submitterModel);
+                submitterIds.add(ticket.getSubmitter().getId());
+            }
         }
-        logger.info(String.format("number of tickets retrieved %s", tickets.size()));
+        logger.info(String.format("number of tickets retrieved %s", ticketModels.size()));
+        logger.info(String.format("number of organizations retrieved %s", organizationModels.size()));
+        logger.info(String.format("number of assignees retrieved %s", assigneeModels.size()));
+        logger.info(String.format("number of submitters retrieved %s", submitterModels.size()));
         model.put("field", field);
         model.put("value", value);
         model.put("tickets", ticketModels);
+        model.put("ticketsCount", ticketModels.size());
+        model.put("organizations", organizationModels);
+        model.put("organizationsCount", organizationModels.size());
+        model.put("assignees", assigneeModels);
+        model.put("assigneesCount", assigneeModels.size());
+        model.put("submitters", submitterModels);
+        model.put("submittersCount", submitterModels.size());
         return "ticket";
     }
 }

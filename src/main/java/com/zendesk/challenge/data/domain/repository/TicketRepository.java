@@ -1,8 +1,13 @@
 package com.zendesk.challenge.data.domain.repository;
 
+import com.zendesk.challenge.data.domain.jpa.Organization;
 import com.zendesk.challenge.data.domain.jpa.Ticket;
+import com.zendesk.challenge.data.domain.jpa.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -20,9 +25,30 @@ import org.springframework.stereotype.Repository;
 public interface TicketRepository extends TicketDao, JpaRepository<Ticket, Long> {
 
     /**
-     * Retrieves a user by the ticket id.
+     * Retrieves a ticket by the ticket id.
      *
      * @return Ticket Object
      */
-    Ticket findByTicketId(String id);
+    Optional<Ticket> findById(String id);
+
+    /**
+     * Retrieves a ticket by the organization.
+     *
+     * @return Ticket Object
+     */
+    List<Ticket> findByOrganization(Organization organization);
+
+    /**
+     * Retrieves a ticket by the assignee.
+     *
+     * @return List of Ticket Objects
+     */
+    List<Ticket> findByAssignee(User user);
+
+    /**
+     * Retrieves a Ticket by the submitter.
+     *
+     * @return List of Ticket Objects
+     */
+    List<Ticket> findBySubmitter(User user);
 }

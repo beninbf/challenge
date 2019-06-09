@@ -10,6 +10,7 @@ import com.zendesk.challenge.model.OrganizationModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
@@ -33,6 +34,7 @@ import java.util.List;
  * @since June 6, 2019
  */
 @Component
+@Order(1)
 public class OrganizationDataLoader implements CommandLineRunner {
 
     private static Logger logger = LoggerFactory.getLogger(OrganizationDataLoader.class);

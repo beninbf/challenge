@@ -1,7 +1,9 @@
 package com.zendesk.challenge.controller;
 
+import com.zendesk.challenge.builder.OrganizationBuilder;
 import com.zendesk.challenge.builder.UserBuilder;
 import com.zendesk.challenge.data.domain.jpa.User;
+import com.zendesk.challenge.model.OrganizationModel;
 import com.zendesk.challenge.model.UserModel;
 import com.zendesk.challenge.service.BooleanValueScrubber;
 import com.zendesk.challenge.service.UserService;
@@ -35,42 +37,33 @@ import java.util.Set;
 public class UserController {
     private static Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    private static final String VERIFIED = "verified";
-
-    private static final String ACTIVE = "active";
-
-    private static final String SHARED = "shared";
-
-    private static final String SUSPENDED = "suspended";
-
-    private static final Set<String> booleanTypes = new HashSet<>();
-    {
-        booleanTypes.add(VERIFIED);
-        booleanTypes.add(ACTIVE);
-        booleanTypes.add(SHARED);
-        booleanTypes.add(SUSPENDED);
-    }
-
     @Inject
     private UserService userService;
-
-    @Inject
-    private BooleanValueScrubber booleanValueScrubber;
 
     @RequestMapping(value = "/user", method = RequestMethod.GET, params = {"field", "value"})
     public String user(@RequestParam("field") String field, @RequestParam("value") String value, Map<String, Object> model) {
         logger.info(String.format("Querying for users by field=%s and value=%s", field, value));
-        Object valueToQuery = booleanValueScrubber.scrub(booleanTypes, field, value);
-        List<User> users = userService.getUsers(field, valueToQuery);
+        List<User> users = userService.findUsers(field, value);
         List<UserModel> userModels = new ArrayList<>();
+        List<OrganizationModel> organizationModels = new ArrayList<>();
+        Set<Long> organizationIds = new HashSet<>();
         for (User user : users) {
-            UserModel userModel = new UserBuilder().user(user).buildModel();
+            UserModel userModel = new UserBuilder().user(user).organization(user.getOrganization()).buildModel();
             userModels.add(userModel);
+            if (user.getOrganization() != null && !organizationIds.contains(user.getOrganization().getId())) {
+                OrganizationModel organizationModel = new OrganizationBuilder().organization(user.getOrganization()).buildModel();
+                organizationModels.add(organizationModel);
+                organizationIds.add(user.getOrganization().getId());
+            }
         }
-        logger.info(String.format("number of users retrieved %s", users.size()));
+        logger.info(String.format("number of users retrieved %s", userModels.size()));
+        logger.info(String.format("number of organizations retrieved %s", organizationModels.size()));
         model.put("field", field);
         model.put("value", value);
         model.put("users", userModels);
+        model.put("usersCount", userModels.size());
+        model.put("organizations", organizationModels);
+        model.put("organizationsCount", organizationModels.size());
         return "user";
     }
 }

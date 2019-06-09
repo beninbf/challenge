@@ -2,6 +2,7 @@ package com.zendesk.challenge.data.domain.repository;
 
 import com.zendesk.challenge.data.domain.jpa.User;
 import com.zendesk.challenge.data.domain.repository.config.RepositoryTestConfig;
+import com.zendesk.challenge.util.GenericTestDataFactory;
 import com.zendesk.challenge.util.TestUtil;
 import org.junit.After;
 import org.junit.Before;
@@ -12,11 +13,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import javax.inject.Inject;
-import java.lang.reflect.Field;
-import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 
@@ -41,6 +39,9 @@ public class UserRepositoryImplTest {
     UserRepository userRepository;
 
     @Inject
+    OrganizationRepository organizationRepository;
+
+    @Inject
     private TestUtil testUtil;
 
     @Before
@@ -49,64 +50,53 @@ public class UserRepositoryImplTest {
     }
 
     @Test
-    public void testGetUsers() {
-        User user = getUser();
+    public void testFindById() {
+        User user = GenericTestDataFactory.getUser(1l);
+        organizationRepository.save(user.getOrganization());
         userRepository.save(user);
-        List<User> results = userRepository.getUsers("userId", Long.valueOf(11));
-        assertEquals("should be 1", 1, results.size());
-        assertEquals("user_id should be 1", 11l, results.get(0).getUserId().longValue());
+        Optional<User> findByIdUser = userRepository.findById(1l);
+        assertEquals("user id should be 1", 1l, findByIdUser.get().getId().longValue());
+    }
 
-        List<User> externalId = userRepository.getUsers("externalId", "abc");
+    @Test
+    public void testFindUsersByField() {
+        User user = GenericTestDataFactory.getUser(1l);
+        organizationRepository.save(user.getOrganization());
+        userRepository.save(user);
+        List<User> results = userRepository.findUsersByField("id", Long.valueOf(1));
+        Optional<User> findByIdUser = userRepository.findById(1l);
+        assertEquals("should be 1", 1, results.size());
+        assertEquals("user_id should be 1", 1l, results.get(0).getId().longValue());
+        assertEquals("user id should be 1", 1l, findByIdUser.get().getId().longValue());
+
+        List<User> externalId = userRepository.findUsersByField("externalId", "abc");
         assertEquals("size should be 1", 1, externalId.size());
         assertEquals("externalId should be abc", "abc", externalId.get(0).getExternalId());
 
-        List<User> suspended = userRepository.getUsers("suspended", Boolean.TRUE);
+        List<User> suspended = userRepository.findUsersByField("suspended", Boolean.TRUE);
         assertEquals("size should be 1", 1, suspended.size());
         assertEquals("suspended should be true", true, suspended.get(0).isSuspended());
+        assertEquals("organization id should be", 5l, suspended.get(0).getOrganization().getId().longValue());
 
-        User anotherUser = getUser();
+        User anotherUser = GenericTestDataFactory.getUser(2l);
         userRepository.save(anotherUser);
-        List<User> externalId1 = userRepository.getUsers("externalId", "abc");
+        List<User> externalId1 = userRepository.findUsersByField("externalId", "abc");
         assertEquals("should be 2", 2, externalId1.size());
 
-        User emptyNameUser = getUser();
+        User emptyNameUser = GenericTestDataFactory.getUser(3l);
         emptyNameUser.setName(null);
-        emptyNameUser.setUserId(100l);
+        emptyNameUser.setId(100l);
         userRepository.save(emptyNameUser);
-        List<User> emptyUserList = userRepository.getUsers("name", null);
-        User emptyUser = userRepository.findByUserId(100l);
+        List<User> emptyUserList = userRepository.findUsersByField("name", null);
+        Optional<User> emptyUser = userRepository.findById(100l);
         assertEquals("should be 1", 1, emptyUserList.size());
-        assertEquals("should be 100", 100l, emptyUser.getUserId().longValue());
-        assertEquals("subject should be 100", 100l, emptyUserList.get(0).getUserId().longValue());
-    }
-
-    private User getUser() {
-        User user = new User();
-        user.setUserId(11L);
-        user.setUrl("Test");
-        user.setExternalId("abc");
-        user.setName("test name");
-        user.setAlias("test alias");
-        user.setCreatedDate(new Timestamp(new Date().getTime()));
-        user.setActive(true);
-        user.setShared(true);
-        user.setVerified(true);
-        user.setLastLoginDate(new Timestamp(new Date().getTime()));
-        user.setEmail("test@email.com");
-        user.setSignature("sig");
-        user.setPhone("888-888-8888");
-        user.setOrganizationId(3l);
-        user.setSuspended(true);
-        user.setTags(Arrays.asList("hello","ok","good"));
-        user.setRole("admin");
-        user.setLocale("locale");
-        user.setTimezone("timezone");
-        return user;
+        assertEquals("should be 100", 100l, emptyUser.get().getId().longValue());
+        assertEquals("subject should be 100", 100l, emptyUserList.get(0).getId().longValue());
+        assertEquals("user id with empty name should be 100", 100l, emptyUser.get().getId().longValue());
     }
 
     @After
     public void after() {
         testUtil.deleteAllRepositories();
     }
-
 }

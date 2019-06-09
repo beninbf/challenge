@@ -5,6 +5,9 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.junit.Assert.assertEquals;
 
 public class OrganizationOptionsControllerTest {
@@ -24,8 +27,9 @@ public class OrganizationOptionsControllerTest {
     }
 
     @Test
-    public void testUser() {
-        String path = organziationOptionsController.organizationOptions();
+    public void testOrganizationOptionsController() {
+        Map<String, Object> map = new HashMap<>();
+        String path = organziationOptionsController.organizationOptions(map);
         assertEquals("should be organization-options", "organization-options", path);
     }
 }

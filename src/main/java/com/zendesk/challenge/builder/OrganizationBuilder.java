@@ -38,7 +38,7 @@ public class OrganizationBuilder {
     public Organization build() {
         if (model != null) {
             Organization organization = new Organization();
-            organization.setOrganizationId(model.getId());
+            organization.setId(model.getId());
             organization.setUrl(model.getUrl());
             organization.setExternalId(model.getExternalId());
             organization.setName(model.getName());
@@ -58,7 +58,7 @@ public class OrganizationBuilder {
     public OrganizationModel buildModel() {
         if (organization != null) {
             OrganizationModel model = new OrganizationModel();
-            model.setId(organization.getOrgnizationId());
+            model.setId(organization.getId());
             model.setUrl(organization.getUrl());
             model.setExternalId(organization.getExternalId());
             model.setName(organization.getName());
@@ -71,7 +71,7 @@ public class OrganizationBuilder {
             model.setTags(organization.getTags());
             return model;
         } else {
-            throw new IllegalArgumentException("Organization must be set to create an orgnization model object");
+            throw new IllegalArgumentException("Organization must be set to create an organization model object");
         }
     }
 }

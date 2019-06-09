@@ -31,7 +31,7 @@ public class UserRepositoryImpl implements UserDao {
     @Autowired
     private EntityManager em;
 
-    public List<User> getUsers(String field, Object value) throws NumberFormatException {
+    public List<User> findUsersByField(String field, Object value) throws NumberFormatException {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<User> cq = cb.createQuery(User.class);
         Root<User> user = cq.from(User.class);

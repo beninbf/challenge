@@ -19,11 +19,19 @@ import java.util.List;
 public interface OrganizationService {
 
     /**
+     * Find by id.
+     *
+     * @param id Long
+     * @return organization
+     */
+    Organization findById(Long id);
+
+    /**
      * Get organizations where the field matches the value.
      *
      * @param field String
      * @param value Object
      * @return list of organizations
      */
-    List<Organization> getOrganizations(String field, Object value);
+    List<Organization> findOrganizationsByField(String field, Object value);
 }

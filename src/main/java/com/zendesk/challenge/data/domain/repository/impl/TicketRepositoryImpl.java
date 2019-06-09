@@ -30,7 +30,7 @@ public class TicketRepositoryImpl implements TicketDao {
     @Autowired
     private EntityManager em;
 
-    public List<Ticket> getTickets(String field, Object value) throws NumberFormatException {
+    public List<Ticket> findTicketsByField(String field, Object value) throws NumberFormatException {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Ticket> cq = cb.createQuery(Ticket.class);
         Root<Ticket> ticket = cq.from(Ticket.class);

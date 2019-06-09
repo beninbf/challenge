@@ -1,25 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <style>
+            .zendesk-logo {
+                display: block;
+                -ms-flex: 0 0 auto;
+                flex: 0 0 auto;
+                width: 200px;
+                height: 40px;
+                background: url(//d1eipm3vz40hy0.cloudfront.net/images/navigation/header/zendesk-logo.svg) left top no-repeat transparent;
+                overflow: hidden;
+                text-indent: -9999px;
+                border: none;
+                margin-top: 5%;
+            }
+        </style>
         <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
         <link href="${jstlCss}" rel="stylesheet" />
     </head>
     <body>
-        <nav class="navbar navbar-inverse">
-            <div class="container">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="#">ZenDesk Code Challenge</a>
-                </div>
-            </div>
-        </nav>
+        <div class="container">
+            <a href="/" class="zendesk-logo"></a>
+        </div>
         <div class="container">
             <div class="starter-template">
-                <h1>Please select the entity you would like to search</h1>
+                <h2 style="color: #03363d;">Select the entity you would like to search</h2>
                 <br />
                 <table>
-                    <td><button type="button" class="btn btn-primary" onclick="location.href='user-options';">Users</button></td>
-                    <td><button type="button" class="btn btn-primary" onclick="location.href='ticket-options';">Tickets</button></td>
-                    <td><button type="button" class="btn btn-primary" onclick="location.href='organization-options';">Organizations</button></td>
+                    <td style="padding: 5px;"><button type="button" style="background-color: #30aabc;" class="btn btn-primary" onclick="location.href='organization-options';">Organizations</button></td>
+                    <td style="padding: 5px;"><button type="button" style="background-color: #30aabc;" class="btn btn-primary" onclick="location.href='user-options';">Users</button></td>
+                    <td style="padding: 5px;"><button type="button" style="background-color: #30aabc;" class="btn btn-primary" onclick="location.href='ticket-options';">Tickets</button></td>
                 </table>
             </div>
         </div>

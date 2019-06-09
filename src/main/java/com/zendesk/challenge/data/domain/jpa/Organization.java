@@ -1,11 +1,10 @@
 package com.zendesk.challenge.data.domain.jpa;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -31,11 +30,8 @@ public class Organization implements Serializable {
     private static final long serialVersionUID = -5101095100631176305L;
 
     @Id
-    @GeneratedValue()
+    @Column(name = "ID", nullable = false)
     private Long id;
-
-    @Column(name = "ORGANIZATION_ID", nullable = false)
-    private Long organizationId;
 
     @Column(name = "URL", nullable = true, length = 100)
     private String url;
@@ -78,24 +74,6 @@ public class Organization implements Serializable {
      */
     public void setId(Long id) {
         this.id = id;
-    }
-
-    /**
-     * Gets organizationId.
-     *
-     * @return the organizationId
-     */
-    public Long getOrgnizationId() {
-        return organizationId;
-    }
-
-    /**
-     * Sets organizationId.
-     *
-     * @param organizationId the organizationId
-     */
-    public void setOrganizationId(Long organizationId) {
-        this.organizationId = organizationId;
     }
 
     /**
@@ -240,5 +218,10 @@ public class Organization implements Serializable {
      */
     public void setSharedTickets(Boolean sharedTickets) {
         this.sharedTickets = sharedTickets;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }

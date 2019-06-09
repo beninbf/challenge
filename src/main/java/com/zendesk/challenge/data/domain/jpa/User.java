@@ -1,11 +1,14 @@
 package com.zendesk.challenge.data.domain.jpa;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Arrays;
@@ -30,11 +33,8 @@ public class User implements Serializable {
     private static final long serialVersionUID = -2556403692023268096L;
 
     @Id
-    @GeneratedValue()
+    @Column(name = "ID", nullable = false)
     private Long id;
-
-    @Column(name = "USER_ID", nullable = false)
-    private Long userId;
 
     @Column(name = "URL", nullable = true, length = 100)
     private String url;
@@ -81,8 +81,9 @@ public class User implements Serializable {
     @Column(name = "SIGNATURE", nullable = true, length = 50)
     private String signature;
 
-    @Column(name = "ORGANIZATION_ID", nullable = true)
-    private Long organizationId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ORGANIZATION_ID", referencedColumnName = "ID", nullable = true)
+    private Organization organization;
 
     @Column(name = "TAGS", nullable = false, length = 100)
     private String tags;
@@ -95,39 +96,21 @@ public class User implements Serializable {
     private String role;
 
     /**
-     * Gets unique userId.
+     * Gets id.
      *
-     * @return the unique userId
+     * @return the id
      */
     public Long getId() {
         return id;
     }
 
     /**
-     * Sets unique userId.
+     * Sets id.
      *
-     * @param id the unique userId
+     * @param id the id
      */
     public void setId(Long id) {
         this.id = id;
-    }
-
-    /**
-     * Gets userId.
-     *
-     * @return the userId
-     */
-    public Long getUserId() {
-        return userId;
-    }
-
-    /**
-     * Sets userId.
-     *
-     * @param userId the userId
-     */
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     /**
@@ -149,18 +132,18 @@ public class User implements Serializable {
     }
 
     /**
-     * Gets external userId.
+     * Gets external id.
      *
-     * @return the external userId
+     * @return the external id
      */
     public String getExternalId() {
         return externalId;
     }
 
     /**
-     * Sets external userId.
+     * Sets external id.
      *
-     * @param externalId the external userId
+     * @param externalId the external id
      */
     public void setExternalId(String externalId) {
         this.externalId = externalId;
@@ -383,21 +366,21 @@ public class User implements Serializable {
     }
 
     /**
-     * Gets organization userId.
+     * Gets organization id.
      *
-     * @return the organization userId
+     * @return the organization id
      */
-    public Long getOrganizationId() {
-        return organizationId;
+    public Organization getOrganization() {
+        return organization;
     }
 
     /**
-     * Sets organization userId.
+     * Sets organization id.
      *
-     * @param organizationId the organization userId
+     * @param organization the organization id
      */
-    public void setOrganizationId(Long organizationId) {
-        this.organizationId = organizationId;
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
     }
 
     /**
@@ -452,5 +435,10 @@ public class User implements Serializable {
      */
     public void setRole(String role) {
         this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }

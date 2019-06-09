@@ -4,12 +4,15 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zendesk.challenge.builder.UserBuilder;
+import com.zendesk.challenge.data.domain.jpa.Organization;
 import com.zendesk.challenge.data.domain.jpa.User;
+import com.zendesk.challenge.data.domain.repository.OrganizationRepository;
 import com.zendesk.challenge.data.domain.repository.UserRepository;
 import com.zendesk.challenge.model.UserModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
@@ -19,6 +22,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -33,6 +37,7 @@ import java.util.List;
  * @since June 6, 2019
  */
 @Component
+@Order(2)
 public class UserDataLoader implements CommandLineRunner {
 
     private static Logger logger = LoggerFactory.getLogger(UserDataLoader.class);
@@ -41,6 +46,9 @@ public class UserDataLoader implements CommandLineRunner {
 
     @Inject
     private UserRepository userRepository;
+
+    @Inject
+    private OrganizationRepository organizationRepository;
 
     @Override
     public void run(String[] args) {
@@ -56,7 +64,12 @@ public class UserDataLoader implements CommandLineRunner {
             String contents = getContents(file);
             List<UserModel> userModels = getUserObjectFromJson(contents);
             for (UserModel userModel: userModels) {
-                User user = new UserBuilder().model(userModel).build();
+                Organization organization = null;
+                if (userModel.getOrganizationId() != null) {
+                    Optional<Organization> organizationOptional = organizationRepository.findById(userModel.getOrganizationId());
+                    organization = organizationOptional.isPresent() ? organizationOptional.get() : null;
+                }
+                User user = new UserBuilder().model(userModel).organization(organization).build();
                 userRepository.save(user);
             }
         } catch (IOException ex) {

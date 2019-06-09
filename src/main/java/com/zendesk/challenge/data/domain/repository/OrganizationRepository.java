@@ -4,6 +4,8 @@ import com.zendesk.challenge.data.domain.jpa.Organization;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 /**
  *
  * <code>OrganizationRepository</code> repository for querying organization data.
@@ -24,5 +26,5 @@ public interface OrganizationRepository extends OrganizationDao, JpaRepository<O
      *
      * @return Organization Object
      */
-    Organization findByOrganizationId(long id);
+    Optional<Organization> findById(Long id);
 }

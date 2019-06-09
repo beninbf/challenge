@@ -11,6 +11,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -51,23 +52,32 @@ public class OrganizationServiceImplTest {
     }
 
     @Test
-    public void testGetUsers() {
+    public void testFindById() {
+        Organization organization = mock(Organization.class);
+        when(organizationRepository.findById(anyLong())).thenReturn(Optional.of(organization));
+        Organization result = organizationService.findById(1l);
+        verify(organizationRepository, times(1)).findById(anyLong());
+        assertNotNull("result should not be null", result);
+    }
+
+    @Test
+    public void testFindOrganizationsByField() {
         Organization organization = mock(Organization.class);
         List<Organization> organizations = Arrays.asList(organization);
-        when(organizationRepository.getOrganizations(anyString(), anyLong())).thenReturn(organizations);
-        List<Organization> result = organizationService.getOrganizations("userId", 1l);
-        verify(organizationRepository, times(1)).getOrganizations(anyString(), any(Object.class));
+        when(organizationRepository.findOrganizationsByField(anyString(), anyLong())).thenReturn(organizations);
+        List<Organization> result = organizationService.findOrganizationsByField("id", 1l);
+        verify(organizationRepository, times(1)).findOrganizationsByField(anyString(), any(Object.class));
         assertNotNull("result should not be null", result);
         assertFalse("result should not be empty", result.isEmpty());
         assertTrue("result size should be 1", result.size() == 1);
     }
 
     @Test
-    public void testGetUsers_Exception() {
+    public void testFindOrganizationsByField_Exception() {
         NumberFormatException nfe = mock(NumberFormatException.class);
-        when(organizationRepository.getOrganizations(anyString(), anyLong())).thenThrow(nfe);
-        List<Organization> result = organizationService.getOrganizations("userId", 1l);
-        verify(organizationRepository, times(1)).getOrganizations(anyString(), any(Object.class));
+        when(organizationRepository.findOrganizationsByField(anyString(), anyLong())).thenThrow(nfe);
+        List<Organization> result = organizationService.findOrganizationsByField("id", 1l);
+        verify(organizationRepository, times(1)).findOrganizationsByField(anyString(), any(Object.class));
         assertTrue("result should be empty", result.isEmpty());
     }
 }

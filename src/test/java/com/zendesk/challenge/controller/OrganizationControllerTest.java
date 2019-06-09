@@ -62,9 +62,9 @@ public class OrganizationControllerTest {
         Map<String, Object> modelMap = new HashMap<>();
         Organization organization = mock(Organization.class);
         when(booleanValueScrubber.scrub(any(HashSet.class), anyString(), anyString())).thenReturn(Object.class);
-        when(organizationService.getOrganizations(anyString(), any(Object.class))).thenReturn(Arrays.asList(organization));
+        when(organizationService.findOrganizationsByField(anyString(), any(Object.class))).thenReturn(Arrays.asList(organization));
         String path = organizationController.organization("id", "100l", modelMap);
         assertEquals("should be organization", "organization", path);
-        verify(organizationService, times(1)).getOrganizations(anyString(), any(Object.class));
+        verify(organizationService, times(1)).findOrganizationsByField(anyString(), any(Object.class));
     }
 }

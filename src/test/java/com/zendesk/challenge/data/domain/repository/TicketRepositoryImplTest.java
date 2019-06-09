@@ -2,6 +2,7 @@ package com.zendesk.challenge.data.domain.repository;
 
 import com.zendesk.challenge.data.domain.jpa.Ticket;
 import com.zendesk.challenge.data.domain.repository.config.RepositoryTestConfig;
+import com.zendesk.challenge.util.GenericTestDataFactory;
 import com.zendesk.challenge.util.TestUtil;
 import org.junit.After;
 import org.junit.Before;
@@ -12,10 +13,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import javax.inject.Inject;
-import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 
@@ -40,6 +39,12 @@ public class TicketRepositoryImplTest {
     TicketRepository ticketRepository;
 
     @Inject
+    UserRepository userRepository;
+
+    @Inject
+    OrganizationRepository organizationRepository;
+
+    @Inject
     private TestUtil testUtil;
 
     @Before
@@ -48,60 +53,57 @@ public class TicketRepositoryImplTest {
     }
 
     @Test
-    public void testGetTickets() {
-        Ticket ticket = getTicket();
+    public void testFindById() {
+        Ticket ticket = GenericTestDataFactory.getTicket();
+        organizationRepository.save(ticket.getOrganization());
+        userRepository.save(ticket.getAssignee());
+        userRepository.save(ticket.getSubmitter());
         ticketRepository.save(ticket);
-        List<Ticket> results = ticketRepository.getTickets("ticketId", "aaa");
-        Ticket test = ticketRepository.findByTicketId("aaa");
+        Optional<Ticket> test = ticketRepository.findById("aaa");
+        assertEquals("ticket_id should be aaa", "aaa", test.get().getId());
+    }
+
+    @Test
+    public void testFindTicketsByField() {
+        Ticket ticket = GenericTestDataFactory.getTicket();
+        organizationRepository.save(ticket.getOrganization());
+        userRepository.save(ticket.getAssignee());
+        userRepository.save(ticket.getSubmitter());
+        ticketRepository.save(ticket);
+        List<Ticket> results = ticketRepository.findTicketsByField("id", "aaa");
         assertEquals("size should be 1", 1, results.size());
-        assertEquals("ticket_id should be aaa", "aaa", results.get(0).getTicketId());
-        assertEquals("ticket_id should be aaa", "aaa", test.getTicketId());
+        assertEquals("ticket_id should be aaa", "aaa", results.get(0).getId());
 
-        List<Ticket> submitterId = ticketRepository.getTickets("submitterId", 2l);
-        assertEquals("size should be 1", 1, submitterId.size());
-        assertEquals("submitterId should be 2", 2l, submitterId.get(0).getSubmitterId().longValue());
+        List<Ticket> submitterList = ticketRepository.findTicketsByField("submitter", ticket.getSubmitter().getId());
+        assertEquals("size should be 1", 1, submitterList.size());
+        assertEquals("submitterId should be 2", 2l, submitterList.get(0).getSubmitter().getId().longValue());
 
-        List<Ticket> subject = ticketRepository.getTickets("subject", "test subject");
-        assertEquals("size should be 1", 1, subject.size());
-        assertEquals("subject should be test subject", "test subject", submitterId.get(0).getSubject());
+        List<Ticket> assigneeList = ticketRepository.findTicketsByField("assignee", ticket.getAssignee().getId());
+        assertEquals("size should be 1", 1, assigneeList.size());
+        assertEquals("assigneeId should be 4", 4l, assigneeList.get(0).getAssignee().getId().longValue());
 
-        Ticket anotherTicket = getTicket();
+        List<Ticket> subjectList = ticketRepository.findTicketsByField("subject", "test subject");
+        assertEquals("size should be 1", 1, subjectList.size());
+        assertEquals("subject should be test subject", "test subject", subjectList.get(0).getSubject());
+
+        Ticket anotherTicket = GenericTestDataFactory.getTicket();
+        anotherTicket.setId("aab");
         ticketRepository.save(anotherTicket);
-        List<Ticket> externalId = ticketRepository.getTickets("externalId", "abc");
+        List<Ticket> externalId = ticketRepository.findTicketsByField("externalId", "abc");
         assertEquals("should be 2", 2, externalId.size());
 
-        Ticket emptyDescriptionTicket = getTicket();
+        Ticket emptyDescriptionTicket = GenericTestDataFactory.getTicket();
         emptyDescriptionTicket.setDescription(null);
-        emptyDescriptionTicket.setTicketId("empty");
+        emptyDescriptionTicket.setId("empty");
         ticketRepository.save(emptyDescriptionTicket);
-        List<Ticket> emptyDescription = ticketRepository.getTickets("description", null);
-        Ticket emptyTicket = ticketRepository.findByTicketId("empty");
+
+        List<Ticket> emptyDescription = ticketRepository.findTicketsByField("description", null);
+
+        Optional<Ticket> emptyTicket = ticketRepository.findById("empty");
         assertEquals("should be 1", 1, emptyDescription.size());
-        assertEquals("should be empty", "empty", emptyTicket.getTicketId());
-        assertEquals("subject should be empty", "empty", emptyDescription.get(0).getTicketId());
+        assertEquals("should be empty", "empty", emptyTicket.get().getId());
+        assertEquals("subject should be empty", "empty", emptyDescription.get(0).getId());
     }
-
-    private Ticket getTicket() {
-        Ticket ticket = new Ticket();
-        ticket.setTicketId("aaa");
-        ticket.setUrl("Test");
-        ticket.setExternalId("abc");
-        ticket.setCreatedDate(new Timestamp(new Date().getTime()));
-        ticket.setType("test type");
-        ticket.setSubject("test subject");
-        ticket.setDescription("test description");
-        ticket.setPriority("test priority");
-        ticket.setStatus("test status");
-        ticket.setSubmitterId(2l);
-        ticket.setAssigneeId(4l);
-        ticket.setOrganizationId(5l);
-        ticket.setVia("via");
-        ticket.setHasIncidents(true);
-        ticket.setTags(Arrays.asList("blah,blah,blah"));
-        ticket.setDueDate(new Timestamp(new Date().getTime()));
-        return ticket;
-    }
-
 
     @After
     public void after() {

@@ -2,6 +2,7 @@ package com.zendesk.challenge.data.domain.repository;
 
 import com.zendesk.challenge.data.domain.jpa.Organization;
 import com.zendesk.challenge.data.domain.repository.config.RepositoryTestConfig;
+import com.zendesk.challenge.util.GenericTestDataFactory;
 import com.zendesk.challenge.util.TestUtil;
 import org.junit.After;
 import org.junit.Before;
@@ -12,10 +13,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import javax.inject.Inject;
-import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 
@@ -48,50 +47,44 @@ public class OrganizationRepositoryImplTest {
     }
 
     @Test
-    public void testGetOrganizations() {
-        Organization ticket = getOrganization();
-        organizationRepository.save(ticket);
-        List<Organization> results = organizationRepository.getOrganizations("organizationId", Long.valueOf(5));
-        Organization test = organizationRepository.findByOrganizationId(5l);
+    public void testFindById() {
+        Organization organization = GenericTestDataFactory.getOrganization();
+        organizationRepository.save(organization);
+        Optional<Organization> test = organizationRepository.findById(5l);
+        assertEquals("organization_id should be 5", 5l, test.get().getId().longValue());
+    }
+
+    @Test
+    public void testFindOrganizationsByField() {
+        Organization organization = GenericTestDataFactory.getOrganization();
+        organizationRepository.save(organization);
+        List<Organization> results = organizationRepository.findOrganizationsByField("id", Long.valueOf(5));
+        Optional<Organization> test = organizationRepository.findById(5l);
 
         assertEquals("size should be 1", 1, results.size());
-        assertEquals("organization_id should be 5", 5l, results.get(0).getOrgnizationId().longValue());
-        assertEquals("organization_id should be 5", 5l, test.getOrgnizationId().longValue());
+        assertEquals("organization_id should be 5", 5l, results.get(0).getId().longValue());
+        assertEquals("organization_id should be 5", 5l, test.get().getId().longValue());
 
-        List<Organization> names = organizationRepository.getOrganizations("name", "name");
+        List<Organization> names = organizationRepository.findOrganizationsByField("name", "name");
         assertEquals("size should be 1", 1, names.size());
         assertEquals("name should be name", "name", names.get(0).getName());
 
-        Organization anotherOrganization = getOrganization();
+        Organization anotherOrganization = GenericTestDataFactory.getOrganization();
+        anotherOrganization.setId(4l);
         organizationRepository.save(anotherOrganization);
-        List<Organization> externalId = organizationRepository.getOrganizations("externalId", "abc");
+        List<Organization> externalId = organizationRepository.findOrganizationsByField("externalId", "abc");
         assertEquals("should be 2", 2, externalId.size());
 
-        Organization emptyNameOrg = getOrganization();
+        Organization emptyNameOrg = GenericTestDataFactory.getOrganization();
         emptyNameOrg.setName(null);
-        emptyNameOrg.setOrganizationId(100l);
+        emptyNameOrg.setId(100l);
         organizationRepository.save(emptyNameOrg);
-        List<Organization> emptyOrgList = organizationRepository.getOrganizations("name", null);
-        Organization emptyOrg = organizationRepository.findByOrganizationId(100l);
-        assertEquals("should be 1", 1, emptyOrgList.size());
-        assertEquals("should be 100", 100l, emptyOrg.getOrgnizationId().longValue());
-        assertEquals("subject should be 100", 100l, emptyOrgList.get(0).getOrgnizationId().longValue());
+        List<Organization> emptyNameOrgList = organizationRepository.findOrganizationsByField("name", null);
+        Optional<Organization> emptyNameOrgResult = organizationRepository.findById(100l);
+        assertEquals("should be 1", 1, emptyNameOrgList.size());
+        assertEquals("organization id should be 100", 100l, emptyNameOrgResult.get().getId().longValue());
+        assertEquals("organization id should be 100", 100l, emptyNameOrgList.get(0).getId().longValue());
     }
-
-    private Organization getOrganization() {
-        Organization organization = new Organization();
-        organization.setOrganizationId(5l);
-        organization.setUrl("Test");
-        organization.setName("name");
-        organization.setExternalId("abc");
-        organization.setCreatedDate(new Timestamp(new Date().getTime()));
-        organization.setDetails("test details");
-        organization.setSharedTickets(true);
-        organization.setTags(Arrays.asList("blah,blah,blah"));
-        organization.setDomainNames(Arrays.asList("domain.com,blah.com,blah.com"));
-        return organization;
-    }
-
 
     @After
     public void after() {

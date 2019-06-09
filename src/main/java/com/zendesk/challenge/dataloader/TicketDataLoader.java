@@ -4,12 +4,17 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zendesk.challenge.builder.TicketBuilder;
+import com.zendesk.challenge.data.domain.jpa.Organization;
 import com.zendesk.challenge.data.domain.jpa.Ticket;
+import com.zendesk.challenge.data.domain.jpa.User;
+import com.zendesk.challenge.data.domain.repository.OrganizationRepository;
 import com.zendesk.challenge.data.domain.repository.TicketRepository;
+import com.zendesk.challenge.data.domain.repository.UserRepository;
 import com.zendesk.challenge.model.TicketModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
@@ -19,6 +24,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -33,6 +39,7 @@ import java.util.List;
  * @since June 6, 2019
  */
 @Component
+@Order(3)
 public class TicketDataLoader implements CommandLineRunner {
 
     private static Logger logger = LoggerFactory.getLogger(TicketDataLoader.class);
@@ -41,6 +48,12 @@ public class TicketDataLoader implements CommandLineRunner {
 
     @Inject
     private TicketRepository ticketRepository;
+
+    @Inject
+    private OrganizationRepository organizationRepository;
+
+    @Inject
+    private UserRepository userRepository;
 
     @Override
     public void run(String[] args) {
@@ -56,7 +69,28 @@ public class TicketDataLoader implements CommandLineRunner {
             String contents = getContents(file);
             List<TicketModel> ticketModels = getUserObjectFromJson(contents);
             for (TicketModel ticketModel: ticketModels) {
-                Ticket ticket = new TicketBuilder().model(ticketModel).build();
+                Organization organization = null;
+                User assignee = null;
+                User submitter = null;
+                if (ticketModel.getOrganizationId() != null) {
+                    Optional<Organization> organizationOptional = organizationRepository.findById(ticketModel.getOrganizationId());
+                    organization = organizationOptional.isPresent() ? organizationOptional.get() : null;
+                }
+                if (ticketModel.getAssigneeId() != null) {
+                    Optional<User> assigneeOptional = userRepository.findById(ticketModel.getAssigneeId());
+                    assignee = assigneeOptional.isPresent() ? assigneeOptional.get() : null;
+                }
+                if (ticketModel.getSubmitterId() != null) {
+                    Optional<User> submitterOptional = userRepository.findById(ticketModel.getSubmitterId());
+                    submitter = submitterOptional.isPresent() ? submitterOptional.get() : null;
+                }
+
+                Ticket ticket = new TicketBuilder()
+                    .model(ticketModel)
+                    .organization(organization)
+                    .assignee(assignee)
+                    .submitter(submitter)
+                    .build();
                 ticketRepository.save(ticket);
             }
         } catch (IOException ex) {

@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -29,11 +30,22 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Inject
     private OrganizationRepository organizationRepository;
 
-    public List<Organization> getOrganizations(String field, Object value) {
+    public Organization findById(Long id) {
+        logger.info(String.format("retrieving organization where id=%s", id));
+        try {
+            Optional<Organization> organizationOptional = organizationRepository.findById(id);
+            return organizationOptional.orElse(null);
+        } catch (Exception ex) {
+            logger.error(ex.getMessage(), ex);
+            return null;
+        }
+    }
+
+    public List<Organization> findOrganizationsByField(String field, Object value) {
         logger.info(String.format("retrieving organizations where field=%s and value=%s", field, value));
         List<Organization> result = new ArrayList<>();
         try {
-            result = organizationRepository.getOrganizations(field, value);
+            result = organizationRepository.findOrganizationsByField(field, value);
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
         }

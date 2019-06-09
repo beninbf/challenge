@@ -2,6 +2,7 @@ package com.zendesk.challenge.builder;
 
 import com.zendesk.challenge.data.domain.jpa.Organization;
 import com.zendesk.challenge.model.OrganizationModel;
+import com.zendesk.challenge.util.GenericTestDataFactory;
 import org.junit.Test;
 
 import java.sql.Timestamp;
@@ -28,45 +29,17 @@ public class OrganizationBuilderTest {
 
     @Test
     public void testBuild() {
-        OrganizationModel model = getOrganizationModel();
+        OrganizationModel model = GenericTestDataFactory.getOrganizationModel();
         Organization organization  = new OrganizationBuilder().model(model).build();
         assertNotNull("organization should not be null", organization);
-        assertEquals("organization id should be 11", model.getId(), organization.getOrgnizationId());
+        assertEquals("organization id should be 11", model.getId(), organization.getId());
     }
 
     @Test
     public void testBuildModel() {
-        Organization organization = getOrganization();
+        Organization organization = GenericTestDataFactory.getOrganization();
         OrganizationModel model  = new OrganizationBuilder().organization(organization).buildModel();
         assertNotNull("organization model should not be null", organization);
         assertEquals("organization model id should be 11", 5l, model.getId().longValue());
-    }
-
-    private OrganizationModel getOrganizationModel() {
-        OrganizationModel organizationModel = new OrganizationModel();
-        organizationModel.setId(5l);
-        organizationModel.setUrl("Test");
-        organizationModel.setName("name");
-        organizationModel.setExternalId("abc");
-        organizationModel.setCreatedAt(new Date());
-        organizationModel.setDetails("test details");
-        organizationModel.setSharedTickets(true);
-        organizationModel.setTags(Arrays.asList("blah,blah,blah"));
-        organizationModel.setDomainNames(Arrays.asList("domain.com,blah.com,blah.com"));
-        return organizationModel;
-    }
-
-    private Organization getOrganization() {
-        Organization organization = new Organization();
-        organization.setOrganizationId(5l);
-        organization.setUrl("Test");
-        organization.setName("name");
-        organization.setExternalId("abc");
-        organization.setCreatedDate(new Timestamp(new Date().getTime()));
-        organization.setDetails("test details");
-        organization.setSharedTickets(true);
-        organization.setTags(Arrays.asList("blah,blah,blah"));
-        organization.setDomainNames(Arrays.asList("domain.com,blah.com,blah.com"));
-        return organization;
     }
 }

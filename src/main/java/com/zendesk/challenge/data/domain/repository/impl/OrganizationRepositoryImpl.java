@@ -32,7 +32,7 @@ public class OrganizationRepositoryImpl implements OrganizationDao {
     @Autowired
     private EntityManager em;
 
-    public List<Organization> getOrganizations(String field, Object value) throws NumberFormatException {
+    public List<Organization> findOrganizationsByField(String field, Object value) throws NumberFormatException {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Organization> cq = cb.createQuery(Organization.class);
         Root<Organization> organizationRoot = cq.from(Organization.class);

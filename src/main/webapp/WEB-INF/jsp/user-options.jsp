@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="com.zendesk.challenge.data.domain.jpa.User" %>
-<%@ page import="java.lang.reflect.Field" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="java.util.List" %>
-
 <html lang="en">
     <head>
         <style>
-            table, th, td {
-              border: 1px black;
+            .zendesk-logo {
+                display: block;
+                -ms-flex: 0 0 auto;
+                flex: 0 0 auto;
+                width: 200px;
+                height: 40px;
+                background: url(//d1eipm3vz40hy0.cloudfront.net/images/navigation/header/zendesk-logo.svg) left top no-repeat transparent;
+                overflow: hidden;
+                text-indent: -9999px;
+                border: none;
+                margin-top: 5%;
             }
         </style>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -18,35 +22,27 @@
         <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
         <c:url value="/css/main.css" var="jstlCss" />
         <link href="${jstlCss}" rel="stylesheet" />
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $("#userForm").submit(function(e) {
+                  if ($('#userField').val() == 'Select') {
+                    alert('Your must select a valid field');
+                    e.preventDefault(e);
+                  }
+                });
+             });
+        </script>
     </head>
     <body>
-        <nav class="navbar navbar-inverse">
-            <div class="container">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="#">User Search Options</a>
-                </div>
-                <div id="navbar" class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a href="/">Back</a></li>
-                    </ul>
-                </div>
+        <div class="container">
+            <a href="/" class="zendesk-logo"></a>
+            <div class="navbar-header">
+                <a class="navbar-brand" style="padding: 15px 0;" href="/">Back</a>
             </div>
-        </nav>
+        </div>
        <div class="container">
             <div class="starter-template">
-                <h1 class="display-2">USER SEARCH PAGE</h1>
-                <%
-                    User user = new User();
-                    Field[] fields = user.getClass().getDeclaredFields();
-                    List<String> fieldNames = new ArrayList<>();
-                    for(Field field: fields) {
-                        if (field.getName().equals("id") || field.getName().equals("serialVersionUID")) {
-                            continue;
-                        }
-                        fieldNames.add(field.getName());
-                    }
-                    request.setAttribute("fieldNames", fieldNames);
-                 %>
+                 <h2 style="color: #03363d;" class="display-2">USER SEARCH PAGE</h2>
                  <form id="userForm" action="/user">
                     <table class="table table-striped table-bordered">
                         <thead class="thead-light">
@@ -71,20 +67,12 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><button id="submit" class="btn btn-primary">Submit</button></td>
+                                <td><button id="submit" style="background-color: #30aabc;" class="btn btn-primary">Submit</button></td>
                             </tr>
                         </tbody>
                     </table>
                 </form>
             </div>
         </div>
-        <script type="text/javascript">
-            $("#userForm").submit(function(e) {
-              if ($('#userField').val() == 'Select') {
-                alert('Your must select a valid field');
-                e.preventDefault(e);
-              }
-            });
-        </script>
     </body>
 </html>

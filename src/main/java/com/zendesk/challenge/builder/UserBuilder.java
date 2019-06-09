@@ -1,9 +1,11 @@
 package com.zendesk.challenge.builder;
 
+import com.zendesk.challenge.data.domain.jpa.Organization;
 import com.zendesk.challenge.data.domain.jpa.User;
 import com.zendesk.challenge.model.UserModel;
 
 import java.sql.Timestamp;
+import java.util.Optional;
 
 /**
  *
@@ -22,6 +24,8 @@ public class UserBuilder {
 
     private UserModel model;
 
+    private Organization organization;
+
     private User user;
 
     public UserBuilder model(UserModel model) {
@@ -35,10 +39,15 @@ public class UserBuilder {
         return this;
     }
 
+    public UserBuilder organization(Organization organization) {
+        this.organization = organization;
+        return this;
+    }
+
     public User build() {
         if (model != null) {
             User user = new User();
-            user.setUserId(model.getId());
+            user.setId(model.getId());
             user.setUrl(model.getUrl());
             user.setExternalId(model.getExternalId());
             user.setName(model.getName());
@@ -55,7 +64,7 @@ public class UserBuilder {
             user.setEmail(model.getEmail());
             user.setSignature(model.getSignature());
             user.setPhone(model.getPhone());
-            user.setOrganizationId(model.getOrganizationId());
+            user.setOrganization(organization);
             user.setSuspended(model.getSuspended());
             user.setTags(model.getTags());
             user.setRole(model.getRole());
@@ -70,7 +79,7 @@ public class UserBuilder {
     public UserModel buildModel() {
         if (user != null) {
             UserModel userModel = new UserModel();
-            userModel.setId(user.getUserId());
+            userModel.setId(user.getId());
             userModel.setUrl(user.getUrl());
             userModel.setExternalId(user.getExternalId());
             userModel.setName(user.getName());
@@ -87,7 +96,9 @@ public class UserBuilder {
             userModel.setEmail(user.getEmail());
             userModel.setSignature(user.getSignature());
             userModel.setPhone(user.getPhone());
-            userModel.setOrganizationId(user.getOrganizationId());
+            if (organization != null) {
+                userModel.setOrganizationId(organization.getId());
+            }
             userModel.setSuspended(user.isSuspended());
             userModel.setTags(user.getTags());
             userModel.setRole(user.getRole());
@@ -95,7 +106,7 @@ public class UserBuilder {
             userModel.setTimezone(user.getTimezone());
             return userModel;
         } else {
-            throw new IllegalArgumentException("UserModel must be set to create a user db object");
+            throw new IllegalArgumentException("user and organization must be set to create a UserModel object");
         }
     }
 }

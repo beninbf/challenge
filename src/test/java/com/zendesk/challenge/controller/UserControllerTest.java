@@ -61,10 +61,11 @@ public class UserControllerTest {
     public void testUser() {
         Map<String, Object> modelMap = new HashMap<>();
         User user = mock(User.class);
-        when(booleanValueScrubber.scrub(any(HashSet.class), anyString(), anyString())).thenReturn(Object.class);
-        when(userService.getUsers(anyString(), any(Object.class))).thenReturn(Arrays.asList(user));
+        when(userService.findUsers(anyString(), anyString())).thenReturn(Arrays.asList(user));
+
         String path = userController.user("id", "100", modelMap);
+
         assertEquals("should be user", "user", path);
-        verify(userService, times(1)).getUsers(anyString(), any(Object.class));
+        verify(userService, times(1)).findUsers(anyString(), anyString());
     }
 }

@@ -3,37 +3,54 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html lang="en">
     <head>
+        <style>
+            .zendesk-logo {
+                display: block;
+                -ms-flex: 0 0 auto;
+                flex: 0 0 auto;
+                width: 200px;
+                height: 40px;
+                background: url(//d1eipm3vz40hy0.cloudfront.net/images/navigation/header/zendesk-logo.svg) left top no-repeat transparent;
+                overflow: hidden;
+                text-indent: -9999px;
+                border: none;
+                margin-top: 5%;
+            }
+        </style>
         <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
         <c:url value="/css/main.css" var="jstlCss" />
         <link href="${jstlCss}" rel="stylesheet" />
     </head>
     <body>
-        <nav class="navbar navbar-inverse" style="width:1290px;">
-            <div class="container" style="margin-left:50px;">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="#">ZenDesk Code Challenge</a>
-                </div>
-                <div id="navbar" class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a href="/organization-options">Back</a></li>
-                    </ul>
-                </div>
+        <div class="container">
+            <a href="/" class="zendesk-logo"></a>
+            <div class="navbar-header">
+                <a class="navbar-brand" style="padding: 15px 0;" href="/organization-options">Back</a>
             </div>
-        </nav>
+        </div>
         <div class="container">
             <div class="starter-template">
-                <h1 class="display-2">Organization Search Results</h1>
+                <h2 style="color: #03363d;" class="display-2">Organization Search Results</h2>
                 <table class="table table-bordered" style="max-width:30%;">
                     <thead class="thead-light">
                         <tr>
                             <th scope="col">ORGANIZATION FIELD</th>
                             <th scope="col">FIELD VALUE</th>
+                            <th scope="col">NUMBER OF ORGANIZATIONS</th>
                         <tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>${field}</td>
-                            <td>${value}</td>
+                            <td>
+                                <c:if test="${empty value}">
+                                    NULL
+                                </c:if>
+                                <c:if test="${not empty value}">
+                                    ${value}
+                                </c:if>
+                            </td>
+                            <td>${organizationsCount}</td>
                         </tr>
                     </tbody>
                 </table>

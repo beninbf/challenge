@@ -1,11 +1,14 @@
 package com.zendesk.challenge.data.domain.jpa;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
@@ -29,11 +32,8 @@ public class Ticket {
     private static final long serialVersionUID = -2556403692023268096L;
 
     @Id
-    @GeneratedValue()
-    private Long id;
-
-    @Column(name = "TICKET_ID", nullable = false)
-    private String ticketId;
+    @Column(name = "ID", nullable = false)
+    private String id;
 
     @Column(name = "URL", nullable = true, length = 100)
     private String url;
@@ -62,14 +62,17 @@ public class Ticket {
     @Column(name = "STATUS", nullable = true, length = 50)
     private String status;
 
-    @Column(name = "ASSIGNEE_ID", nullable = true)
-    private Long assigneeId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ASSIGNEE_ID", referencedColumnName = "ID", nullable = true)
+    private User assignee;
 
-    @Column(name = "SUBMITTER_ID", nullable = true)
-    private Long submitterId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "SUBMITTER_ID", referencedColumnName = "ID", nullable = true)
+    private User submitter;
 
-    @Column(name = "ORGANIZATION_ID", nullable = true)
-    private Long organizationId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ORGANIZATION_ID", referencedColumnName = "ID", nullable = true)
+    private Organization organization;
 
     @Column(name = "HAS_INCIDENTS", columnDefinition = "TINYINT(1)", nullable = true)
     @Type(type = "org.hibernate.type.NumericBooleanType")
@@ -89,17 +92,17 @@ public class Ticket {
      *
      * @return the ticket id
      */
-    public String getTicketId() {
-        return ticketId;
+    public String getId() {
+        return id;
     }
 
     /**
      * Sets ticket id.
      *
-     * @param ticketId the ticket id
+     * @param id the ticket id
      */
-    public void setTicketId(String ticketId) {
-        this.ticketId = ticketId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     /**
@@ -211,57 +214,39 @@ public class Ticket {
     }
 
     /**
-     * Gets unique userId.
+     * Gets assignee.
      *
-     * @return the unique userId
+     * @return the assignee
      */
-    public Long getId() {
-        return id;
+    public User getAssignee() {
+        return assignee;
     }
 
     /**
-     * Sets unique userId.
+     * Sets assignee.
      *
-     * @param id the unique userId
+     * @param assigneeId the assignee
      */
-    public void setId(Long id) {
-        this.id = id;
+    public void setAssignee(User assigneeId) {
+        this.assignee = assigneeId;
     }
 
     /**
-     * Gets assigneeId.
+     * Gets submitter.
      *
-     * @return the assigneeId
+     * @return the submitter
      */
-    public Long getAssigneeId() {
-        return assigneeId;
+    public User getSubmitter() {
+        return submitter;
     }
 
     /**
-     * Sets assigneeId.
+     * Sets assignee.
      *
-     * @param assigneeId the assigneeId
+     * @param submitter the submitter
      */
-    public void setAssigneeId(Long assigneeId) {
-        this.assigneeId = assigneeId;
-    }
-
-    /**
-     * Gets submitterId.
-     *
-     * @return the submitterId
-     */
-    public Long getSubmitterId() {
-        return submitterId;
-    }
-
-    /**
-     * Sets assigneeId.
-     *
-     * @param submitterId the submitterId
-     */
-    public void setSubmitterId(Long submitterId) {
-        this.submitterId = submitterId;
+    public void setSubmitter(User submitter) {
+        this.submitter = submitter;
     }
 
     /**
@@ -379,17 +364,17 @@ public class Ticket {
      *
      * @return the organization userId
      */
-    public Long getOrganizationId() {
-        return organizationId;
+    public Organization getOrganization() {
+        return organization;
     }
 
     /**
-     * Sets organization userId.
+     * Sets the organization.
      *
-     * @param organizationId the organization userId
+     * @param organization the organization
      */
-    public void setOrganizationId(Long organizationId) {
-        this.organizationId = organizationId;
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
     }
 
     /**
@@ -408,5 +393,10 @@ public class Ticket {
      */
     public void setTags(List<String> tags) {
         this.tags = String.join(",", tags);
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }
