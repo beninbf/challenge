@@ -5,6 +5,7 @@ import com.zendesk.challenge.data.domain.jpa.User;
 import com.zendesk.challenge.data.domain.repository.UserRepository;
 import com.zendesk.challenge.service.BooleanValueScrubber;
 import com.zendesk.challenge.service.OrganizationService;
+import com.zendesk.challenge.service.TimeFormatter;
 import com.zendesk.challenge.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,12 +43,25 @@ public class UserServiceImpl implements UserService {
 
     private static final String ORGANIZATION = "organization";
 
-    private static final Set<String> booleanTypes = new HashSet<>();
+    private static final String CREATED_DATE = "createdDate";
+
+    private static final String LAST_LOGIN_DATE = "lastLoginDate";
+
+    @Inject
+    private TimeFormatter timeFormatter;
+
+    private static final Set<String> booleanFields = new HashSet<>();
     {
-        booleanTypes.add(VERIFIED);
-        booleanTypes.add(ACTIVE);
-        booleanTypes.add(SHARED);
-        booleanTypes.add(SUSPENDED);
+        booleanFields.add(VERIFIED);
+        booleanFields.add(ACTIVE);
+        booleanFields.add(SHARED);
+        booleanFields.add(SUSPENDED);
+    }
+
+    private static final Set<String> timeFields = new HashSet<>();
+    {
+        timeFields.add(CREATED_DATE);
+        timeFields.add(LAST_LOGIN_DATE);
     }
 
     @Inject
@@ -91,8 +105,12 @@ public class UserServiceImpl implements UserService {
                 }
                 return userRepository.findByOrganization(organization);
             } else {
-                Object valueToQuery = booleanValueScrubber.scrub(booleanTypes, field, value);
-                return findUsersByField(field, valueToQuery);
+                if (timeFields.contains(field)) {
+                    return findUsersByField(field, timeFormatter.getDateFromModelString(value));
+                } else {
+                    Object valueToQuery = booleanValueScrubber.scrub(booleanFields, field, value);
+                    return findUsersByField(field, valueToQuery);
+                }
             }
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);

@@ -8,6 +8,7 @@ import com.zendesk.challenge.model.OrganizationModel;
 import com.zendesk.challenge.model.TicketModel;
 import com.zendesk.challenge.model.UserModel;
 import com.zendesk.challenge.service.TicketService;
+import com.zendesk.challenge.service.TimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -41,6 +42,9 @@ public class TicketController {
     @Inject
     private TicketService ticketService;
 
+    @Inject
+    private TimeFormatter timeFormatter;
+
     @RequestMapping(value = "/ticket", method = RequestMethod.GET, params = {"field", "value"})
     public String ticket(@RequestParam("field") String field, @RequestParam("value") String value, Map<String, Object> model) {
         logger.info(String.format("Querying for tickets by field=%s and value=%s", field, value));
@@ -61,20 +65,32 @@ public class TicketController {
                 .organization(ticket.getOrganization())
                 .assignee(ticket.getAssignee())
                 .submitter(ticket.getSubmitter())
+                .timeFormatter(timeFormatter)
                 .buildModel();
             ticketModels.add(ticketModel);
             if (ticket.getOrganization() != null && !organizationIds.contains(ticket.getOrganization().getId())) {
-                OrganizationModel organizationModel = new OrganizationBuilder().organization(ticket.getOrganization()).buildModel();
+                OrganizationModel organizationModel = new OrganizationBuilder()
+                    .organization(ticket.getOrganization())
+                    .timeFormatter(timeFormatter)
+                    .buildModel();
                 organizationModels.add(organizationModel);
                 organizationIds.add(ticket.getOrganization().getId());
             }
             if (ticket.getAssignee() != null && !assigneeIds.contains(ticket.getAssignee().getId())) {
-                UserModel assigneeModel = new UserBuilder().user(ticket.getAssignee()).organization(ticket.getOrganization()).buildModel();
+                UserModel assigneeModel = new UserBuilder()
+                    .user(ticket.getAssignee())
+                    .organization(ticket.getOrganization())
+                    .timeFormatter(timeFormatter)
+                    .buildModel();
                 assigneeModels.add(assigneeModel);
                 assigneeIds.add(ticket.getAssignee().getId());
             }
             if (ticket.getSubmitter() != null && !submitterIds.contains(ticket.getSubmitter().getId())) {
-                UserModel submitterModel = new UserBuilder().user(ticket.getSubmitter()).organization(ticket.getOrganization()).buildModel();
+                UserModel submitterModel = new UserBuilder()
+                    .user(ticket.getSubmitter())
+                    .organization(ticket.getOrganization())
+                    .timeFormatter(timeFormatter)
+                    .buildModel();
                 submitterModels.add(submitterModel);
                 submitterIds.add(ticket.getSubmitter().getId());
             }

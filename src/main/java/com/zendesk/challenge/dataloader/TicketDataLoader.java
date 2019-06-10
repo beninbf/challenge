@@ -10,6 +10,7 @@ import com.zendesk.challenge.data.domain.jpa.User;
 import com.zendesk.challenge.model.TicketModel;
 import com.zendesk.challenge.service.OrganizationService;
 import com.zendesk.challenge.service.TicketService;
+import com.zendesk.challenge.service.TimeFormatter;
 import com.zendesk.challenge.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,6 +54,9 @@ public class TicketDataLoader implements CommandLineRunner {
     @Inject
     private UserService userService;
 
+    @Inject
+    private TimeFormatter timeFormatter;
+
     @Override
     public void run(String[] args) {
         logger.info("saving tickets to storage");
@@ -85,6 +89,7 @@ public class TicketDataLoader implements CommandLineRunner {
                     .organization(organization)
                     .assignee(assignee)
                     .submitter(submitter)
+                    .timeFormatter(timeFormatter)
                     .build();
                 ticketService.save(ticket);
             }

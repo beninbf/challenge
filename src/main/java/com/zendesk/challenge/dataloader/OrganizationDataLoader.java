@@ -7,6 +7,7 @@ import com.zendesk.challenge.builder.OrganizationBuilder;
 import com.zendesk.challenge.data.domain.jpa.Organization;
 import com.zendesk.challenge.model.OrganizationModel;
 import com.zendesk.challenge.service.OrganizationService;
+import com.zendesk.challenge.service.TimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -43,6 +44,9 @@ public class OrganizationDataLoader implements CommandLineRunner {
     @Inject
     private OrganizationService organizationService;
 
+    @Inject
+    private TimeFormatter timeFormatter;
+
     @Override
     public void run(String[] args) {
         logger.info("saving organizations to storage");
@@ -57,7 +61,10 @@ public class OrganizationDataLoader implements CommandLineRunner {
             String contents = getContents(file);
             List<OrganizationModel> organizationModels = getUserObjectFromJson(contents);
             for (OrganizationModel organizationModel: organizationModels) {
-                Organization organization = new OrganizationBuilder().model(organizationModel).build();
+                Organization organization = new OrganizationBuilder()
+                    .model(organizationModel)
+                    .timeFormatter(timeFormatter)
+                    .build();
                 organizationService.save(organization);
             }
         } catch (IOException ex) {
@@ -74,7 +81,7 @@ public class OrganizationDataLoader implements CommandLineRunner {
         try {
             return mapper.readValue(json, new TypeReference<List<OrganizationModel>>() { });
         } catch (Exception ex) {
-            logger.info(ex.getMessage());
+            logger.info(ex.getMessage(), ex);
         }
         return null;
     }

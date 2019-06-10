@@ -6,9 +6,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zendesk.challenge.builder.UserBuilder;
 import com.zendesk.challenge.data.domain.jpa.Organization;
 import com.zendesk.challenge.data.domain.jpa.User;
-import com.zendesk.challenge.data.domain.repository.OrganizationRepository;
-import com.zendesk.challenge.data.domain.repository.UserRepository;
 import com.zendesk.challenge.model.UserModel;
+import com.zendesk.challenge.service.OrganizationService;
+import com.zendesk.challenge.service.TimeFormatter;
+import com.zendesk.challenge.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -20,9 +21,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
-import java.util.Optional;
 
 /**
  *
@@ -45,10 +44,13 @@ public class UserDataLoader implements CommandLineRunner {
     private final static String USER_SEED_PATH = "json_data/users.json";
 
     @Inject
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Inject
-    private OrganizationRepository organizationRepository;
+    private OrganizationService organizationService;
+
+    @Inject
+    private TimeFormatter timeFormatter;
 
     @Override
     public void run(String[] args) {
@@ -66,11 +68,14 @@ public class UserDataLoader implements CommandLineRunner {
             for (UserModel userModel: userModels) {
                 Organization organization = null;
                 if (userModel.getOrganizationId() != null) {
-                    Optional<Organization> organizationOptional = organizationRepository.findById(userModel.getOrganizationId());
-                    organization = organizationOptional.isPresent() ? organizationOptional.get() : null;
+                    organization = organizationService.findById(userModel.getOrganizationId());
                 }
-                User user = new UserBuilder().model(userModel).organization(organization).build();
-                userRepository.save(user);
+                User user = new UserBuilder()
+                    .model(userModel)
+                    .organization(organization)
+                    .timeFormatter(timeFormatter)
+                    .build();
+                userService.save(user);
             }
         } catch (IOException ex) {
             logger.info(ex.getMessage(), ex);

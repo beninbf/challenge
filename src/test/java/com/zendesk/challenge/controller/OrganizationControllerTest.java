@@ -3,6 +3,7 @@ package com.zendesk.challenge.controller;
 import com.zendesk.challenge.data.domain.jpa.Organization;
 import com.zendesk.challenge.service.BooleanValueScrubber;
 import com.zendesk.challenge.service.OrganizationService;
+import com.zendesk.challenge.service.TimeFormatter;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -41,7 +42,7 @@ public class OrganizationControllerTest {
     private OrganizationService organizationService;
 
     @Mock
-    private BooleanValueScrubber booleanValueScrubber;
+    private TimeFormatter timeFormatter;
 
     @InjectMocks
     private OrganizationController organizationController;
@@ -61,10 +62,9 @@ public class OrganizationControllerTest {
     public void testOrganization() {
         Map<String, Object> modelMap = new HashMap<>();
         Organization organization = mock(Organization.class);
-        when(booleanValueScrubber.scrub(any(HashSet.class), anyString(), anyString())).thenReturn(Object.class);
-        when(organizationService.findOrganizationsByField(anyString(), any(Object.class))).thenReturn(Arrays.asList(organization));
+        when(organizationService.findOrganizationsByField(anyString(), anyString())).thenReturn(Arrays.asList(organization));
         String path = organizationController.organization("id", "100l", modelMap);
         assertEquals("should be organization", "organization", path);
-        verify(organizationService, times(1)).findOrganizationsByField(anyString(), any(Object.class));
+        verify(organizationService, times(1)).findOrganizationsByField(anyString(), anyString());
     }
 }

@@ -2,8 +2,12 @@ package com.zendesk.challenge.builder;
 
 import com.zendesk.challenge.data.domain.jpa.Organization;
 import com.zendesk.challenge.model.OrganizationModel;
+import com.zendesk.challenge.service.TimeFormatter;
 import com.zendesk.challenge.util.GenericTestDataFactory;
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -23,10 +27,18 @@ import static org.junit.Assert.assertNotNull;
  */
 public class OrganizationBuilderTest {
 
+    @Mock
+    private TimeFormatter timeFormatter;
+
+    @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+    }
+
     @Test
     public void testBuild() {
         OrganizationModel model = GenericTestDataFactory.getOrganizationModel();
-        Organization organization  = new OrganizationBuilder().model(model).build();
+        Organization organization  = new OrganizationBuilder().model(model).timeFormatter(timeFormatter).build();
         assertNotNull("organization should not be null", organization);
         assertEquals("organization id should be 11", model.getId(), organization.getId());
     }
@@ -34,7 +46,7 @@ public class OrganizationBuilderTest {
     @Test
     public void testBuildModel() {
         Organization organization = GenericTestDataFactory.getOrganization();
-        OrganizationModel model  = new OrganizationBuilder().organization(organization).buildModel();
+        OrganizationModel model  = new OrganizationBuilder().organization(organization).timeFormatter(timeFormatter).buildModel();
         assertNotNull("organization model should not be null", organization);
         assertEquals("organization model id should be 11", 5l, model.getId().longValue());
     }

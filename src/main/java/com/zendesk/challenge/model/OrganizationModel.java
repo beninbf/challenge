@@ -38,8 +38,7 @@ public class OrganizationModel implements Serializable {
     private List<String> domainNames;
 
     @JsonProperty("created_at")
-    @JsonDeserialize(using = DateDeserializer.class)
-    private Date createdAt;
+    private String createdAt;
 
     private String details;
 
@@ -125,7 +124,7 @@ public class OrganizationModel implements Serializable {
      *
      * @return the created date
      */
-    public Date getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
@@ -134,7 +133,7 @@ public class OrganizationModel implements Serializable {
      *
      * @param createdAt the created at
      */
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 

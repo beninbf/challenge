@@ -2,6 +2,7 @@ package com.zendesk.challenge.controller;
 
 import com.zendesk.challenge.data.domain.jpa.User;
 import com.zendesk.challenge.service.BooleanValueScrubber;
+import com.zendesk.challenge.service.TimeFormatter;
 import com.zendesk.challenge.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,7 +40,7 @@ public class UserControllerTest {
     private UserService userService;
 
     @Mock
-    private BooleanValueScrubber booleanValueScrubber;
+    private TimeFormatter timeFormatter;
 
     @InjectMocks
     private UserController userController;

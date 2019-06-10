@@ -4,8 +4,7 @@ import com.zendesk.challenge.data.domain.jpa.Organization;
 import com.zendesk.challenge.data.domain.jpa.Ticket;
 import com.zendesk.challenge.data.domain.jpa.User;
 import com.zendesk.challenge.model.TicketModel;
-
-import java.sql.Timestamp;
+import com.zendesk.challenge.service.TimeFormatter;
 
 /**
  *
@@ -32,6 +31,8 @@ public class TicketBuilder {
 
     private User submitter;
 
+    private TimeFormatter timeFormatter;
+
     public TicketBuilder model(TicketModel model) {
         this.model = model;
         return this;
@@ -57,14 +58,19 @@ public class TicketBuilder {
         return this;
     }
 
+    public TicketBuilder timeFormatter(TimeFormatter timeFormatter) {
+        this.timeFormatter = timeFormatter;
+        return this;
+    }
+
     public Ticket build() {
-        if (model != null) {
+        if (model != null && timeFormatter != null) {
             Ticket ticket = new Ticket();
             ticket.setId(model.getId());
             ticket.setUrl(model.getUrl());
             ticket.setExternalId(model.getExternalId());
             if (model.getCreatedAt() != null) {
-                ticket.setCreatedDate(new Timestamp(model.getCreatedAt().getTime()));
+                ticket.setCreatedDate(timeFormatter.getDateFromString(model.getCreatedAt()));
             }
             ticket.setType(model.getType());
             ticket.setSubject(model.getSubject());
@@ -74,7 +80,7 @@ public class TicketBuilder {
             ticket.setSubmitter(submitter);
             ticket.setAssignee(assignee);
             if (model.getDueAt() != null) {
-                ticket.setDueDate(new Timestamp(model.getDueAt().getTime()));
+                ticket.setDueDate(timeFormatter.getDateFromString(model.getDueAt()));
             }
             ticket.setVia(model.getVia());
             ticket.setOrganization(organization);
@@ -82,7 +88,7 @@ public class TicketBuilder {
             ticket.setTags(model.getTags());
             return ticket;
         } else {
-            throw new IllegalArgumentException("TicketModel must be set to create a ticket db object");
+            throw new IllegalArgumentException("TicketModel and TimeFormatter must be set to create a ticket db object");
         }
     }
 
@@ -93,7 +99,7 @@ public class TicketBuilder {
             ticketModel.setUrl(ticket.getUrl());
             ticketModel.setExternalId(ticket.getExternalId());
             if (ticket.getCreatedDate() != null) {
-                ticketModel.setCreatedAt(new Timestamp(ticket.getCreatedDate().getTime()));
+                ticketModel.setCreatedAt(timeFormatter.getStringFromTimeStamp(ticket.getCreatedDate()));
             }
             ticketModel.setType(ticket.getType());
             ticketModel.setSubject(ticket.getSubject());
@@ -109,14 +115,14 @@ public class TicketBuilder {
                 ticketModel.setOrganizationId(organization.getId());
             }
             if (ticket.getDueDate() != null) {
-                ticketModel.setDueAt(new Timestamp(ticket.getDueDate().getTime()));
+                ticketModel.setDueAt(timeFormatter.getStringFromTimeStamp(ticket.getDueDate()));
             }
             ticketModel.setVia(ticket.getVia());
             ticketModel.setHasIncidents(ticket.hasIncidents());
             ticketModel.setTags(ticket.getTags());
             return ticketModel;
         } else {
-            throw new IllegalArgumentException("Ticket must be set to create a tick model object");
+            throw new IllegalArgumentException("Ticket and TimeFormatter must be set to create a tick model object");
         }
     }
 }

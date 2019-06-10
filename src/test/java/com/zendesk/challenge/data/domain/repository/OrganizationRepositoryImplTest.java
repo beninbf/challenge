@@ -32,6 +32,7 @@ import static org.junit.Assert.assertNotNull;
  * @author Benin Bryant
  * @since June 6, 2019
  */
+
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = RepositoryTestConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class OrganizationRepositoryImplTest {

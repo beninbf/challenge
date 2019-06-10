@@ -8,6 +8,7 @@ import com.zendesk.challenge.data.domain.repository.TicketRepository;
 import com.zendesk.challenge.data.domain.repository.UserRepository;
 import com.zendesk.challenge.service.OrganizationService;
 import com.zendesk.challenge.service.TicketService;
+import com.zendesk.challenge.service.TimeFormatter;
 import com.zendesk.challenge.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +27,7 @@ import static org.mockito.Mockito.when;
 
 /**
  *
- * <code>TicketLoaderTest</code> unit test for TicketLoader
+ * <code>TicketDataLoaderTest</code> unit test for TicketLoader
  *
  * <pre>
  * <strong>History</strong>    Name              Date            Description
@@ -37,7 +38,7 @@ import static org.mockito.Mockito.when;
  * @author Benin Bryant
  * @since June 6, 2019
  */
-public class TicketLoaderTest {
+public class TicketDataLoaderTest {
 
     @Mock
     private TicketService ticketService;
@@ -47,6 +48,9 @@ public class TicketLoaderTest {
 
     @Mock
     private OrganizationService organizationService;
+
+    @Mock
+    private TimeFormatter timeForamtter;
 
     @InjectMocks
     private TicketDataLoader ticketDataLoader;

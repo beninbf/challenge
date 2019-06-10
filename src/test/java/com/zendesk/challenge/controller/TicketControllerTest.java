@@ -2,6 +2,7 @@ package com.zendesk.challenge.controller;
 
 import com.zendesk.challenge.data.domain.jpa.Ticket;
 import com.zendesk.challenge.service.TicketService;
+import com.zendesk.challenge.service.TimeFormatter;
 import com.zendesk.challenge.util.GenericTestDataFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,6 +38,9 @@ public class TicketControllerTest {
 
     @Mock
     private TicketService ticketService;
+
+    @Mock
+    private TimeFormatter timeFormatter;
 
     @InjectMocks
     private TicketController ticketController;

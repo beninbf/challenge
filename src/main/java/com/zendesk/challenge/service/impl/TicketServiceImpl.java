@@ -7,6 +7,7 @@ import com.zendesk.challenge.data.domain.repository.TicketRepository;
 import com.zendesk.challenge.service.BooleanValueScrubber;
 import com.zendesk.challenge.service.OrganizationService;
 import com.zendesk.challenge.service.TicketService;
+import com.zendesk.challenge.service.TimeFormatter;
 import com.zendesk.challenge.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,9 +47,19 @@ public class TicketServiceImpl implements TicketService {
 
     private static final String ID = "id";
 
-    private static final Set<String> booleanTypes = new HashSet<>();
+    private static final String CREATED_DATE = "createdDate";
+
+    private static final String DUE_DATE = "dueDate";
+
+    private static final Set<String> booleanFields = new HashSet<>();
     {
-        booleanTypes.add(HAS_INCIDENTS);
+        booleanFields.add(HAS_INCIDENTS);
+    }
+
+    private static final Set<String> timeFields = new HashSet<>();
+    {
+        timeFields.add(CREATED_DATE);
+        timeFields.add(DUE_DATE);
     }
 
     @Inject
@@ -59,6 +70,9 @@ public class TicketServiceImpl implements TicketService {
 
     @Inject
     private UserService userService;
+
+    @Inject
+    private TimeFormatter timeFormatter;
 
     @Inject
     private BooleanValueScrubber booleanValueScrubber;
@@ -89,8 +103,12 @@ public class TicketServiceImpl implements TicketService {
                 Ticket ticket = findById(value);
                 return Arrays.asList(ticket);
             } else {
-                Object valueToQuery = booleanValueScrubber.scrub(booleanTypes, field, value);
-                return findByTicketsByField(field, valueToQuery);
+                if (timeFields.contains(field)) {
+                    logger.info("TIME SERFDFDSFSDFSDF");
+                    return findByTicketsByField(field, timeFormatter.getDateFromModelString(value));
+                } else {
+                    return findByTicketsByField(field, booleanValueScrubber.scrub(booleanFields, field, value));
+                }
             }
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);

@@ -3,6 +3,7 @@ package com.zendesk.challenge.config;
 import com.zendesk.challenge.service.BooleanValueScrubber;
 import com.zendesk.challenge.service.OrganizationService;
 import com.zendesk.challenge.service.TicketService;
+import com.zendesk.challenge.service.TimeFormatter;
 import com.zendesk.challenge.service.UserService;
 import com.zendesk.challenge.service.impl.BooleanValueScrubberImpl;
 import com.zendesk.challenge.service.impl.OrganizationServiceImpl;
@@ -53,5 +54,10 @@ public class ChallengeConfig {
     @Bean
     public BooleanValueScrubber booleanValueScrubber() {
         return new BooleanValueScrubberImpl();
+    }
+
+    @Bean
+    public TimeFormatter timeFormatter() {
+        return new TimeFormatter();
     }
 }

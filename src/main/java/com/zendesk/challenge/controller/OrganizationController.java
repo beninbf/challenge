@@ -3,8 +3,8 @@ package com.zendesk.challenge.controller;
 import com.zendesk.challenge.builder.OrganizationBuilder;
 import com.zendesk.challenge.data.domain.jpa.Organization;
 import com.zendesk.challenge.model.OrganizationModel;
-import com.zendesk.challenge.service.BooleanValueScrubber;
 import com.zendesk.challenge.service.OrganizationService;
+import com.zendesk.challenge.service.TimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -14,10 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  *
@@ -37,28 +35,23 @@ public class OrganizationController {
 
     private static Logger logger = LoggerFactory.getLogger(OrganizationController.class);
 
-    private static final String SHARED_TICKETS = "sharedTickets";
-
-    private static final Set<String> booleanTypes = new HashSet<>();
-    {
-        booleanTypes.add(SHARED_TICKETS);
-    }
-
     @Inject
     private OrganizationService organizationService;
 
     @Inject
-    private BooleanValueScrubber booleanValueScrubber;
+    private TimeFormatter timeFormatter;
 
     @RequestMapping(value="/organization", method = RequestMethod.GET, params = {"field", "value"})
     public String organization(@RequestParam("field") String field, @RequestParam("value") String value, Map<String, Object> model) {
         logger.info(String.format("Querying for users by field=%s and value=%s", field, value));
-        Object valueToQuery = booleanValueScrubber.scrub(booleanTypes, field, value);
-        List<Organization> organizations = organizationService.findOrganizationsByField(field, valueToQuery);
+        List<Organization> organizations = organizationService.findOrganizationsByField(field, value);
 
         List<OrganizationModel> organizationModels = new ArrayList<>();
         for (Organization organization: organizations) {
-            OrganizationModel organizationModel = new OrganizationBuilder().organization(organization).buildModel();
+            OrganizationModel organizationModel = new OrganizationBuilder()
+                .organization(organization)
+                .timeFormatter(timeFormatter)
+                .buildModel();
             organizationModels.add(organizationModel);
         }
         logger.info(String.format("number of organizations retrieved %s", organizations.size()));

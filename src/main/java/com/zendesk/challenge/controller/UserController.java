@@ -5,6 +5,7 @@ import com.zendesk.challenge.builder.UserBuilder;
 import com.zendesk.challenge.data.domain.jpa.User;
 import com.zendesk.challenge.model.OrganizationModel;
 import com.zendesk.challenge.model.UserModel;
+import com.zendesk.challenge.service.TimeFormatter;
 import com.zendesk.challenge.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,22 +40,31 @@ public class UserController {
     @Inject
     private UserService userService;
 
+    @Inject
+    private TimeFormatter timeFormatter;
+
     @RequestMapping(value = "/user", method = RequestMethod.GET, params = {"field", "value"})
     public String user(@RequestParam("field") String field, @RequestParam("value") String value, Map<String, Object> model) {
         logger.info(String.format("Querying for users by field=%s and value=%s", field, value));
+
         List<User> users = userService.findUsers(field, value);
         List<UserModel> userModels = new ArrayList<>();
         List<OrganizationModel> organizationModels = new ArrayList<>();
         Set<Long> organizationIds = new HashSet<>();
+
         for (User user : users) {
-            UserModel userModel = new UserBuilder().user(user).organization(user.getOrganization()).buildModel();
+            UserModel userModel = new UserBuilder().user(user).organization(user.getOrganization()).timeFormatter(timeFormatter).buildModel();
             userModels.add(userModel);
             if (user.getOrganization() != null && !organizationIds.contains(user.getOrganization().getId())) {
-                OrganizationModel organizationModel = new OrganizationBuilder().organization(user.getOrganization()).buildModel();
+                OrganizationModel organizationModel = new OrganizationBuilder()
+                    .organization(user.getOrganization())
+                    .timeFormatter(timeFormatter)
+                    .buildModel();
                 organizationModels.add(organizationModel);
                 organizationIds.add(user.getOrganization().getId());
             }
         }
+
         logger.info(String.format("number of users retrieved %s", userModels.size()));
         logger.info(String.format("number of organizations retrieved %s", organizationModels.size()));
         model.put("field", field);

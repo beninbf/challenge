@@ -3,6 +3,7 @@ package com.zendesk.challenge.builder;
 import com.zendesk.challenge.data.domain.jpa.Organization;
 import com.zendesk.challenge.data.domain.jpa.User;
 import com.zendesk.challenge.model.UserModel;
+import com.zendesk.challenge.service.TimeFormatter;
 
 import java.sql.Timestamp;
 
@@ -27,11 +28,12 @@ public class UserBuilder {
 
     private User user;
 
+    private TimeFormatter timeFormatter;
+
     public UserBuilder model(UserModel model) {
         this.model = model;
         return this;
     }
-
 
     public UserBuilder user(User user) {
         this.user = user;
@@ -43,8 +45,13 @@ public class UserBuilder {
         return this;
     }
 
+    public UserBuilder timeFormatter(TimeFormatter timeFormatter) {
+        this.timeFormatter = timeFormatter;
+        return this;
+    }
+
     public User build() {
-        if (model != null) {
+        if (model != null && timeFormatter != null) {
             User user = new User();
             user.setId(model.getId());
             user.setUrl(model.getUrl());
@@ -52,13 +59,13 @@ public class UserBuilder {
             user.setName(model.getName());
             user.setAlias(model.getAlias());
             if (model.getCreatedAt() != null) {
-                user.setCreatedDate(new Timestamp(model.getCreatedAt().getTime()));
+                user.setCreatedDate(timeFormatter.getDateFromString(model.getCreatedAt()));
             }
             user.setActive(model.getActive());
             user.setShared(model.getShared());
             user.setVerified(model.getVerified());
             if (model.getLastLoginAt() != null) {
-                user.setLastLoginDate(new Timestamp(model.getLastLoginAt().getTime()));
+                user.setLastLoginDate(timeFormatter.getDateFromString(model.getLastLoginAt()));
             }
             user.setEmail(model.getEmail());
             user.setSignature(model.getSignature());
@@ -71,12 +78,12 @@ public class UserBuilder {
             user.setTimezone(model.getTimezone());
             return user;
         } else {
-            throw new IllegalArgumentException("UserModel must be set to create a user db object");
+            throw new IllegalArgumentException("UserModel and TimeFormatter must be set to create a user db object");
         }
     }
 
     public UserModel buildModel() {
-        if (user != null) {
+        if (user != null && timeFormatter != null) {
             UserModel userModel = new UserModel();
             userModel.setId(user.getId());
             userModel.setUrl(user.getUrl());
@@ -84,13 +91,14 @@ public class UserBuilder {
             userModel.setName(user.getName());
             userModel.setAlias(user.getAlias());
             if (user.getCreatedDate() != null) {
-                userModel.setCreatedAt(new Timestamp(user.getCreatedDate().getTime()));
+                userModel.setCreatedAt(timeFormatter.getStringFromTimeStamp(user.getCreatedDate()));
+
             }
             userModel.setActive(user.isActive());
             userModel.setShared(user.isShared());
             userModel.setVerified(user.isVerified());
             if (user.getLastLoginDate() != null) {
-                userModel.setLastLoginDate(new Timestamp(user.getLastLoginDate().getTime()));
+                userModel.setLastLoginDate(timeFormatter.getStringFromTimeStamp(user.getLastLoginDate()));
             }
             userModel.setEmail(user.getEmail());
             userModel.setSignature(user.getSignature());
@@ -105,7 +113,7 @@ public class UserBuilder {
             userModel.setTimezone(user.getTimezone());
             return userModel;
         } else {
-            throw new IllegalArgumentException("user and organization must be set to create a UserModel object");
+            throw new IllegalArgumentException("User and TimeFormatter and Organization must be set to create a UserModel object");
         }
     }
 }

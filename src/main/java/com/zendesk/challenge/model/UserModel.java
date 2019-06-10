@@ -38,8 +38,7 @@ public class UserModel implements Serializable {
     private String alias;
 
     @JsonProperty("created_at")
-    @JsonDeserialize(using = DateDeserializer.class)
-    private Date createdAt;
+    private String createdAt;
 
     private Boolean active;
 
@@ -52,8 +51,7 @@ public class UserModel implements Serializable {
     private String timezone;
 
     @JsonProperty("last_login_at")
-    @JsonDeserialize(using = DateDeserializer.class)
-    private Date lastLoginAt;
+    private String lastLoginAt;
 
     private String email;
 
@@ -165,7 +163,7 @@ public class UserModel implements Serializable {
      *
      * @return the created date
      */
-    public Date getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
@@ -174,7 +172,7 @@ public class UserModel implements Serializable {
      *
      * @param createdAt the created date
      */
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -273,7 +271,7 @@ public class UserModel implements Serializable {
      *
      * @return the last logic date
      */
-    public Date getLastLoginAt() {
+    public String getLastLoginAt() {
         return lastLoginAt;
     }
 
@@ -283,7 +281,7 @@ public class UserModel implements Serializable {
      *
      * @param lastLoginDate the last login date
      */
-    public void setLastLoginDate(Date lastLoginDate) {
+    public void setLastLoginDate(String lastLoginDate) {
         this.lastLoginAt = lastLoginDate;
     }
 

@@ -33,8 +33,7 @@ public class TicketModel implements Serializable {
     private String externalId;
 
     @JsonProperty("created_at")
-    @JsonDeserialize(using = DateDeserializer.class)
-    private Date createdAt;
+    private String createdAt;
 
     private String type;
 
@@ -59,8 +58,7 @@ public class TicketModel implements Serializable {
     private Boolean hasIncidents;
 
     @JsonProperty("due_at")
-    @JsonDeserialize(using = DateDeserializer.class)
-    private Date dueAt;
+    private String dueAt;
 
     private List<String> tags;
 
@@ -161,7 +159,7 @@ public class TicketModel implements Serializable {
      *
      * @return the created date
      */
-    public Date getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
@@ -170,7 +168,7 @@ public class TicketModel implements Serializable {
      *
      * @param createdAt the created date
      */
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -319,7 +317,7 @@ public class TicketModel implements Serializable {
      *
      * @return the due at
      */
-    public Date getDueAt() {
+    public String getDueAt() {
         return dueAt;
     }
 
@@ -328,7 +326,7 @@ public class TicketModel implements Serializable {
      *
      * @param due_at the due at
      */
-    public void setDueAt(Date due_at) {
+    public void setDueAt(String due_at) {
         this.dueAt = due_at;
     }
 

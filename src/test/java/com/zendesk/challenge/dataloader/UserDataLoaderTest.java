@@ -4,8 +4,12 @@ import com.zendesk.challenge.data.domain.jpa.Organization;
 import com.zendesk.challenge.data.domain.jpa.User;
 import com.zendesk.challenge.data.domain.repository.OrganizationRepository;
 import com.zendesk.challenge.data.domain.repository.UserRepository;
+import com.zendesk.challenge.service.OrganizationService;
+import com.zendesk.challenge.service.TimeFormatter;
+import com.zendesk.challenge.service.UserService;
 import com.zendesk.challenge.util.GenericTestDataFactory;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -35,10 +39,13 @@ import static org.mockito.Mockito.when;
 public class UserDataLoaderTest {
 
     @Mock
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Mock
-    private OrganizationRepository organizationRepository;
+    private OrganizationService organizationService;
+
+    @Mock
+    private TimeFormatter timeForamtter;
 
     @InjectMocks
     private UserDataLoader userDataLoader;
@@ -52,8 +59,8 @@ public class UserDataLoaderTest {
     @Test
     public void testUploadUserData() {
         Organization organization = GenericTestDataFactory.getOrganization();
-        when(organizationRepository.findById(anyLong())).thenReturn(Optional.of(organization));
+        when(organizationService.findById(anyLong())).thenReturn(organization);
         userDataLoader.run(null);
-        verify(userRepository, times(75)).save(any(User.class));
+        verify(userService, times(75)).save(any(User.class));
     }
 }

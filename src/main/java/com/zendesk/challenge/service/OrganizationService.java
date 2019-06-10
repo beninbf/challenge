@@ -33,7 +33,7 @@ public interface OrganizationService {
      * @param value Object
      * @return list of organizations
      */
-    List<Organization> findOrganizationsByField(String field, Object value);
+    List<Organization> findOrganizationsByField(String field, String value);
 
     /**
      * Save an organization to storage.

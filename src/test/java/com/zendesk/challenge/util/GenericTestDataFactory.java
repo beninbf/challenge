@@ -6,8 +6,11 @@ import com.zendesk.challenge.data.domain.jpa.User;
 import com.zendesk.challenge.model.OrganizationModel;
 import com.zendesk.challenge.model.TicketModel;
 import com.zendesk.challenge.model.UserModel;
+import com.zendesk.challenge.service.TimeFormatter;
 
+import javax.inject.Inject;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -26,6 +29,9 @@ import java.util.Date;
  */
 public class GenericTestDataFactory {
 
+    @Inject
+    private TimeFormatter timeFormatter;
+
     public static UserModel getUserModel() {
         UserModel userModel = new UserModel();
         userModel.setId(11L);
@@ -33,11 +39,11 @@ public class GenericTestDataFactory {
         userModel.setExternalId("abc");
         userModel.setName("test name");
         userModel.setAlias("test alias");
-        userModel.setCreatedAt(new Date());
+        userModel.setCreatedAt(new Date().toString());
         userModel.setActive(true);
         userModel.setShared(true);
         userModel.setVerified(true);
-        userModel.setLastLoginDate(new Date());
+        userModel.setLastLoginDate(new Date().toString());
         userModel.setEmail("test@email.com");
         userModel.setSignature("sig");
         userModel.setPhone("888-888-8888");
@@ -100,7 +106,7 @@ public class GenericTestDataFactory {
         ticketModel.setId("aaa");
         ticketModel.setUrl("Test");
         ticketModel.setExternalId("abc");
-        ticketModel.setCreatedAt(new Date());
+        ticketModel.setCreatedAt(new Date().toString());
         ticketModel.setType("test type");
         ticketModel.setSubject("test subject");
         ticketModel.setDescription("test description");
@@ -112,7 +118,7 @@ public class GenericTestDataFactory {
         ticketModel.setVia("via");
         ticketModel.setHasIncidents(true);
         ticketModel.setTags(Arrays.asList("blah,blah,blah"));
-        ticketModel.setDueAt(new Date());
+        ticketModel.setDueAt(new Date().toString());
         return ticketModel;
     }
 
@@ -122,7 +128,7 @@ public class GenericTestDataFactory {
         organizationModel.setUrl("Test");
         organizationModel.setName("name");
         organizationModel.setExternalId("abc");
-        organizationModel.setCreatedAt(new Date());
+        organizationModel.setCreatedAt(new Date().toString());
         organizationModel.setDetails("test details");
         organizationModel.setSharedTickets(true);
         organizationModel.setTags(Arrays.asList("blah,blah,blah"));

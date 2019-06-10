@@ -6,6 +6,7 @@ import com.zendesk.challenge.data.domain.repository.UserRepository;
 import com.zendesk.challenge.service.impl.UserServiceImpl;
 import com.zendesk.challenge.util.GenericTestDataFactory;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

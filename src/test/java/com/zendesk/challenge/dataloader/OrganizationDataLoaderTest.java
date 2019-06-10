@@ -3,6 +3,7 @@ package com.zendesk.challenge.dataloader;
 import com.zendesk.challenge.data.domain.jpa.Organization;
 import com.zendesk.challenge.data.domain.repository.OrganizationRepository;
 import com.zendesk.challenge.service.OrganizationService;
+import com.zendesk.challenge.service.TimeFormatter;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -30,6 +31,9 @@ public class OrganizationDataLoaderTest {
 
     @Mock
     private OrganizationService organizationService;
+
+    @Mock
+    private TimeFormatter timeForamtter;
 
     @InjectMocks
     private OrganizationDataLoader organizationDataLoader;
