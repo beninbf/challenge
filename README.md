@@ -42,7 +42,7 @@ To build this project execute the following command
 
 `mvn package;`
 
-To run the web application execute one can use either of the following commands
+To run the web application execute
 
 `mvn spring-boot:run`
 
