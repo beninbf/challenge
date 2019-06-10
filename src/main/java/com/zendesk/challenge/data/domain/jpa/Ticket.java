@@ -178,24 +178,6 @@ public class Ticket {
     }
 
     /**
-     * Gets pending.
-     *
-     * @return the pending
-     */
-    public String getPending() {
-        return pending;
-    }
-
-    /**
-     * Sets pending.
-     *
-     * @param pending the pending
-     */
-    public void setPending(String pending) {
-        this.pending = pending;
-    }
-
-    /**
      * Gets status.
      *
      * @return the status
