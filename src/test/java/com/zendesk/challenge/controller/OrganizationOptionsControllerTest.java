@@ -14,6 +14,19 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
+/**
+ *
+ * <code>OrganizationOptionsControllerTest</code> unit test for OrganizationOptionsController.
+ *
+ * <pre>
+ * <strong>History</strong>    Name              Date            Description
+ * <strong>History</strong>    --------------------------------------------------------------------
+ * <strong>History</strong>    Benin Bryant      June 6, 2019    Creating a basic search.
+ * </pre>
+ *
+ * @author Benin Bryant
+ * @since June 6, 2019
+ */
 public class OrganizationOptionsControllerTest {
 
     @Mock

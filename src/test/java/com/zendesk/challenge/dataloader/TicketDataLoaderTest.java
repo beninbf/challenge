@@ -3,9 +3,6 @@ package com.zendesk.challenge.dataloader;
 import com.zendesk.challenge.data.domain.jpa.Organization;
 import com.zendesk.challenge.data.domain.jpa.Ticket;
 import com.zendesk.challenge.data.domain.jpa.User;
-import com.zendesk.challenge.data.domain.repository.OrganizationRepository;
-import com.zendesk.challenge.data.domain.repository.TicketRepository;
-import com.zendesk.challenge.data.domain.repository.UserRepository;
 import com.zendesk.challenge.service.OrganizationService;
 import com.zendesk.challenge.service.TicketService;
 import com.zendesk.challenge.service.TimeFormatter;
@@ -16,8 +13,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Optional;
-
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -27,7 +22,7 @@ import static org.mockito.Mockito.when;
 
 /**
  *
- * <code>TicketDataLoaderTest</code> unit test for TicketLoader
+ * <code>TicketDataLoaderTest</code> unit test for TicketDataLoader.
  *
  * <pre>
  * <strong>History</strong>    Name              Date            Description

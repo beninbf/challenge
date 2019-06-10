@@ -2,20 +2,15 @@ package com.zendesk.challenge.dataloader;
 
 import com.zendesk.challenge.data.domain.jpa.Organization;
 import com.zendesk.challenge.data.domain.jpa.User;
-import com.zendesk.challenge.data.domain.repository.OrganizationRepository;
-import com.zendesk.challenge.data.domain.repository.UserRepository;
 import com.zendesk.challenge.service.OrganizationService;
 import com.zendesk.challenge.service.TimeFormatter;
 import com.zendesk.challenge.service.UserService;
 import com.zendesk.challenge.util.GenericTestDataFactory;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -25,7 +20,7 @@ import static org.mockito.Mockito.when;
 
 /**
  *
- * <code>UserDataLoaderTest</code> unit test for UserDataLoader
+ * <code>UserDataLoaderTest</code> unit test for UserDataLoader.
  *
  * <pre>
  * <strong>History</strong>    Name              Date            Description

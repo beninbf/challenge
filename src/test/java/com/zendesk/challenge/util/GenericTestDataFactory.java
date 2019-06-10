@@ -10,13 +10,12 @@ import com.zendesk.challenge.service.TimeFormatter;
 
 import javax.inject.Inject;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
 /**
  *
- * <code>GenericTestDataFactory</code> a factory producing Models and Jpa object for testing.
+ * <code>GenericTestDataFactory</code> a factory producing Models and Jpa objects for testing.
  *
  * <pre>
  * <strong>History</strong>    Name              Date            Description

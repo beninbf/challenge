@@ -24,9 +24,14 @@ public class TimeFormatter {
 
     private static Logger logger = LoggerFactory.getLogger(TimeFormatter.class);
 
+    private static final String DATE_MODEL_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
+    private static final String TIMESTAMP_FORMAT = "yyyy-MM-dd'T'HH:mm:ss XXX";
+
+
     public String getStringFromTimeStamp(Timestamp timestamp) {
         try {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_MODEL_FORMAT);
             Date date = new Date(timestamp.getTime());
             return simpleDateFormat.format(date);
         } catch (Exception ex) {
@@ -37,7 +42,7 @@ public class TimeFormatter {
 
     public Timestamp getDateFromString(String date) {
         try {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss XXX");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(TIMESTAMP_FORMAT);
             Date d = simpleDateFormat.parse(date);
             return new Timestamp(d.getTime());
         } catch (Exception ex) {
@@ -48,7 +53,7 @@ public class TimeFormatter {
 
     public Timestamp getDateFromModelString(String date) {
         try {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_MODEL_FORMAT);
             Date d = simpleDateFormat.parse(date);
             return new Timestamp(d.getTime());
         } catch (Exception ex) {

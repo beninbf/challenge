@@ -1,7 +1,6 @@
 package com.zendesk.challenge.dataloader;
 
 import com.zendesk.challenge.data.domain.jpa.Organization;
-import com.zendesk.challenge.data.domain.repository.OrganizationRepository;
 import com.zendesk.challenge.service.OrganizationService;
 import com.zendesk.challenge.service.TimeFormatter;
 import org.junit.Before;
@@ -16,7 +15,7 @@ import static org.mockito.Mockito.verify;
 
 /**
  *
- * <code>OrganizationDataLoaderTest</code> unit test for OrganizationDataLoader
+ * <code>OrganizationDataLoaderTest</code> unit test for the OrganizationDataLoader.
  *
  * <pre>
  * <strong>History</strong>    Name              Date            Description

@@ -5,8 +5,6 @@ import com.zendesk.challenge.data.domain.jpa.User;
 import com.zendesk.challenge.model.UserModel;
 import com.zendesk.challenge.service.TimeFormatter;
 
-import java.sql.Timestamp;
-
 /**
  *
  * <code>UserBuilder</code> Builder class for building User JPA objects and User Models

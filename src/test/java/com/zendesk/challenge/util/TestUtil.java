@@ -11,7 +11,7 @@ import javax.inject.Inject;
 
 /**
  *
- * <code>TestUtil</code> a bean for conveniently deleting all repositories before an after tests
+ * <code>TestUtil</code> a bean for conveniently deleting all repositories before and after tests
  *
  * <pre>
  * <strong>History</strong>    Name              Date            Description

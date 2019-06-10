@@ -56,9 +56,6 @@ public class Ticket {
     @Column(name = "PRIORITY", nullable = true, length = 20)
     private String priority;
 
-    @Column(name = "PENDING", nullable = true, length = 20)
-    private String pending;
-
     @Column(name = "STATUS", nullable = true, length = 50)
     private String status;
 
