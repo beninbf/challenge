@@ -16,7 +16,6 @@ import org.springframework.dao.InvalidDataAccessApiUsageException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.Assert.assertFalse;
@@ -130,12 +129,10 @@ public class TicketServiceImplTest {
         List<Ticket> tickets = Arrays.asList(ticket);
         String externalId = "test";
         when(ticketRepository.findTicketsByField(anyString(), any(Object.class))).thenReturn(tickets);
-        when(booleanValueScrubber.scrub(any(Set.class), anyString(), anyString())).thenReturn(externalId);
-
         List<Ticket> result = ticketService.findTickets("externalId", "test");
 
         verify(ticketRepository, times(1)).findTicketsByField(anyString(), any(Object.class));
-        verify(booleanValueScrubber, times(1)).scrub(any(Set.class), anyString(), anyString());
+        verify(booleanValueScrubber, times(0)).scrub(anyString(), anyString());
         assertNotNull("result should not be null", result);
         assertFalse("result should not be empty", result.isEmpty());
         assertTrue("result size should be 1", result.size() == 1);
@@ -147,12 +144,10 @@ public class TicketServiceImplTest {
         String externalId = "test";
         InvalidDataAccessApiUsageException inv = mock(InvalidDataAccessApiUsageException.class);
         when(ticketRepository.findTicketsByField(anyString(), any(Object.class))).thenThrow(inv);
-        when(booleanValueScrubber.scrub(any(Set.class), anyString(), anyString())).thenReturn(externalId);
-
         List<Ticket> result = ticketService.findTickets("externalId", "test");
 
         verify(ticketRepository, times(1)).findTicketsByField(anyString(), any(Object.class));
-        verify(booleanValueScrubber, times(1)).scrub(any(Set.class), anyString(), anyString());
+        verify(booleanValueScrubber, times(0)).scrub(anyString(), anyString());
         assertTrue("result should be empty", result.isEmpty());
     }
 

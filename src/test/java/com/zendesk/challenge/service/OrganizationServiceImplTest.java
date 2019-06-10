@@ -10,10 +10,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -21,6 +22,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -47,6 +49,9 @@ public class OrganizationServiceImplTest {
     @Mock
     private BooleanValueScrubber booleanValueScrubber;
 
+    @Mock
+    private TimeFormatter timeFormatter;
+
     @InjectMocks
     private OrganizationService organizationService;
 
@@ -70,12 +75,42 @@ public class OrganizationServiceImplTest {
         Organization organization = mock(Organization.class);
         List<Organization> organizations = Arrays.asList(organization);
         when(organizationRepository.findOrganizationsByField(anyString(), any(Object.class))).thenReturn(organizations);
-        when(booleanValueScrubber.scrub(any(Set.class), anyString(), anyString())).thenReturn("test");
-
         List<Organization> result = organizationService.findOrganizationsByField("name", "test");
 
         verify(organizationRepository, times(1)).findOrganizationsByField(anyString(), any(Object.class));
-        verify(booleanValueScrubber, times(1)).scrub(any(Set.class), anyString(), anyString());
+        verify(booleanValueScrubber, times(0)).scrub(anyString(), anyString());
+        assertNotNull("result should not be null", result);
+        assertFalse("result should not be empty", result.isEmpty());
+        assertTrue("result size should be 1", result.size() == 1);
+    }
+
+    @Test
+    public void testFindOrganizationsByTimeField() {
+        Organization organization = mock(Organization.class);
+        List<Organization> organizations = Arrays.asList(organization);
+        when(organizationRepository.findOrganizationsByField(anyString(), any(Object.class))).thenReturn(organizations);
+        when(timeFormatter.getDateFromModelString(anyString())).thenReturn(new Timestamp(new Date().getTime()));
+
+        List<Organization> result = organizationService.findOrganizationsByField(DbFieldPredicate.CREATED_DATE, new Date().toString());
+
+        verify(organizationRepository, times(1)).findOrganizationsByField(anyString(), any(Object.class));
+        verify(booleanValueScrubber, times(0)).scrub(anyString(), anyString());
+        assertNotNull("result should not be null", result);
+        assertFalse("result should not be empty", result.isEmpty());
+        assertTrue("result size should be 1", result.size() == 1);
+    }
+
+    @Test
+    public void testFindOrganizationsByBooleanField() {
+        Organization organization = mock(Organization.class);
+        List<Organization> organizations = Arrays.asList(organization);
+        when(organizationRepository.findOrganizationsByField(anyString(), any(Object.class))).thenReturn(organizations);
+        when(booleanValueScrubber.scrub(anyString(), anyString())).thenReturn(Boolean.TRUE);
+
+        List<Organization> result = organizationService.findOrganizationsByField(DbFieldPredicate.SHARED_TICKETS, Boolean.TRUE.toString());
+
+        verify(organizationRepository, times(1)).findOrganizationsByField(anyString(), any(Object.class));
+        verify(booleanValueScrubber, times(1)).scrub(anyString(), anyString());
         assertNotNull("result should not be null", result);
         assertFalse("result should not be empty", result.isEmpty());
         assertTrue("result size should be 1", result.size() == 1);
@@ -84,14 +119,12 @@ public class OrganizationServiceImplTest {
     @Test
     public void testFindOrganizationsByField_Exception() {
         NumberFormatException nfe = mock(NumberFormatException.class);
-        when(booleanValueScrubber.scrub(any(Set.class), anyString(), anyString())).thenReturn("test");
         when(organizationRepository.findOrganizationsByField(anyString(), anyLong())).thenThrow(nfe);
 
         List<Organization> result = organizationService.findOrganizationsByField("id", "1");
 
         verify(organizationRepository, times(1)).findOrganizationsByField(anyString(), any(Object.class));
-        verify(booleanValueScrubber, times(1)).scrub(any(Set.class), anyString(), anyString());
-
+        verify(booleanValueScrubber, times(0)).scrub(anyString(), anyString());
         assertTrue("result should be empty", result.isEmpty());
     }
 

@@ -6,12 +6,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -34,11 +29,6 @@ public class BooleanValueScrubberImplTest {
 
     private static final String VERIFIED = "verified";
 
-    private static final Set<String> booleanTypes = new HashSet<>();
-    {
-        booleanTypes.add(VERIFIED);
-    }
-
     @Before
     public void setup() {
         booleanValueScrubberImpl = new BooleanValueScrubberImpl();
@@ -47,7 +37,7 @@ public class BooleanValueScrubberImplTest {
 
     @Test
     public void testScrubTrue() {
-        Object result = booleanValueScrubberImpl.scrub(booleanTypes, VERIFIED, Boolean.TRUE.toString());
+        Object result = booleanValueScrubberImpl.scrub(VERIFIED, Boolean.TRUE.toString());
         assertTrue("result should be Boolean true", result instanceof Boolean);
 
         Boolean value = (Boolean) result;
@@ -56,7 +46,7 @@ public class BooleanValueScrubberImplTest {
 
     @Test
     public void testScrubFalse() {
-        Object result = booleanValueScrubberImpl.scrub(booleanTypes, VERIFIED, Boolean.FALSE.toString());
+        Object result = booleanValueScrubberImpl.scrub(VERIFIED, Boolean.FALSE.toString());
         assertTrue("result should be Boolean true", result instanceof Boolean);
 
         Boolean value = (Boolean) result;
@@ -65,16 +55,13 @@ public class BooleanValueScrubberImplTest {
 
     @Test
     public void testScrub_EmptyValue() {
-        Object result = booleanValueScrubberImpl.scrub(booleanTypes, VERIFIED, "");
+        Object result = booleanValueScrubberImpl.scrub(VERIFIED, "");
         assertNull("result should be null", result);
     }
 
     @Test
     public void testScrub_NonBooleanValue() {
-        Object result = booleanValueScrubberImpl.scrub(booleanTypes, "other", "test");
-        assertNotNull("result should be not null", result);
-
-        String value = (String) result;
-        assertEquals("result should be 'test'", "test", value);
+        Object result = booleanValueScrubberImpl.scrub("other", "test");
+        assertNull("result should be null", result);
     }
 }

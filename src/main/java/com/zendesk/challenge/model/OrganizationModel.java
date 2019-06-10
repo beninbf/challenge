@@ -45,6 +45,7 @@ public class OrganizationModel implements Serializable {
     @JsonProperty("shared_tickets")
     private Boolean sharedTickets;
 
+    @JsonProperty("tags")
     private List<String> tags;
 
     /**

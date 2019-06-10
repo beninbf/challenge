@@ -1,7 +1,5 @@
 package com.zendesk.challenge.service;
 
-import java.util.Set;
-
 /**
  *
  * <code>BooleanValueScrubber</code> interface for scrubbing query paramater values.
@@ -17,12 +15,11 @@ import java.util.Set;
 public interface BooleanValueScrubber {
 
     /**
-     * BooleanValueScrubber - validates field against a known set of
-     * boolean and returns the appropriate object type.
+     * BooleanValueScrubber - validates a boolean for property object casting.
      *
      * @param field the field
      * @param value the value
      * @return Object
      */
-    Object scrub(Set<String> booleanTypes, String field, String value) ;
+    Object scrub(String field, String value) ;
 }

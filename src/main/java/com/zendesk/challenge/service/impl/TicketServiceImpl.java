@@ -5,6 +5,7 @@ import com.zendesk.challenge.data.domain.jpa.Ticket;
 import com.zendesk.challenge.data.domain.jpa.User;
 import com.zendesk.challenge.data.domain.repository.TicketRepository;
 import com.zendesk.challenge.service.BooleanValueScrubber;
+import com.zendesk.challenge.service.DbFieldPredicate;
 import com.zendesk.challenge.service.OrganizationService;
 import com.zendesk.challenge.service.TicketService;
 import com.zendesk.challenge.service.TimeFormatter;
@@ -15,11 +16,8 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  *
@@ -36,31 +34,6 @@ import java.util.Set;
 public class TicketServiceImpl implements TicketService {
 
     private static Logger logger = LoggerFactory.getLogger(TicketServiceImpl.class);
-
-    private static final String HAS_INCIDENTS = "hasIncidents";
-
-    private static final String ORGANIZATION = "organization";
-
-    private static final String ASSIGNEE = "assignee";
-
-    private static final String SUBMITTER = "submitter";
-
-    private static final String ID = "id";
-
-    private static final String CREATED_DATE = "createdDate";
-
-    private static final String DUE_DATE = "dueDate";
-
-    private static final Set<String> booleanFields = new HashSet<>();
-    {
-        booleanFields.add(HAS_INCIDENTS);
-    }
-
-    private static final Set<String> timeFields = new HashSet<>();
-    {
-        timeFields.add(CREATED_DATE);
-        timeFields.add(DUE_DATE);
-    }
 
     @Inject
     TicketRepository ticketRepository;
@@ -83,32 +56,35 @@ public class TicketServiceImpl implements TicketService {
     }
 
     public List<Ticket> findTickets(String field, String value) {
+        boolean isBooleanField = DbFieldPredicate.isBooleanField().test(field);
+        boolean isTimeField = DbFieldPredicate.isTimeField().test(field);
+        boolean isUserField = DbFieldPredicate.isUserField().test(field);
+        boolean isAssignee = DbFieldPredicate.isAssignee().test(field);
+        boolean isSubmitter = DbFieldPredicate.isSubmitter().test(field);
+        boolean isOrganizationField = DbFieldPredicate.isOrganizationField().test(field);
         try {
-            if (field.equals(ORGANIZATION)) {
-                logger.info("query by organization");
+            if (isOrganizationField) {
                 Long organizationId = getLong(value);
+                logger.info(String.format("query by organization=%s", organizationId));
                 Organization organization = organizationService.findById(organizationId);
                 return findByOrganization(organization);
-            } else if (field.equals(ASSIGNEE)) {
-                logger.info("query by assignee");
+            } else if (isUserField && isAssignee) {
                 Long assigneeId = getLong(value);
+                logger.info(String.format("query by assignee=%s", assigneeId));
                 User assignee = userService.findById(assigneeId);
                 return findByAssignee(assignee);
-            } else if (field.equals(SUBMITTER)) {
-                logger.info("query by submitter");
+            } else if (isUserField && isSubmitter) {
                 Long submitterId = getLong(value);
+                logger.info(String.format("query by submitter=%s", submitterId));
                 User submitter = userService.findById(submitterId);
                 return findBySubmitter(submitter);
-            } else if (field.equals(ID)) {
-                Ticket ticket = findById(value);
-                return Arrays.asList(ticket);
+            } else if (isTimeField) {
+                return findByTicketsByField(field, timeFormatter.getDateFromModelString(value));
+            } else if (isBooleanField) {
+                return findByTicketsByField(field, booleanValueScrubber.scrub(field, value));
             } else {
-                if (timeFields.contains(field)) {
-                    logger.info("TIME SERFDFDSFSDFSDF");
-                    return findByTicketsByField(field, timeFormatter.getDateFromModelString(value));
-                } else {
-                    return findByTicketsByField(field, booleanValueScrubber.scrub(booleanFields, field, value));
-                }
+                Object valueToQuery = value.isEmpty() ? null : value;
+                return findByTicketsByField(field, valueToQuery);
             }
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);

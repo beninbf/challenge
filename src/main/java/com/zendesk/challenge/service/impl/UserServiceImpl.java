@@ -4,6 +4,7 @@ import com.zendesk.challenge.data.domain.jpa.Organization;
 import com.zendesk.challenge.data.domain.jpa.User;
 import com.zendesk.challenge.data.domain.repository.UserRepository;
 import com.zendesk.challenge.service.BooleanValueScrubber;
+import com.zendesk.challenge.service.DbFieldPredicate;
 import com.zendesk.challenge.service.OrganizationService;
 import com.zendesk.challenge.service.TimeFormatter;
 import com.zendesk.challenge.service.UserService;
@@ -13,10 +14,8 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  *
@@ -33,36 +32,8 @@ import java.util.Set;
 public class UserServiceImpl implements UserService {
     private static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
-    private static final String VERIFIED = "verified";
-
-    private static final String ACTIVE = "active";
-
-    private static final String SHARED = "shared";
-
-    private static final String SUSPENDED = "suspended";
-
-    private static final String ORGANIZATION = "organization";
-
-    private static final String CREATED_DATE = "createdDate";
-
-    private static final String LAST_LOGIN_DATE = "lastLoginDate";
-
     @Inject
     private TimeFormatter timeFormatter;
-
-    private static final Set<String> booleanFields = new HashSet<>();
-    {
-        booleanFields.add(VERIFIED);
-        booleanFields.add(ACTIVE);
-        booleanFields.add(SHARED);
-        booleanFields.add(SUSPENDED);
-    }
-
-    private static final Set<String> timeFields = new HashSet<>();
-    {
-        timeFields.add(CREATED_DATE);
-        timeFields.add(LAST_LOGIN_DATE);
-    }
 
     @Inject
     UserRepository userRepository;
@@ -96,21 +67,25 @@ public class UserServiceImpl implements UserService {
     }
 
     public List<User> findUsers(String field, String value) {
+        boolean isBooleanField = DbFieldPredicate.isBooleanField().test(field);
+        boolean isTimeField = DbFieldPredicate.isTimeField().test(field);
+        boolean isOrganizationField = DbFieldPredicate.isOrganizationField().test(field);
         try {
-            if (field.equals(ORGANIZATION)) {
+            if (isOrganizationField) {
                 logger.info("query by organization");
                 Organization organization = organizationService.findById(getLong(value));
-                if (organization == null) {
-                    return new ArrayList<>();
-                }
-                return userRepository.findByOrganization(organization);
+                List<User> results = organization != null ? userRepository.findByOrganization(organization) : new ArrayList<>();
+                return results;
+            } else if (isTimeField) {
+                logger.info(String.format("query by date field=%s", field));
+                return findUsersByField(field, timeFormatter.getDateFromModelString(value));
+            } else if (isBooleanField) {
+                logger.info(String.format("query by boolean field=%s", field));
+                return findUsersByField(field, booleanValueScrubber.scrub(field, value));
             } else {
-                if (timeFields.contains(field)) {
-                    return findUsersByField(field, timeFormatter.getDateFromModelString(value));
-                } else {
-                    Object valueToQuery = booleanValueScrubber.scrub(booleanFields, field, value);
-                    return findUsersByField(field, valueToQuery);
-                }
+                logger.info(String.format("query by generic field=%s", field));
+                Object valueToQuery = value.isEmpty() ? null : value;
+                return findUsersByField(field, valueToQuery);
             }
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);

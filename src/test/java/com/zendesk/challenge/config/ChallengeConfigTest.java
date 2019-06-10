@@ -3,6 +3,7 @@ package com.zendesk.challenge.config;
 import com.zendesk.challenge.service.BooleanValueScrubber;
 import com.zendesk.challenge.service.OrganizationService;
 import com.zendesk.challenge.service.TicketService;
+import com.zendesk.challenge.service.TimeFormatter;
 import com.zendesk.challenge.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
@@ -71,5 +72,14 @@ public class ChallengeConfigTest {
     public void testBooleanValueScrubber() {
         assertNotNull(config.booleanValueScrubber());
         assertTrue(config.booleanValueScrubber() instanceof BooleanValueScrubber);
+    }
+
+    /**
+     * Test method for {@link ChallengeConfig#timeFormatter()}.
+     */
+    @Test
+    public void testTimeFormatter() {
+        assertNotNull(config.timeFormatter());
+        assertTrue(config.timeFormatter() instanceof TimeFormatter);
     }
 }

@@ -3,6 +3,7 @@ package com.zendesk.challenge.service.impl;
 import com.zendesk.challenge.data.domain.jpa.Organization;
 import com.zendesk.challenge.data.domain.repository.OrganizationRepository;
 import com.zendesk.challenge.service.BooleanValueScrubber;
+import com.zendesk.challenge.service.DbFieldPredicate;
 import com.zendesk.challenge.service.OrganizationService;
 import com.zendesk.challenge.service.TimeFormatter;
 import org.slf4j.Logger;
@@ -11,11 +12,8 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-
 
 /**
  *
@@ -41,15 +39,6 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Inject
     private TimeFormatter timeFormatter;
 
-    private static final String SHARED_TICKETS = "sharedTickets";
-
-    private static final String CREATED_DATE = "createdDate";
-
-    private static final Set<String> booleanTypes = new HashSet<>();
-    {
-        booleanTypes.add(SHARED_TICKETS);
-    }
-
     public Organization findById(Long id) {
         logger.info(String.format("retrieving organization where id=%s", id));
         try {
@@ -66,10 +55,15 @@ public class OrganizationServiceImpl implements OrganizationService {
         logger.info(String.format("retrieving organizations where field=%s and value=%s", field, value));
         List<Organization> result = new ArrayList<>();
         try {
-            if (field.equals(CREATED_DATE)) {
+            boolean isBooleanField = DbFieldPredicate.isBooleanField().test(field);
+            boolean isTimeField = DbFieldPredicate.isTimeField().test(field);
+
+            if (isTimeField) {
                 return organizationRepository.findOrganizationsByField(field, timeFormatter.getDateFromModelString(value));
+            } else if (isBooleanField) {
+                return organizationRepository.findOrganizationsByField(field, booleanValueScrubber.scrub(field, value));
             } else {
-                Object valueToQuery = booleanValueScrubber.scrub(booleanTypes, field, value);
+                Object valueToQuery = value.isEmpty() ? null : value;
                 return organizationRepository.findOrganizationsByField(field, valueToQuery);
             }
         } catch (Exception ex) {

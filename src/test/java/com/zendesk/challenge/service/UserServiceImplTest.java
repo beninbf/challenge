@@ -6,7 +6,6 @@ import com.zendesk.challenge.data.domain.repository.UserRepository;
 import com.zendesk.challenge.service.impl.UserServiceImpl;
 import com.zendesk.challenge.util.GenericTestDataFactory;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -15,7 +14,6 @@ import org.mockito.MockitoAnnotations;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -110,13 +108,13 @@ public class UserServiceImplTest {
     public void testFindUsers_ByNonOrganizationField() {
         User user = GenericTestDataFactory.getUser(1l);
         List<User> users = Arrays.asList(user);
-        when(booleanValueScrubber.scrub(any(Set.class), anyString(), anyString())).thenReturn(Object.class);
+        when(booleanValueScrubber.scrub(anyString(), anyString())).thenReturn(Object.class);
         when(userRepository.findUsersByField(anyString(), any(Object.class))).thenReturn(users);
 
         List<User> result = userService.findUsers("active", "true");
 
         verify(userRepository, times(1)).findUsersByField(anyString(), any(Object.class));
-        verify(booleanValueScrubber, times(1)).scrub(any(Set.class), anyString(), anyString());
+        verify(booleanValueScrubber, times(1)).scrub(anyString(), anyString());
         assertNotNull("users should not be null", result);
         assertFalse("users should not be empty", result.isEmpty());
         assertTrue("users size should be 1", result.size() == 1);
